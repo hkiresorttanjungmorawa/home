@@ -133,7 +133,7 @@
 
         /* Konten Form yang bisa di-collapse */
         .form-collapsible {
-            max-height: 1000px; /* Angka maksimal tinggi form */
+            max-height: 1000px;
             overflow: hidden;
             transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
             opacity: 1;
@@ -252,13 +252,16 @@
 
     <div id="loading-status">Menghubungkan ke DATABASE_KEUANGAN...</div>
 
+    <!-- Form Input Transaksi (SEKARANG OTOMATIS TERTUTUP DI AWAL) -->
     <div class="section-card">
         <div class="section-header-toggle" id="form-toggle-btn">
             <div class="section-title">✍️ Catat Transaksi Baru</div>
-            <div class="toggle-icon" id="toggle-icon">Sembunyikan 🔼</div>
+            <!-- Bagian ini diubah menjadi Buka -->
+            <div class="toggle-icon" id="toggle-icon">Buka 🔽</div>
         </div>
         
-        <div class="form-collapsible" id="form-body">
+        <!-- Menambahkan class 'collapsed' agar langsung tersembunyi saat dimuat -->
+        <div class="form-collapsible collapsed" id="form-body">
             <form id="finance-form">
                 <div class="form-group">
                     <label for="description">KETERANGAN / KEPERLUAN</label>
@@ -314,14 +317,12 @@
     const totalIncomeEl = document.getElementById('total-income');
     const totalExpenseEl = document.getElementById('total-expense');
 
-    // Elemen untuk Fitur Minimize
     const formToggleBtn = document.getElementById('form-toggle-btn');
     const formBody = document.getElementById('form-body');
     const toggleIcon = document.getElementById('toggle-icon');
 
     let transactions = [];
 
-    // Logika interaksi meminimize form (Buka/Tutup)
     formToggleBtn.addEventListener('click', function() {
         formBody.classList.toggle('collapsed');
         if (formBody.classList.contains('collapsed')) {
@@ -423,7 +424,6 @@
             init();
             alert('Data berhasil disimpan! ✅');
             
-            // Otomatis tutup form setelah berhasil menginput agar layar kembali lega
             formBody.classList.add('collapsed');
             toggleIcon.innerText = 'Buka 🔽';
         })
