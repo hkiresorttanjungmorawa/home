@@ -2,177 +2,308 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dompetku - Realtime Sheets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dompetku Pro - Catatan Keuangan Realtime</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #4f46e5;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --dark: #1f2937;
-            --light: #f3f4f6;
+            --bg-finance: #0f172a; /* Midnight Slate */
+            --card-bg: #1e293b;
+            --emerald-money: #10b981; /* Hijau Uang */
+            --rose-expense: #f43f5e; /* Merah Pengeluaran */
+            --gold-accent: #f59e0b; /* Emas */
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Menghapus warna highlight biru saat ditekan di HP */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-finance);
+            color: var(--text-light);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
         }
 
-        .container {
-            max-width: 600px;
+        .phone-wrapper {
+            width: 100%;
+            max-width: 480px; /* Lebar maksimal seukuran layar HP standar */
             margin: 0 auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding-bottom: 40px;
         }
 
-        h2, h3 {
+        header {
+            margin: 15px 0 25px 0;
             text-align: center;
-            margin-top: 0;
         }
 
-        .balance-board {
+        header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        header p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* Dashboard Kartu Utama (Ala M-Banking) */
+        .main-card {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.4);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+
+        .main-card .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a7f3d0;
+            font-weight: 500;
+        }
+
+        .main-card h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 6px 0 20px 0;
+            letter-spacing: -1px;
+        }
+
+        .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-bottom: 25px;
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 15px;
         }
 
-        .balance-item {
+        .stat-item h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .stat-item .income-val { color: #34d399; }
+        .stat-item .expense-val { color: #fca5a5; }
+
+        /* Indikator Status Cloud */
+        #loading-status {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--gold-accent);
+            border: 1px solid rgba(245, 158, 11, 0.2);
             text-align: center;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: pulse 2s infinite;
         }
 
-        .balance-item.full {
-            grid-column: span 2;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 10px;
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
         }
 
-        .income-text { color: var(--success); font-weight: bold; }
-        .expense-text { color: var(--danger); font-weight: bold; }
+        /* Komponen Form Input Tersembunyi di dalam Kontainer Elegan */
+        .section-card {
+            background-color: var(--card-bg);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #334155;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
         }
 
         input, select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            box-sizing: border-box;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            color: var(--text-light);
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--emerald-money);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background-color: var(--primary);
-            color: white;
+            background-color: var(--emerald-money);
+            color: #062f21;
             border: none;
-            border-radius: 6px;
+            padding: 16px;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
+            transition: background-color 0.2s;
+            margin-top: 5px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
-        button:hover {
-            background-color: #4338ca;
+        button:active {
+            background-color: #059669;
+            transform: scale(0.98);
         }
 
         button:disabled {
-            background-color: #9ca3af;
+            background-color: #334155;
+            color: var(--text-muted);
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
 
+        /* Daftar Riwayat Transaksi Ringkas */
         .transaction-list {
             list-style: none;
-            padding: 0;
-            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
-            background: #f9fafb;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            border-left: 5px solid #d1d5db;
+            padding: 14px 16px;
+            background-color: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #334155;
         }
 
-        .transaction-item.income { border-left-color: var(--success); }
-        .transaction-item.expense { border-left-color: var(--danger); }
-        
-        #loading-status {
-            text-align: center;
-            color: #6b7280;
-            font-style: italic;
-            margin-bottom: 15px;
+        .item-info .title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
         }
+
+        .item-info .subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .item-amount {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .item-amount.income { color: var(--emerald-money); }
+        .item-amount.expense { color: var(--rose-expense); }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Dompetku 💰 (Real-time Sheets)</h2>
+<div class="phone-wrapper">
+    <header>
+        <h2>Dompetku Pro 💵</h2>
+        <p>Database Cloud Terhubung Real-time</p>
+    </header>
     
-    <div class="balance-board">
-        <div class="balance-item full">
-            <small>Sisa Saldo Anda</small>
-            <h1 id="total-balance">Rp 0</h1>
-        </div>
-        <div class="balance-item">
-            <small>Total Pemasukan</small>
-            <p id="total-income" class="income-text">Rp 0</p>
-        </div>
-        <div class="balance-item">
-            <small>Total Pengeluaran</small>
-            <p id="total-expense" class="expense-text">Rp 0</p>
+    <div class="main-card">
+        <div class="label">Sisa Saldo Bersih</div>
+        <h1 id="total-balance">Rp 0</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="label" style="color: #cbd5e1;">Pemasukan</div>
+                <h3 id="total-income" class="income-val">Rp 0</h3>
+            </div>
+            <div class="stat-item">
+                <div class="label" style="color: #cbd5e1;">Pengeluaran</div>
+                <h3 id="total-expense" class="expense-val">Rp 0</h3>
+            </div>
         </div>
     </div>
 
     <div id="loading-status">Menghubungkan ke DATABASE_KEUANGAN...</div>
 
-    <h3>Tambah Transaksi Baru</h3>
-    <form id="finance-form">
-        <div class="form-group">
-            <label for="description">Keterangan</label>
-            <input type="text" id="description" placeholder="Contoh: Gaji bulanan, Beli kopi" required>
-        </div>
-        <div class="form-group">
-            <label for="amount">Jumlah (Rp)</label>
-            <input type="text" id="amount" placeholder="Contoh: 50.000" required>
-        </div>
-        <div class="form-group">
-            <label for="type">Jenis Transaksi</label>
-            <select id="type">
-                <option value="income">Pemasukan</option>
-                <option value="expense">Pengeluaran</option>
-            </select>
-        </div>
-        <button type="submit" id="submit-btn">Simpan Transaksi</button>
-    </form>
+    <div class="section-card">
+        <div class="section-title">✍️ Catat Transaksi Baru</div>
+        <form id="finance-form">
+            <div class="form-group">
+                <label for="description">KETERANGAN / KEPERLUAN</label>
+                <input type="text" id="description" placeholder="Contoh: Gaji, Makan Siang, Kopi" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="amount">JUMLAH (RUPIAH)</label>
+                <input type="text" id="amount" placeholder="0" required inputmode="numeric">
+            </div>
+            <div class="form-group">
+                <label for="type">JENIS ARUS KAS</label>
+                <select id="type">
+                    <option value="income">🟢 Pemasukan (Uang Masuk)</option>
+                    <option value="expense">🔴 Pengeluaran (Uang Keluar)</option>
+                </select>
+            </div>
+            <button type="submit" id="submit-btn">Simpan Transaksi</button>
+        </form>
+    </div>
 
-    <h3>Riwayat Transaksi</h3>
-    <ul id="transaction-list" class="transaction-list"></ul>
+    <div class="section-card">
+        <div class="section-title">🕒 5 Transaksi Terakhir</div>
+        <ul id="transaction-list" class="transaction-list"></ul>
+    </div>
 </div>
 
 <script>
+    // MASUKKAN URL GOOGLE WEB APP AKTIF KAMU DI SINI
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
 
     const form = document.getElementById('finance-form');
@@ -189,7 +320,7 @@
 
     let transactions = [];
 
-    // Format titik otomatis saat mengetik jumlah uang
+    // Format input angka otomatis dengan pembatas titik ribuan saat mengetik
     amountInput.addEventListener('keyup', function(e) {
         let numberString = this.value.replace(/[^,\d]/g, '').toString();
         let split        = numberString.split(',');
@@ -217,17 +348,37 @@
         totalBalanceEl.innerText = formatRupiah(total);
         totalIncomeEl.innerText = formatRupiah(income);
         totalExpenseEl.innerText = formatRupiah(expense);
+        
+        // Mengubah warna teks saldo utama berdasarkan nilai positif/negatif
+        if (total < 0) {
+            totalBalanceEl.style.color = '#f43f5e';
+        } else {
+            totalBalanceEl.style.color = '#f8fafc';
+        }
     }
 
     function renderTransactions() {
         transactionList.innerHTML = '';
-        // Menampilkan 5 transaksi terakhir secara terbalik (terbaru di atas)
+        
+        if (transactions.length === 0) {
+            transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px; padding:10px;">Belum ada catatan transaksi</li>';
+            return;
+        }
+
         transactions.slice(-5).reverse().forEach((transaction) => {
             const sign = transaction.type === 'income' ? '+' : '-';
-            const itemClass = transaction.type === 'income' ? 'income' : 'expense';
+            const amountClass = transaction.type === 'income' ? 'income' : 'expense';
+            const badgeType = transaction.type === 'income' ? 'Masuk' : 'Keluar';
+            
             const li = document.createElement('li');
-            li.classList.add('transaction-item', itemClass);
-            li.innerHTML = `<div><strong>${transaction.description}</strong><br><small>${sign} ${formatRupiah(transaction.amount)}</small></div>`;
+            li.classList.add('transaction-item');
+            li.innerHTML = `
+                <div class="item-info">
+                    <div class="title">${transaction.description}</div>
+                    <div class="subtitle">Dana ${badgeType}</div>
+                </div>
+                <div class="item-amount ${amountClass}">${sign} ${formatRupiah(transaction.amount)}</div>
+            `;
             transactionList.appendChild(li);
         });
     }
@@ -248,22 +399,20 @@
         };
 
         submitBtn.disabled = true;
-        submitBtn.innerText = 'Mengirim ke Google Sheets...';
+        submitBtn.innerText = 'Mengunci data & mengirim...';
 
         fetch(SCRIPT_URL, {
             method: 'POST',
             body: JSON.stringify(newTransaction)
         })
-        .then(response => {
-            // Ketika berhasil input, panggil init() lagi untuk sinkronisasi ulang data terbaru dari cloud
+        .then(() => {
             descriptionInput.value = '';
             amountInput.value = '';
-            init();
-            alert('Data berhasil disimpan! ✅');
+            init(); // Ambil ulang data segar langsung dari cloud
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Gagal mengirim data. Pastikan setelan Apps Script sudah "Anyone".');
+            alert('Gagal mengirim data. Periksa jaringan internet Anda.');
         })
         .finally(() => {
             submitBtn.disabled = false;
@@ -271,35 +420,28 @@
         });
     });
 
-    // HANYA ADA SATU FUNGSI INIT SEKARANG
     function init() {
-        // bypass cache dengan menambahkan timestamp acak di akhir URL
         const cacheBusterUrl = SCRIPT_URL + '?_ts=' + new Date().getTime();
 
         loadingStatus.style.display = 'block';
-        loadingStatus.innerText = 'Mengambil data dari Google Sheets...';
+        loadingStatus.innerText = '🔄 Menyinkronkan dengan DATABASE_KEUANGAN Cloud...';
 
         fetch(cacheBusterUrl)
         .then(response => response.json())
         .then(data => {
-            if(data && data.length > 0) {
-                transactions = data;
-            } else {
-                transactions = [];
-            }
+            transactions = (data && data.length > 0) ? data : [];
             loadingStatus.style.display = 'none';
             renderTransactions();
             updateBudget();
         })
         .catch(error => {
             console.error('Gagal mengambil data:', error);
-            loadingStatus.innerText = 'Gagal memuat data dari cloud. Periksa setelan CORS/Deploy.';
+            loadingStatus.innerText = '⚠️ Mode Offline. Gagal tersambung ke server.';
             renderTransactions();
             updateBudget();
         });
     }
 
-    // Jalankan inisialisasi saat halaman pertama kali dibuka
     init();
 </script>
 
