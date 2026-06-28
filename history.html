@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dompetku Pro - Semua Riwayat</title>
+    <title>Dompetku Pro - Analisis & Riwayat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         :root {
             --bg-finance: #0f172a;
@@ -63,12 +65,11 @@
             border: 1px solid #334155;
         }
 
-        /* Ringkasan akumulasi seluruh data */
-        .month-summary {
+        .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .summary-box {
@@ -92,6 +93,31 @@
         }
         .summary-box .value.in { color: var(--emerald-money); }
         .summary-box .value.out { color: var(--rose-expense); }
+
+        /* Wadah Grafik */
+        .chart-card {
+            background-color: var(--card-bg);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-height: 220px;
+            display: flex;
+            justify-content: center;
+        }
 
         #loading-status {
             text-align: center;
@@ -141,11 +167,11 @@
 
 <div class="phone-wrapper">
     <header>
-        <h2>Semua Riwayat 📊</h2>
+        <h2>Analisis & Riwayat 📊</h2>
         <a href="index.html" class="btn-back">⬅️ Kembali</a>
     </header>
 
-    <div class="month-summary">
+    <div class="summary-grid">
         <div class="summary-box">
             <div class="label">Total Semua Masuk</div>
             <div id="month-income" class="value in">Rp 0</div>
@@ -156,22 +182,73 @@
         </div>
     </div>
 
-    <div id="loading-status">Sedang mengunduh seluruh arsip data dari cloud...</div>
+    <div class="chart-card" id="chart-box" style="display: none;">
+        <div class="chart-title">Rasio Keuangan (Masuk vs Keluar)</div>
+        <div class="chart-container">
+            <canvas id="ratioChart"></canvas>
+        </div>
+    </div>
+
+    <div id="loading-status">Sedang mengunduh dan menganalisis data...</div>
 
     <ul id="transaction-list" class="transaction-list"></ul>
 </div>
 
 <script>
-    // MASUKKAN URL GOOGLE WEB APP KAMU DI SINI
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMerwOuywRIcEdghhlzH8tfWJJvXvvoIR13xYk1_mjIe2hnmHcOjmCG2yBRZo9Uur5/exec';
 
     const transactionList = document.getElementById('transaction-list');
     const loadingStatus = document.getElementById('loading-status');
     const monthIncomeEl = document.getElementById('month-income');
     const monthExpenseEl = document.getElementById('month-expense');
+    const chartBox = document.getElementById('chart-box');
+    
+    let ratioChartInstance = null;
 
     function formatRupiah(angka) {
         return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
+    }
+
+    // Fungsi membuat grafik rasio donut
+    function renderChart(income, expense) {
+        const ctx = document.getElementById('ratioChart').getContext('2d');
+        
+        // Hancurkan chart lama jika ada aktivitas render ulang agar tidak tumpang tindih
+        if (ratioChartInstance) {
+            ratioChartInstance.destroy();
+        }
+
+        if (income === 0 && expense === 0) {
+            chartBox.style.display = 'none';
+            return;
+        }
+
+        chartBox.style.display = 'block';
+        ratioChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pemasukan', 'Pengeluaran'],
+                datasets: [{
+                    data: [income, expense],
+                    backgroundColor: ['#10b981', '#f43f5e'],
+                    borderWidth: 2,
+                    borderColor: '#1e293b'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#f8fafc',
+                            font: { family: 'Inter', size: 12 }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function initHistory() {
@@ -184,24 +261,20 @@
             transactionList.innerHTML = '';
 
             if (!data || data.length === 0) {
-                transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px;">Belum ada data di database cloud.</li>';
+                transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px;">Belum ada data transaksi.</li>';
                 return;
             }
 
             let totalIncome = 0;
             let totalExpense = 0;
 
-            // Membaca dari data paling baru (di-reverse) agar transaksi terbaru berada di paling atas
-            data.reverse().forEach(transaction => {
+            // Kita salin datanya lalu balik urutannya khusus untuk list riwayat di bawah
+            const displayData = [...data].reverse();
+
+            displayData.forEach(transaction => {
                 const sign = transaction.type === 'income' ? '+' : '-';
                 const amountClass = transaction.type === 'income' ? 'income' : 'expense';
                 const badgeType = transaction.type === 'income' ? 'Masuk' : 'Keluar';
-
-                if (transaction.type === 'income') {
-                    totalIncome += transaction.amount;
-                } else {
-                    totalExpense += transaction.amount;
-                }
 
                 const li = document.createElement('li');
                 li.classList.add('transaction-item');
@@ -215,12 +288,24 @@
                 transactionList.appendChild(li);
             });
 
+            // Kalkulasi total untuk grafik (menggunakan data asli terakumulasi)
+            data.forEach(transaction => {
+                if (transaction.type === 'income') {
+                    totalIncome += transaction.amount;
+                } else {
+                    totalExpense += transaction.amount;
+                }
+            });
+
             monthIncomeEl.innerText = formatRupiah(totalIncome);
             monthExpenseEl.innerText = formatRupiah(totalExpense);
+
+            // Tampilkan grafik secara otomatis berbasis data riwayat cloud
+            renderChart(totalIncome, totalExpense);
         })
         .catch(error => {
             console.error('Error:', error);
-            loadingStatus.innerText = '⚠️ Gagal memuat riwayat dari cloud.';
+            loadingStatus.innerText = '⚠️ Gagal memuat analisis riwayat.';
         });
     }
 
