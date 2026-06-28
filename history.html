@@ -100,11 +100,11 @@
         return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
     }
 
-    function renderChart(income, expense, pending) {
+    function renderChart(pemasukan, pengeluaran, pending) {
         const ctx = document.getElementById('ratioChart').getContext('2d');
         if (ratioChartInstance) { ratioChartInstance.destroy(); }
 
-        if (income === 0 && expense === 0 && pending === 0) {
+        if (pemasukan === 0 && pengeluaran === 0 && pending === 0) {
             chartBox.style.display = 'none';
             return;
         }
@@ -115,7 +115,7 @@
             data: {
                 labels: ['Pemasukan', 'Pengeluaran', 'Transit (Pending)'],
                 datasets: [{
-                    data: [income, expense, pending],
+                    data: [pemasukan, pengeluaran, pending],
                     backgroundColor: ['#10b981', '#f43f5e', '#f59e0b'],
                     borderWidth: 2,
                     borderColor: '#1e293b'
@@ -145,46 +145,48 @@
                 return;
             }
 
-            let totalIncome = 0;
-            let totalExpense = 0;
+            let totalPemasukan = 0;
+            let totalPengeluaran = 0;
             let totalPending = 0;
 
             const displayData = [...data].reverse();
 
-            displayData.forEach(transaction => {
-                let sign = '-';
-                let amountClass = 'expense';
-                let badgeType = 'Keluar';
+            displayData.forEach(transaksi => {
+                let tanda = '-';
+                let kelasNominal = 'expense';
+                let teksBadge = 'Keluar';
 
-                if (transaction.type === 'income') {
-                    sign = '+'; amountClass = 'income'; badgeType = 'Masuk';
-                } else if (transaction.type === 'pending') {
-                    sign = '⏳'; amountClass = 'pending'; badgeType = 'Transit';
+                // Menyesuaikan dengan variabel baru berbahasa Indonesia
+                if (transaksi.jenis === 'Pemasukan') {
+                    tanda = '+'; kelasNominal = 'income'; teksBadge = 'Masuk';
+                } else if (transaksi.jenis === 'Pending') {
+                    tanda = '⏳'; kelasNominal = 'pending'; teksBadge = 'Transit';
                 }
 
                 const li = document.createElement('li');
                 li.classList.add('transaction-item');
                 li.innerHTML = `
                     <div class="item-info">
-                        <div class="title">${transaction.description}</div>
-                        <div class="date">Dana ${badgeType}</div>
+                        <div class="title">${transaksi.keterangan}</div>
+                        <div class="date">Dana ${teksBadge}</div>
                     </div>
-                    <div class="item-amount ${amountClass}">${sign} ${formatRupiah(transaction.amount)}</div>
+                    <div class="item-amount ${kelasNominal}">${tanda} ${formatRupiah(transaksi.jumlah)}</div>
                 `;
                 transactionList.appendChild(li);
             });
 
-            data.forEach(transaction => {
-                if (transaction.type === 'income') totalIncome += transaction.amount;
-                else if (transaction.type === 'expense') totalExpense += transaction.amount;
-                else if (transaction.type === 'pending') totalPending += transaction.amount;
+            data.forEach(transaksi => {
+                const nominal = parseInt(transaksi.jumlah) || 0;
+                if (transaksi.jenis === 'Pemasukan') totalPemasukan += nominal;
+                else if (transaksi.jenis === 'Pengeluaran') totalPengeluaran += nominal;
+                else if (transaksi.jenis === 'Pending') totalPending += nominal;
             });
 
-            monthIncomeEl.innerText = formatRupiah(totalIncome);
-            monthExpenseEl.innerText = formatRupiah(totalExpense);
+            monthIncomeEl.innerText = formatRupiah(totalPemasukan);
+            monthExpenseEl.innerText = formatRupiah(totalPengeluaran);
             monthPendingEl.innerText = formatRupiah(totalPending);
 
-            renderChart(totalIncome, totalExpense, totalPending);
+            renderChart(totalPemasukan, totalPengeluaran, totalPending);
         })
         .catch(error => {
             console.error('Error:', error);
