@@ -162,8 +162,8 @@
     function cekKuota() {
         const nm = namaSelect.value; if (!nm) return;
         const tkn = petaDanaNama[nm] || 0, sisa = TARGET_MAKSIMAL - tkn;
-        if (sisa <= 0) { statusDanaNama.innerHTML = `🔴 <b>${nm}</b> sudah LUNAS (${formatRupiah(TARGET_MAKSIMAL)})`; submitBtn.disabled = true; submitBtn.innerText = "Target nama ini sudah penuh"; }
-        else { statusDanaNama.innerHTML = `💰 Akumulasi masuk: ${formatRupiah(tkn)}<br>➡️ Sisa kuota input: <b>${formatRupiah(sisa)}</b>`; submitBtn.disabled = false; submitBtn.innerText = "Simpan Setoran"; }
+        if (sisa <= 0) { statusDanaNama.innerHTML = `✅ <b>${nm}</b> Sudah LUNAS (${formatRupiah(TARGET_MAKSIMAL)})`; submitBtn.disabled = true; submitBtn.innerText = "Target nama ini sudah penuh"; }
+        else { statusDanaNama.innerHTML = `💰 Sudah Setor: ${formatRupiah(tkn)}<br>➡️ Sisa Setor: <b>${formatRupiah(sisa)}</b>`; submitBtn.disabled = false; submitBtn.innerText = "Simpan Setoran"; }
     }
 
     function kalkulasi() {
