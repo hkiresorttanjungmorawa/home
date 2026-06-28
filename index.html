@@ -212,34 +212,36 @@
         .transaction-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* Mengubah ke flex-start agar angka tetap di atas jika teks panjang */
             padding: 14px 16px;
             background-color: #0f172a;
             border-radius: 12px;
             border: 1px solid #334155;
-            gap: 12px; /* Memberikan jarak aman antara teks dan angka */
+            gap: 16px; /* Jarak aman antara teks dan angka */
         }
 
         .item-info {
-            flex: 1; /* Mengizinkan teks mengambil sisa ruang yang tersedia */
-            min-width: 0; /* Penting: Memaksa pembatasan teks berjalan di dalam flexbox */
+            flex: 1;
+            min-width: 0;
+            word-break: break-word; /* Memaksa kata yang sangat panjang untuk patah/turun */
         }
 
         .item-info .title { 
             font-size: 14px; 
             font-weight: 500; 
-            white-space: nowrap; /* Mencegah teks turun ke baris baru */
-            overflow: hidden; /* Menyembunyikan teks yang meluber */
-            text-overflow: ellipsis; /* Mengubah ujung teks yang terpotong menjadi ... */
+            white-space: normal; /* Mengizinkan teks turun ke baris baru jika penuh */
+            overflow: visible; 
+            text-overflow: clip; 
         }
         
-        .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
         
         .item-amount { 
             font-size: 15px; 
             font-weight: 600; 
-            white-space: nowrap; /* Memastikan angka rupiah selalu dalam satu baris utuh */
-            flex-shrink: 0; /* Mencegah angka menciut atau terpotong */
+            white-space: nowrap; 
+            flex-shrink: 0; /* Angka rupiah tidak akan pernah menciut atau terganggu */
+            text-align: right;
         }
         .item-amount.pemasukan { color: var(--emerald-money); }
         .item-amount.pengeluaran { color: var(--rose-expense); }
