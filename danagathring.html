@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gathering Pro - Dompetku</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-finance: #0f172a; --card-bg: #1e293b; --emerald-money: #10b981; --rose-expense: #f43f5e; --gold-accent: #f59e0b; --text-light: #f8fafc; --text-muted: #94a3b8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-finance); color: var(--text-light); padding: 16px; display: flex; justify-content: center; }
+        .phone-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding-bottom: 40px; }
+        header { margin: 15px 0 25px 0; text-align: center; }
+        header h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        header p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+        
+        .main-card { background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%); border-radius: 20px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.4); margin-bottom: 25px; }
+        .main-card h1 { font-size: 32px; font-weight: 700; margin: 6px 0 16px 0; color: #60a5fa; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 15px; }
+        .stat-item h3 { font-size: 14px; font-weight: 600; margin-top: 2px; }
+        .stat-item .pemasukan-val { color: #34d399; }
+        .stat-item .pengeluaran-val { color: #fca5a5; }
+        .stat-item .pending-val { color: #fde047; }
+        
+        #loading-status { background-color: rgba(245, 158, 11, 0.1); color: var(--gold-accent); border: 1px solid rgba(245, 158, 11, 0.2); text-align: center; padding: 10px; border-radius: 12px; font-size: 13px; margin-bottom: 20px; font-weight: 500; }
+        .section-card { background-color: var(--card-bg); border-radius: 18px; padding: 20px; margin-bottom: 25px; border: 1px solid #334155; }
+        .section-header-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .section-title { font-size: 15px; font-weight: 600; }
+        .toggle-icon { font-size: 14px; color: var(--text-muted); background: #0f172a; padding: 4px 10px; border-radius: 8px; border: 1px solid #334155; }
+        
+        .form-collapsible { max-height: 1000px; overflow: hidden; transition: max-height 0.3s ease-out, opacity 0.2s ease-out; opacity: 1; margin-top: 15px; }
+        .form-collapsible.collapsed { max-height: 0 !important; opacity: 0; pointer-events: none; margin-top: 0; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+        
+        input, select { width: 100%; background-color: #0f172a; border: 1px solid #334155; color: var(--text-light); padding: 14px; border-radius: 12px; font-size: 15px; outline: none; }
+        input:focus, select:focus { border-color: #3b82f6; }
+        .info-box { background-color: #0f172a; padding: 10px; border-radius: 8px; font-size: 13px; margin-top: 6px; border: 1px solid #334155; color: var(--text-muted); }
+        .pin-input { border: 1px dashed var(--gold-accent) !important; letter-spacing: 4px; text-align: center; font-weight: bold; color: var(--gold-accent) !important; }
+        
+        button { width: 100%; background-color: #3b82f6; color: #ffffff; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); }
+        button:disabled { background-color: #334155; color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
+        
+        .transaction-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .transaction-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 14px 16px; background-color: #0f172a; border-radius: 12px; border: 1px solid #334155; gap: 16px; }
+        .item-info { flex: 1; min-width: 0; word-break: break-word; }
+        .item-info .title { font-size: 14px; font-weight: 500; white-space: normal; }
+        .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .item-amount { font-size: 15px; font-weight: 600; white-space: nowrap; flex-shrink: 0; text-align: right; }
+        .item-amount.pemasukan { color: var(--emerald-money); }
+        .item-amount.pengeluaran { color: var(--rose-expense); }
+        .item-amount.pending { color: var(--gold-accent); }
+    </style>
+</head>
+<body>
+<div class="phone-wrapper">
+    <header>
+        <h2>Gathering Dana 👥</h2>
+        <p>Tab: Gathering (Maksimal Rp 300.000 / Anggota)</p>
+    </header>
+
+    <div class="main-card">
+        <div style="font-size:12px; color:#93c5fd;">Total Kas Net Terkumpul</div>
+        <h1 id="total-balance">Rp 0</h1>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div style="font-size:10px; color:#cbd5e1;">Masuk</div>
+                <h3 id="total-pemasukan" class="pemasukan-val">Rp 0</h3>
+            </div>
+            <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
+                <div style="font-size:10px; color:#cbd5e1;">Keluar</div>
+                <h3 id="total-pengeluaran" class="pengeluaran-val">Rp 0</h3>
+            </div>
+            <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
+                <div style="font-size:10px; color:#cbd5e1;">Transit</div>
+                <h3 id="total-pending" class="pending-val">Rp 0</h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-status">Menghubungkan ke Tab Gathering...</div>
+
+    <div class="section-card">
+        <div class="section-header-toggle" id="form-toggle-btn">
+            <div class="section-title">✍️ Catat Setoran / Mutasi Gath</div>
+            <div class="toggle-icon" id="toggle-icon">Buka 🔽</div>
+        </div>
+        <div class="form-collapsible collapsed" id="form-body">
+            <form id="gath-form">
+                <div class="form-group">
+                    <label for="nama">NAMA ANGGOTA PEMBERI DANA</label>
+                    <select id="nama" required></select>
+                    <div id="status-dana-nama" class="info-box">Pilih nama untuk cek sisa target (Batas Rp 300.000).</div>
+                </div>
+                <div class="form-group">
+                    <label for="keterangan">KEPERLUAN / KETERANGAN</label>
+                    <input type="text" id="keterangan" placeholder="Contoh: Setoran Awal, Bayar DP, dll." required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="jumlah">JUMLAH (RUPIAH)</label>
+                    <input type="text" id="jumlah" placeholder="0" required inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label for="jenis">JENIS MUTASI</label>
+                    <select id="jenis">
+                        <option value="Pemasukan">🟢 Pemasukan (Uang Masuk)</option>
+                        <option value="Pengeluaran">🔴 Pengeluaran (Uang Keluar)</option>
+                        <option value="Pending">🟡 Pending (Uang Transit)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top: 20px; border-top: 1px dashed #334155; padding-top: 15px;">
+                    <label for="secure-pin" style="color: var(--gold-accent); text-align: center; font-weight: 600;">🔑 MASUKKAN PIN OTORISASI</label>
+                    <input type="password" id="secure-pin" class="pin-input" placeholder="••••" maxlength="8" required inputmode="numeric">
+                </div>
+                <button type="submit" id="submit-btn">Simpan Setoran</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title" style="margin-bottom: 15px;">🕒 5 Transaksi Gath Terakhir</div>
+        <ul id="transaction-list" class="transaction-list"></ul>
+        <a href="historygathring.html" style="display: block; text-align: center; margin-top: 15px; background-color: #0f172a; color: #3b82f6; text-decoration: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; border: 1px solid #334155;">📊 Lihat Progres & Semua Riwayat</a>
+    </div>
+</div>
+
+<script>
+    // MASUKKAN URL WEB APP APPS SCRIPT KAMU DI SINI
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
+    const PIN_RAHASIA = '1234'; 
+    
+    // Ganti daftar nama di bawah ini sesuai anggota gathering kamu
+    const DAFTAR_NAMA = ["Daniel", "Roy", "Marganda", "Hasibuan", "Budi", "Siti"]; 
+    const TARGET_MAKSIMAL = 300000;
+
+    const form = document.getElementById('gath-form'), namaSelect = document.getElementById('nama'), keteranganInput = document.getElementById('keterangan'), jumlahInput = document.getElementById('jumlah'), jenisInput = document.getElementById('jenis'), pinInput = document.getElementById('secure-pin'), submitBtn = document.getElementById('submit-btn'), transactionList = document.getElementById('transaction-list'), loadingStatus = document.getElementById('loading-status'), totalBalanceEl = document.getElementById('total-balance'), totalPemasukanEl = document.getElementById('total-pemasukan'), totalPengeluaranEl = document.getElementById('total-pengeluaran'), totalPendingEl = document.getElementById('total-pending'), formToggleBtn = document.getElementById('form-toggle-btn'), formBody = document.getElementById('form-body'), toggleIcon = document.getElementById('toggle-icon'), statusDanaNama = document.getElementById('status-dana-nama');
+    
+    let daftarTransaksi = [], petaDanaNama = {};
+
+    formToggleBtn.addEventListener('click', () => {
+        formBody.classList.toggle('collapsed');
+        toggleIcon.innerText = formBody.classList.contains('collapsed') ? 'Buka 🔽' : 'Sembunyikan 🔼';
+    });
+
+    function initDropdown() {
+        namaSelect.innerHTML = '<option value="" disabled selected>-- Pilih Nama --</option>';
+        DAFTAR_NAMA.sort().forEach(n => { let op = document.createElement('option'); op.value = n; op.innerText = n; namaSelect.appendChild(op); });
+    }
+
+    jumlahInput.addEventListener('keyup', function() {
+        let val = this.value.replace(/[^,\d]/g, '').toString(), split = val.split(','), sisa = split[0].length % 3, rupiah = split[0].substr(0, sisa), ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        if (ribuan) { rupiah += (sisa ? '.' : '') + ribuan.join('.'); }
+        this.value = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    });
+
+    function formatRupiah(a) { return 'Rp ' + parseInt(a).toLocaleString('id-ID'); }
+
+    namaSelect.addEventListener('change', cekKuota);
+    function cekKuota() {
+        const nm = namaSelect.value; if (!nm) return;
+        const tkn = petaDanaNama[nm] || 0, sisa = TARGET_MAKSIMAL - tkn;
+        if (sisa <= 0) { statusDanaNama.innerHTML = `🔴 <b>${nm}</b> sudah LUNAS (${formatRupiah(TARGET_MAKSIMAL)})`; submitBtn.disabled = true; submitBtn.innerText = "Target nama ini sudah penuh"; }
+        else { statusDanaNama.innerHTML = `💰 Akumulasi masuk: ${formatRupiah(tkn)}<br>➡️ Sisa kuota input: <b>${formatRupiah(sisa)}</b>`; submitBtn.disabled = false; submitBtn.innerText = "Simpan Setoran"; }
+    }
+
+    function kalkulasi() {
+        let total = 0, masuk = 0, keluar = 0, tunda = 0;
+        petaDanaNama = {}; DAFTAR_NAMA.forEach(n => petaDanaNama[n] = 0);
+
+        daftarTransaksi.forEach(t => {
+            const n = parseInt(t.jumlah) || 0;
+            if (t.jenis === 'Pemasukan') { 
+                masuk += n; total += n; 
+                if (petaDanaNama[t.nama] !== undefined) petaDanaNama[t.nama] += n;
+            }
+            else if (t.jenis === 'Pengeluaran') { keluar += n; total -= n; }
+            else if (t.jenis === 'Pending') { tunda += n; }
+        });
+        totalBalanceEl.innerText = formatRupiah(total);
+        totalPemasukanEl.innerText = formatRupiah(masuk);
+        totalPengeluaranEl.innerText = formatRupiah(keluar);
+        totalPendingEl.innerText = formatRupiah(tunda);
+        cekKuota();
+    }
+
+    function render() {
+        transactionList.innerHTML = '';
+        if (daftarTransaksi.length === 0) { transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px; padding:10px;">Belum ada catatan</li>'; return; }
+        daftarTransaksi.slice(-5).reverse().forEach(t => {
+            let td = '-', cls = 'pengeluaran', bdg = 'Keluar';
+            if (t.jenis === 'Pemasukan') { td = '+'; cls = 'pemasukan'; bdg = 'Masuk'; }
+            else if (t.jenis === 'Pending') { td = '⏳'; cls = 'pending'; bdg = 'Transit'; }
+            const li = document.createElement('li'); li.className = 'transaction-item';
+            li.innerHTML = `<div class="item-info"><div class="title"><b>${t.nama}</b>: ${t.keterangan}</div><div class="subtitle">Dana ${bdg}</div></div><div class="item-amount ${cls}">${td} ${formatRupiah(t.jumlah)}</div>`;
+            transactionList.appendChild(li);
+        });
+    }
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (pinInput.value !== PIN_RAHASIA) { alert('❌ PIN Salah!'); pinInput.value = ''; return; }
+        const nm = namaSelect.value, amt = parseInt(jumlahInput.value.replace(/\./g, '')) || 0;
+        
+        if (jenisInput.value === 'Pemasukan' && (petaDanaNama[nm] || 0) + amt > TARGET_MAKSIMAL) {
+            alert(`❌ Gagal! Akumulasi setoran Pemasukan ${nm} akan melebihi Rp 300.000.`);
+            return;
+        }
+
+        submitBtn.disabled = true; submitBtn.innerText = 'Menyimpan...';
+        fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ sumber: "gathering", nama: nm, keterangan: keteranganInput.value, jumlah: amt, jenis: jenisInput.value }) })
+        .then(() => { form.reset(); muat(); alert('Setoran Disimpan! ✅'); formBody.classList.add('collapsed'); toggleIcon.innerText = 'Buka 🔽'; })
+        .catch(() => alert('Gagal menyimpan data.'))
+        .finally(() => submitBtn.disabled = false);
+    });
+
+    function muat() {
+        loadingStatus.style.display = 'block';
+        fetch(SCRIPT_URL + '?aksi=gathering&_ts=' + new Date().getTime()).then(r => r.json()).then(d => { daftarTransaksi = d || []; loadingStatus.style.display = 'none'; render(); kalkulasi(); });
+    }
+
+    initDropdown();
+    muat();
+</script>
+</body>
+</html>
