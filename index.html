@@ -217,11 +217,30 @@
             background-color: #0f172a;
             border-radius: 12px;
             border: 1px solid #334155;
+            gap: 12px; /* Memberikan jarak aman antara teks dan angka */
         }
 
-        .item-info .title { font-size: 14px; font-weight: 500; }
+        .item-info {
+            flex: 1; /* Mengizinkan teks mengambil sisa ruang yang tersedia */
+            min-width: 0; /* Penting: Memaksa pembatasan teks berjalan di dalam flexbox */
+        }
+
+        .item-info .title { 
+            font-size: 14px; 
+            font-weight: 500; 
+            white-space: nowrap; /* Mencegah teks turun ke baris baru */
+            overflow: hidden; /* Menyembunyikan teks yang meluber */
+            text-overflow: ellipsis; /* Mengubah ujung teks yang terpotong menjadi ... */
+        }
+        
         .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .item-amount { font-size: 15px; font-weight: 600; }
+        
+        .item-amount { 
+            font-size: 15px; 
+            font-weight: 600; 
+            white-space: nowrap; /* Memastikan angka rupiah selalu dalam satu baris utuh */
+            flex-shrink: 0; /* Mencegah angka menciut atau terpotong */
+        }
         .item-amount.pemasukan { color: var(--emerald-money); }
         .item-amount.pengeluaran { color: var(--rose-expense); }
         .item-amount.pending { color: var(--gold-accent); }
