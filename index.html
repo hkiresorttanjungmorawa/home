@@ -117,6 +117,13 @@
 
         .transaction-item.income { border-left-color: var(--success); }
         .transaction-item.expense { border-left-color: var(--danger); }
+        
+        #loading-status {
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -139,6 +146,8 @@
         </div>
     </div>
 
+    <div id="loading-status">Menghubungkan ke DATABASE_KEUANGAN...</div>
+
     <h3>Tambah Transaksi Baru</h3>
     <form id="finance-form">
         <div class="form-group">
@@ -159,12 +168,11 @@
         <button type="submit" id="submit-btn">Simpan Transaksi</button>
     </form>
 
-    <h3>Riwayat Transaksi Lokal</h3>
+    <h3>Riwayat Transaksi</h3>
     <ul id="transaction-list" class="transaction-list"></ul>
 </div>
 
 <script>
-    // MASUKKAN URL GOOGLE WEB APP KAMU DI SINI
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMerwOuywRIcEdghhlzH8tfWJJvXvvoIR13xYk1_mjIe2hnmHcOjmCG2yBRZo9Uur5/exec';
 
     const form = document.getElementById('finance-form');
@@ -173,13 +181,13 @@
     const typeInput = document.getElementById('type');
     const submitBtn = document.getElementById('submit-btn');
     const transactionList = document.getElementById('transaction-list');
+    const loadingStatus = document.getElementById('loading-status');
     
     const totalBalanceEl = document.getElementById('total-balance');
     const totalIncomeEl = document.getElementById('total-income');
     const totalExpenseEl = document.getElementById('total-expense');
 
-    // Mengambil data lama di browser jika ada, agar saat refresh data lokal tidak hilang
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    let transactions = [];
 
     // Format titik otomatis saat mengetik jumlah uang
     amountInput.addEventListener('keyup', function(e) {
@@ -213,7 +221,7 @@
 
     function renderTransactions() {
         transactionList.innerHTML = '';
-        // Menampilkan 5 transaksi terakhir saja di web agar tidak penuh
+        // Menampilkan 5 transaksi terakhir secara terbalik (terbaru di atas)
         transactions.slice(-5).reverse().forEach((transaction) => {
             const sign = transaction.type === 'income' ? '+' : '-';
             const itemClass = transaction.type === 'income' ? 'income' : 'expense';
@@ -239,64 +247,60 @@
             type: typeInput.value
         };
 
-        // Kunci tombol biar user tidak klik dua kali saat loading kirim data
         submitBtn.disabled = true;
         submitBtn.innerText = 'Mengirim ke Google Sheets...';
 
-        // KIRIM DATA REAL-TIME KE GOOGLE SHEETS
         fetch(SCRIPT_URL, {
             method: 'POST',
             body: JSON.stringify(newTransaction)
         })
         .then(response => {
-            // Jika sukses terkirim ke Google Sheets, simpan juga di memori web lokal
-            transactions.push(newTransaction);
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            
-            // Reset Form & Tampilan
+            // Ketika berhasil input, panggil init() lagi untuk sinkronisasi ulang data terbaru dari cloud
             descriptionInput.value = '';
             amountInput.value = '';
             init();
-            
-            alert('Data berhasil disimpan ke Google Sheets! ✅');
+            alert('Data berhasil disimpan! ✅');
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Gagal mengirim data ke cloud, periksa internet atau URL Script Anda.');
+            alert('Gagal mengirim data. Pastikan setelan Apps Script sudah "Anyone".');
         })
         .finally(() => {
-            // Kembalikan tombol seperti semula
             submitBtn.disabled = false;
             submitBtn.innerText = 'Simpan Transaksi';
         });
     });
 
+    // HANYA ADA SATU FUNGSI INIT SEKARANG
     function init() {
-        renderTransactions();
-        updateBudget();
+        // bypass cache dengan menambahkan timestamp acak di akhir URL
+        const cacheBusterUrl = SCRIPT_URL + '?_ts=' + new Date().getTime();
+
+        loadingStatus.style.display = 'block';
+        loadingStatus.innerText = 'Mengambil data dari Google Sheets...';
+
+        fetch(cacheBusterUrl)
+        .then(response => response.json())
+        .then(data => {
+            if(data && data.length > 0) {
+                transactions = data;
+            } else {
+                transactions = [];
+            }
+            loadingStatus.style.display = 'none';
+            renderTransactions();
+            updateBudget();
+        })
+        .catch(error => {
+            console.error('Gagal mengambil data:', error);
+            loadingStatus.innerText = 'Gagal memuat data dari cloud. Periksa setelan CORS/Deploy.';
+            renderTransactions();
+            updateBudget();
+        });
     }
 
+    // Jalankan inisialisasi saat halaman pertama kali dibuka
     init();
-
-function init() {
-    // Mengambil data terbaru dari Google Sheets secara realtime saat web dibuka
-    fetch(SCRIPT_URL)
-    .then(response => response.json())
-    .then(data => {
-        if(data && data.length > 0) {
-            transactions = data;
-        }
-        renderTransactions();
-        updateBudget();
-    })
-    .catch(error => {
-        console.error('Gagal mengambil data:', error);
-        // Jika gagal, pakai data lokal browser sebagai cadangan
-        renderTransactions();
-        updateBudget();
-    });
-}
-
 </script>
 
 </body>
