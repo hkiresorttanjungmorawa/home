@@ -77,16 +77,16 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
             padding-top: 15px;
         }
 
-        .stat-item h3 { font-size: 15px; font-weight: 600; margin-top: 2px; }
+        .stat-item h3 { font-size: 14px; font-weight: 600; margin-top: 2px; }
         .stat-item .income-val { color: #34d399; }
         .stat-item .expense-val { color: #fca5a5; }
-        .stat-item .pending-val { color: #fde047; } /* Kuning cerah untuk pending */
+        .stat-item .pending-val { color: #fde047; }
 
         #loading-status {
             background-color: rgba(245, 158, 11, 0.1);
@@ -239,7 +239,7 @@
         <div style="font-size:12px; color:#a7f3d0;">Sisa Saldo Bersih (Real)</div>
         <h1 id="total-balance">Rp 0</h1>
         
-        <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+        <div class="stats-grid">
             <div class="stat-item">
                 <div style="font-size:10px; color:#cbd5e1;">Masuk</div>
                 <h3 id="total-income" class="income-val">Rp 0</h3>
@@ -249,7 +249,7 @@
                 <h3 id="total-expense" class="expense-val">Rp 0</h3>
             </div>
             <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
-                <div style="font-size:10px; color:#cbd5e1;">Transit (Pending)</div>
+                <div style="font-size:10px; color:#cbd5e1;">Transit</div>
                 <h3 id="total-pending" class="pending-val">Rp 0</h3>
             </div>
         </div>
@@ -267,7 +267,7 @@
             <form id="finance-form">
                 <div class="form-group">
                     <label for="description">KETERANGAN / KEPERLUAN</label>
-                    <input type="text" id="description" placeholder="Contoh: Transfer Pending, Piutang A" required autocomplete="off">
+                    <input type="text" id="description" placeholder="Contoh: Pembayaran Pending, Kopi, Gaji" required autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="amount">JUMLAH (RUPIAH)</label>
@@ -354,17 +354,25 @@
     }
 
     function updateBudget() {
-        // Pending tidak masuk ke perhitungan saldo bersih demi keamanan cashflow asli
-        const amounts = transactions.map(t => {
-            if (t.type === 'income') return t.amount;
-            if (t.type === 'expense') return -t.amount;
-            return 0; // pending diabaikan dari saldo real berjalan
+        // Logika kalkulasi dari 1 data kolom terpadu
+        let total = 0;
+        let income = 0;
+        let expense = 0;
+        let pending = 0;
+
+        transactions.forEach(t => {
+            const val = parseInt(t.amount) || 0;
+            if (t.type === 'income') {
+                income += val;
+                total += val;
+            } else if (t.type === 'expense') {
+                expense += val;
+                total -= val;
+            } else if (t.type === 'pending') {
+                pending += val;
+                // Pending tidak menambah/mengurangi saldo real berjalan
+            }
         });
-        
-        const total = amounts.reduce((acc, item) => (acc += item), 0);
-        const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => (acc += t.amount), 0);
-        const expense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => (acc += t.amount), 0);
-        const pending = transactions.filter(t => t.type === 'pending').reduce((acc, t) => (acc += t.amount), 0);
 
         totalBalanceEl.innerText = formatRupiah(total);
         totalIncomeEl.innerText = formatRupiah(income);
@@ -453,7 +461,7 @@
     });
 
     function init() {
-        const cacheBusterUrl = SCRIPT_URL + '?_ts = ' + new Date().getTime();
+        const cacheBusterUrl = SCRIPT_URL + '?_ts=' + new Date().getTime();
         loadingStatus.style.display = 'block';
 
         fetch(cacheBusterUrl)
