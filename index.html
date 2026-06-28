@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dompetku - Realtime Sheets</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .balance-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .balance-item {
+            text-align: center;
+        }
+
+        .balance-item.full {
+            grid-column: span 2;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .income-text { color: var(--success); font-weight: bold; }
+        .expense-text { color: var(--danger); font-weight: bold; }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #4338ca;
+        }
+
+        button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 25px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9fafb;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 5px solid #d1d5db;
+        }
+
+        .transaction-item.income { border-left-color: var(--success); }
+        .transaction-item.expense { border-left-color: var(--danger); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Dompetku 💰 (Real-time Sheets)</h2>
+    
+    <div class="balance-board">
+        <div class="balance-item full">
+            <small>Sisa Saldo Anda</small>
+            <h1 id="total-balance">Rp 0</h1>
+        </div>
+        <div class="balance-item">
+            <small>Total Pemasukan</small>
+            <p id="total-income" class="income-text">Rp 0</p>
+        </div>
+        <div class="balance-item">
+            <small>Total Pengeluaran</small>
+            <p id="total-expense" class="expense-text">Rp 0</p>
+        </div>
+    </div>
+
+    <h3>Tambah Transaksi Baru</h3>
+    <form id="finance-form">
+        <div class="form-group">
+            <label for="description">Keterangan</label>
+            <input type="text" id="description" placeholder="Contoh: Gaji bulanan, Beli kopi" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Jumlah (Rp)</label>
+            <input type="text" id="amount" placeholder="Contoh: 50.000" required>
+        </div>
+        <div class="form-group">
+            <label for="type">Jenis Transaksi</label>
+            <select id="type">
+                <option value="income">Pemasukan</option>
+                <option value="expense">Pengeluaran</option>
+            </select>
+        </div>
+        <button type="submit" id="submit-btn">Simpan Transaksi</button>
+    </form>
+
+    <h3>Riwayat Transaksi Lokal</h3>
+    <ul id="transaction-list" class="transaction-list"></ul>
+</div>
+
+<script>
+    // MASUKKAN URL GOOGLE WEB APP KAMU DI SINI
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzMerwOuywRIcEdghhlzH8tfWJJvXvvoIR13xYk1_mjIe2hnmHcOjmCG2yBRZo9Uur5/exec';
+
+    const form = document.getElementById('finance-form');
+    const descriptionInput = document.getElementById('description');
+    const amountInput = document.getElementById('amount');
+    const typeInput = document.getElementById('type');
+    const submitBtn = document.getElementById('submit-btn');
+    const transactionList = document.getElementById('transaction-list');
+    
+    const totalBalanceEl = document.getElementById('total-balance');
+    const totalIncomeEl = document.getElementById('total-income');
+    const totalExpenseEl = document.getElementById('total-expense');
+
+    // Mengambil data lama di browser jika ada, agar saat refresh data lokal tidak hilang
+    let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+    // Format titik otomatis saat mengetik jumlah uang
+    amountInput.addEventListener('keyup', function(e) {
+        let numberString = this.value.replace(/[^,\d]/g, '').toString();
+        let split        = numberString.split(',');
+        let sisa         = split[0].length % 3;
+        let rupiah       = split[0].substr(0, sisa);
+        let ribuan       = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        this.value = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    });
+
+    function formatRupiah(angka) {
+        return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
+    }
+
+    function updateBudget() {
+        const amounts = transactions.map(t => t.type === 'income' ? t.amount : -t.amount);
+        const total = amounts.reduce((acc, item) => (acc += item), 0);
+        const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => (acc += t.amount), 0);
+        const expense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => (acc += t.amount), 0);
+
+        totalBalanceEl.innerText = formatRupiah(total);
+        totalIncomeEl.innerText = formatRupiah(income);
+        totalExpenseEl.innerText = formatRupiah(expense);
+    }
+
+    function renderTransactions() {
+        transactionList.innerHTML = '';
+        // Menampilkan 5 transaksi terakhir saja di web agar tidak penuh
+        transactions.slice(-5).reverse().forEach((transaction) => {
+            const sign = transaction.type === 'income' ? '+' : '-';
+            const itemClass = transaction.type === 'income' ? 'income' : 'expense';
+            const li = document.createElement('li');
+            li.classList.add('transaction-item', itemClass);
+            li.innerHTML = `<div><strong>${transaction.description}</strong><br><small>${sign} ${formatRupiah(transaction.amount)}</small></div>`;
+            transactionList.appendChild(li);
+        });
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (descriptionInput.value.trim() === '' || amountInput.value.trim() === '') {
+            alert('Harap isi semua kolom!');
+            return;
+        }
+
+        const cleanAmount = amountInput.value.replace(/\./g, '');
+        const newTransaction = {
+            description: descriptionInput.value,
+            amount: parseInt(cleanAmount),
+            type: typeInput.value
+        };
+
+        // Kunci tombol biar user tidak klik dua kali saat loading kirim data
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Mengirim ke Google Sheets...';
+
+        // KIRIM DATA REAL-TIME KE GOOGLE SHEETS
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(newTransaction)
+        })
+        .then(response => {
+            // Jika sukses terkirim ke Google Sheets, simpan juga di memori web lokal
+            transactions.push(newTransaction);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            
+            // Reset Form & Tampilan
+            descriptionInput.value = '';
+            amountInput.value = '';
+            init();
+            
+            alert('Data berhasil disimpan ke Google Sheets! ✅');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Gagal mengirim data ke cloud, periksa internet atau URL Script Anda.');
+        })
+        .finally(() => {
+            // Kembalikan tombol seperti semula
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Simpan Transaksi';
+        });
+    });
+
+    function init() {
+        renderTransactions();
+        updateBudget();
+    }
+
+    init();
+
+function init() {
+    // Mengambil data terbaru dari Google Sheets secara realtime saat web dibuka
+    fetch(SCRIPT_URL)
+    .then(response => response.json())
+    .then(data => {
+        if(data && data.length > 0) {
+            transactions = data;
+        }
+        renderTransactions();
+        updateBudget();
+    })
+    .catch(error => {
+        console.error('Gagal mengambil data:', error);
+        // Jika gagal, pakai data lokal browser sebagai cadangan
+        renderTransactions();
+        updateBudget();
+    });
+}
+
+</script>
+
+</body>
+</html>
