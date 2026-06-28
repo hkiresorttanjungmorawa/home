@@ -41,10 +41,38 @@
         #loading-status { text-align: center; color: #94a3b8; font-style: italic; margin: 40px 0; font-size: 14px; }
         
         .transaction-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-        .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background-color: var(--card-bg); border-radius: 12px; border: 1px solid #334155; }
-        .item-info .title { font-size: 14px; font-weight: 500; }
+        .transaction-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 14px 16px; 
+            background-color: var(--card-bg); 
+            border-radius: 12px; 
+            border: 1px solid #334155; 
+            gap: 12px; /* Jarak aman */
+        }
+        
+        .item-info { 
+            flex: 1; 
+            min-width: 0; /* Memaksa pemotongan teks berjalan */
+        }
+        
+        .item-info .title { 
+            font-size: 14px; 
+            font-weight: 500; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; /* Efek titik-titik (...) */
+        }
+        
         .item-info .date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .item-amount { font-size: 14px; font-weight: 600; }
+        
+        .item-amount { 
+            font-size: 14px; 
+            font-weight: 600; 
+            white-space: nowrap; 
+            flex-shrink: 0; /* Angka rupiah aman dari tekanan teks panjang */
+        }
         .item-amount.income { color: var(--emerald-money); }
         .item-amount.expense { color: var(--rose-expense); }
         .item-amount.pending { color: var(--gold-accent); }
