@@ -72,7 +72,7 @@
         .main-card h1 {
             font-size: 32px;
             font-weight: 700;
-            margin: 6px 0 20px 0;
+            margin: 6px 0 16px 0;
         }
 
         .stats-grid {
@@ -83,9 +83,10 @@
             padding-top: 15px;
         }
 
-        .stat-item h3 { font-size: 16px; font-weight: 600; margin-top: 2px; }
+        .stat-item h3 { font-size: 15px; font-weight: 600; margin-top: 2px; }
         .stat-item .income-val { color: #34d399; }
         .stat-item .expense-val { color: #fca5a5; }
+        .stat-item .pending-val { color: #fde047; } /* Kuning cerah untuk pending */
 
         #loading-status {
             background-color: rgba(245, 158, 11, 0.1);
@@ -131,7 +132,6 @@
             border: 1px solid #334155;
         }
 
-        /* Konten Form yang bisa di-collapse */
         .form-collapsible {
             max-height: 1000px;
             overflow: hidden;
@@ -224,6 +224,7 @@
         .item-amount { font-size: 15px; font-weight: 600; }
         .item-amount.income { color: var(--emerald-money); }
         .item-amount.expense { color: var(--rose-expense); }
+        .item-amount.pending { color: var(--gold-accent); }
     </style>
 </head>
 <body>
@@ -235,37 +236,38 @@
     </header>
     
     <div class="main-card">
-        <div style="font-size:12px; color:#a7f3d0;">Sisa Saldo Bersih</div>
+        <div style="font-size:12px; color:#a7f3d0;">Sisa Saldo Bersih (Real)</div>
         <h1 id="total-balance">Rp 0</h1>
         
-        <div class="stats-grid">
+        <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
             <div class="stat-item">
-                <div style="font-size:11px; color:#cbd5e1;">Pemasukan</div>
+                <div style="font-size:10px; color:#cbd5e1;">Masuk</div>
                 <h3 id="total-income" class="income-val">Rp 0</h3>
             </div>
-            <div class="stat-item">
-                <div style="font-size:11px; color:#cbd5e1;">Pengeluaran</div>
+            <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
+                <div style="font-size:10px; color:#cbd5e1;">Keluar</div>
                 <h3 id="total-expense" class="expense-val">Rp 0</h3>
+            </div>
+            <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
+                <div style="font-size:10px; color:#cbd5e1;">Transit (Pending)</div>
+                <h3 id="total-pending" class="pending-val">Rp 0</h3>
             </div>
         </div>
     </div>
 
     <div id="loading-status">Menghubungkan ke DATABASE_KEUANGAN...</div>
 
-    <!-- Form Input Transaksi (SEKARANG OTOMATIS TERTUTUP DI AWAL) -->
     <div class="section-card">
         <div class="section-header-toggle" id="form-toggle-btn">
             <div class="section-title">✍️ Catat Transaksi Baru</div>
-            <!-- Bagian ini diubah menjadi Buka -->
             <div class="toggle-icon" id="toggle-icon">Buka 🔽</div>
         </div>
         
-        <!-- Menambahkan class 'collapsed' agar langsung tersembunyi saat dimuat -->
         <div class="form-collapsible collapsed" id="form-body">
             <form id="finance-form">
                 <div class="form-group">
                     <label for="description">KETERANGAN / KEPERLUAN</label>
-                    <input type="text" id="description" placeholder="Contoh: Gaji, Kopi, Makan" required autocomplete="off">
+                    <input type="text" id="description" placeholder="Contoh: Transfer Pending, Piutang A" required autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="amount">JUMLAH (RUPIAH)</label>
@@ -276,6 +278,7 @@
                     <select id="type">
                         <option value="income">🟢 Pemasukan (Uang Masuk)</option>
                         <option value="expense">🔴 Pengeluaran (Uang Keluar)</option>
+                        <option value="pending">🟡 Pending (Uang Transit)</option>
                     </select>
                 </div>
 
@@ -301,7 +304,6 @@
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
-    
     const PIN_RAHASIA = '1234'; 
 
     const form = document.getElementById('finance-form');
@@ -316,6 +318,7 @@
     const totalBalanceEl = document.getElementById('total-balance');
     const totalIncomeEl = document.getElementById('total-income');
     const totalExpenseEl = document.getElementById('total-expense');
+    const totalPendingEl = document.getElementById('total-pending');
 
     const formToggleBtn = document.getElementById('form-toggle-btn');
     const formBody = document.getElementById('form-body');
@@ -351,14 +354,22 @@
     }
 
     function updateBudget() {
-        const amounts = transactions.map(t => t.type === 'income' ? t.amount : -t.amount);
+        // Pending tidak masuk ke perhitungan saldo bersih demi keamanan cashflow asli
+        const amounts = transactions.map(t => {
+            if (t.type === 'income') return t.amount;
+            if (t.type === 'expense') return -t.amount;
+            return 0; // pending diabaikan dari saldo real berjalan
+        });
+        
         const total = amounts.reduce((acc, item) => (acc += item), 0);
         const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => (acc += t.amount), 0);
         const expense = transactions.filter(t => t.type === 'expense').reduce((acc, t) => (acc += t.amount), 0);
+        const pending = transactions.filter(t => t.type === 'pending').reduce((acc, t) => (acc += t.amount), 0);
 
         totalBalanceEl.innerText = formatRupiah(total);
         totalIncomeEl.innerText = formatRupiah(income);
         totalExpenseEl.innerText = formatRupiah(expense);
+        totalPendingEl.innerText = formatRupiah(pending);
         
         totalBalanceEl.style.color = total < 0 ? '#f43f5e' : '#f8fafc';
     }
@@ -371,9 +382,19 @@
         }
 
         transactions.slice(-5).reverse().forEach((transaction) => {
-            const sign = transaction.type === 'income' ? '+' : '-';
-            const amountClass = transaction.type === 'income' ? 'income' : 'expense';
-            const badgeType = transaction.type === 'income' ? 'Masuk' : 'Keluar';
+            let sign = '-';
+            let amountClass = 'expense';
+            let badgeType = 'Keluar';
+
+            if (transaction.type === 'income') {
+                sign = '+';
+                amountClass = 'income';
+                badgeType = 'Masuk';
+            } else if (transaction.type === 'pending') {
+                sign = '⏳';
+                amountClass = 'pending';
+                badgeType = 'Transit';
+            }
             
             const li = document.createElement('li');
             li.classList.add('transaction-item');
@@ -398,11 +419,6 @@
             return;
         }
 
-        if (descriptionInput.value.trim() === '' || amountInput.value.trim() === '') {
-            alert('Harap isi semua kolom!');
-            return;
-        }
-
         const cleanAmount = amountInput.value.replace(/\./g, '');
         const newTransaction = {
             description: descriptionInput.value,
@@ -423,7 +439,6 @@
             pinInput.value = '';
             init();
             alert('Data berhasil disimpan! ✅');
-            
             formBody.classList.add('collapsed');
             toggleIcon.innerText = 'Buka 🔽';
         })
@@ -438,9 +453,8 @@
     });
 
     function init() {
-        const cacheBusterUrl = SCRIPT_URL + '?_ts=' + new Date().getTime();
+        const cacheBusterUrl = SCRIPT_URL + '?_ts = ' + new Date().getTime();
         loadingStatus.style.display = 'block';
-        loadingStatus.innerText = '🔄 Menyinkronkan dengan Cloud...';
 
         fetch(cacheBusterUrl)
         .then(response => response.json())
@@ -458,6 +472,5 @@
 
     init();
 </script>
-
 </body>
 </html>
