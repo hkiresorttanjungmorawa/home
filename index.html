@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dompet Hasibuan - Catatan Keuangan Realtime</title>
+    <title>Dompetku Pro - Secure FinTech</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-finance: #0f172a; /* Midnight Slate */
+            --bg-finance: #0f172a;
             --card-bg: #1e293b;
-            --emerald-money: #10b981; /* Hijau Uang */
-            --rose-expense: #f43f5e; /* Merah Pengeluaran */
-            --gold-accent: #f59e0b; /* Emas */
+            --emerald-money: #10b981;
+            --rose-expense: #f43f5e;
+            --gold-accent: #f59e0b;
             --text-light: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -24,7 +24,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Menghapus warna highlight biru saat ditekan di HP */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -37,7 +37,7 @@
 
         .phone-wrapper {
             width: 100%;
-            max-width: 480px; /* Lebar maksimal seukuran layar HP standar */
+            max-width: 480px;
             margin: 0 auto;
             padding-bottom: 40px;
         }
@@ -59,7 +59,6 @@
             margin-top: 4px;
         }
 
-        /* Dashboard Kartu Utama (Ala M-Banking) */
         .main-card {
             background: linear-gradient(135deg, #047857 0%, #065f46 100%);
             border-radius: 20px;
@@ -70,30 +69,10 @@
             overflow: hidden;
         }
 
-        .main-card::before {
-            content: '';
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            top: -50px;
-            right: -50px;
-        }
-
-        .main-card .label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #a7f3d0;
-            font-weight: 500;
-        }
-
         .main-card h1 {
             font-size: 32px;
             font-weight: 700;
             margin: 6px 0 20px 0;
-            letter-spacing: -1px;
         }
 
         .stats-grid {
@@ -104,16 +83,10 @@
             padding-top: 15px;
         }
 
-        .stat-item h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 2px;
-        }
-        
+        .stat-item h3 { font-size: 16px; font-weight: 600; margin-top: 2px; }
         .stat-item .income-val { color: #34d399; }
         .stat-item .expense-val { color: #fca5a5; }
 
-        /* Indikator Status Cloud */
         #loading-status {
             background-color: rgba(245, 158, 11, 0.1);
             color: var(--gold-accent);
@@ -124,16 +97,8 @@
             font-size: 13px;
             margin-bottom: 20px;
             font-weight: 500;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-
-        /* Komponen Form Input Tersembunyi di dalam Kontainer Elegan */
         .section-card {
             background-color: var(--card-bg);
             border-radius: 18px;
@@ -147,9 +112,6 @@
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .form-group {
@@ -173,12 +135,19 @@
             border-radius: 12px;
             font-size: 15px;
             outline: none;
-            transition: all 0.2s ease;
         }
 
         input:focus, select:focus {
             border-color: var(--emerald-money);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Desain Khusus Kolom PIN Keamanan */
+        .pin-input {
+            border: 1px dashed var(--gold-accent) !important;
+            letter-spacing: 4px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--gold-accent) !important;
         }
 
         button {
@@ -191,14 +160,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 5px;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-        }
-
-        button:active {
-            background-color: #059669;
-            transform: scale(0.98);
         }
 
         button:disabled {
@@ -206,10 +168,8 @@
             color: var(--text-muted);
             cursor: not-allowed;
             box-shadow: none;
-            transform: none;
         }
 
-        /* Daftar Riwayat Transaksi Ringkas */
         .transaction-list {
             list-style: none;
             display: flex;
@@ -227,23 +187,9 @@
             border: 1px solid #334155;
         }
 
-        .item-info .title {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .item-info .subtitle {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .item-amount {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
+        .item-info .title { font-size: 14px; font-weight: 500; }
+        .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .item-amount { font-size: 15px; font-weight: 600; }
         .item-amount.income { color: var(--emerald-money); }
         .item-amount.expense { color: var(--rose-expense); }
     </style>
@@ -252,21 +198,21 @@
 
 <div class="phone-wrapper">
     <header>
-        <h2>Dompet Hasibuan 💵</h2>
-        <p>Database Cloud Terhubung Real-time</p>
+        <h2>Dompetku Pro 🔒</h2>
+        <p>Database Cloud Dilindungi PIN Akses</p>
     </header>
     
     <div class="main-card">
-        <div class="label">Sisa Saldo Bersih</div>
+        <div style="font-size:12px; color:#a7f3d0;">Sisa Saldo Bersih</div>
         <h1 id="total-balance">Rp 0</h1>
         
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="label" style="color: #cbd5e1;">Pemasukan</div>
+                <div style="font-size:11px; color:#cbd5e1;">Pemasukan</div>
                 <h3 id="total-income" class="income-val">Rp 0</h3>
             </div>
             <div class="stat-item">
-                <div class="label" style="color: #cbd5e1;">Pengeluaran</div>
+                <div style="font-size:11px; color:#cbd5e1;">Pengeluaran</div>
                 <h3 id="total-expense" class="expense-val">Rp 0</h3>
             </div>
         </div>
@@ -279,7 +225,7 @@
         <form id="finance-form">
             <div class="form-group">
                 <label for="description">KETERANGAN / KEPERLUAN</label>
-                <input type="text" id="description" placeholder="Contoh: Gaji, Makan Siang, Kopi" required autocomplete="off">
+                <input type="text" id="description" placeholder="Contoh: Gaji, Kopi, Makan" required autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="amount">JUMLAH (RUPIAH)</label>
@@ -292,6 +238,12 @@
                     <option value="expense">🔴 Pengeluaran (Uang Keluar)</option>
                 </select>
             </div>
+
+            <div class="form-group" style="margin-top: 20px; border-top: 1px dashed #334155; padding-top: 15px;">
+                <label for="secure-pin" style="color: var(--gold-accent); text-align: center; font-weight: 600;">🔑 MASUKKAN PIN OTORISASI</label>
+                <input type="password" id="secure-pin" class="pin-input" placeholder="••••" maxlength="8" required inputmode="numeric">
+            </div>
+
             <button type="submit" id="submit-btn">Simpan Transaksi</button>
         </form>
     </div>
@@ -299,20 +251,24 @@
     <div class="section-card">
         <div class="section-title">🕒 5 Transaksi Terakhir</div>
         <ul id="transaction-list" class="transaction-list"></ul>
-        <a href="history.html" style="display: block; text-align: center; margin-top: 15px; background-color: #0f172a; color: #34d399; text-decoration: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; border: 1px solid #334155; transition: all 0.2s;">
-            📊 Lihat Semua Riwayat
+        
+        <a href="history.html" style="display: block; text-align: center; margin-top: 15px; background-color: #0f172a; color: #34d399; text-decoration: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; border: 1px solid #334155;">
+            📊 Lihat Semua Riwayat & Grafik
         </a>
     </div>
 </div>
 
 <script>
-    // MASUKKAN URL GOOGLE WEB APP AKTIF KAMU DI SINI
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
+    
+    // 🔏 UBAH PASSWORD/PIN KAMU DI SINI
+    const PIN_RAHASIA = '4114'; 
 
     const form = document.getElementById('finance-form');
     const descriptionInput = document.getElementById('description');
     const amountInput = document.getElementById('amount');
     const typeInput = document.getElementById('type');
+    const pinInput = document.getElementById('secure-pin');
     const submitBtn = document.getElementById('submit-btn');
     const transactionList = document.getElementById('transaction-list');
     const loadingStatus = document.getElementById('loading-status');
@@ -323,7 +279,6 @@
 
     let transactions = [];
 
-    // Format input angka otomatis dengan pembatas titik ribuan saat mengetik
     amountInput.addEventListener('keyup', function(e) {
         let numberString = this.value.replace(/[^,\d]/g, '').toString();
         let split        = numberString.split(',');
@@ -352,17 +307,11 @@
         totalIncomeEl.innerText = formatRupiah(income);
         totalExpenseEl.innerText = formatRupiah(expense);
         
-        // Mengubah warna teks saldo utama berdasarkan nilai positif/negatif
-        if (total < 0) {
-            totalBalanceEl.style.color = '#f43f5e';
-        } else {
-            totalBalanceEl.style.color = '#f8fafc';
-        }
+        totalBalanceEl.style.color = total < 0 ? '#f43f5e' : '#f8fafc';
     }
 
     function renderTransactions() {
         transactionList.innerHTML = '';
-        
         if (transactions.length === 0) {
             transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px; padding:10px;">Belum ada catatan transaksi</li>';
             return;
@@ -389,6 +338,14 @@
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
+        // VALIDASI PIN SEBELUM DATA DIKIRIM KE CLOUD
+        if (pinInput.value !== PIN_RAHASIA) {
+            alert('❌ PIN Otorisasi Salah! Akses ditolak.');
+            pinInput.value = '';
+            pinInput.focus();
+            return;
+        }
+
         if (descriptionInput.value.trim() === '' || amountInput.value.trim() === '') {
             alert('Harap isi semua kolom!');
             return;
@@ -402,7 +359,7 @@
         };
 
         submitBtn.disabled = true;
-        submitBtn.innerText = 'Mengunci data & mengirim...';
+        submitBtn.innerText = 'Memverifikasi PIN & mengirim...';
 
         fetch(SCRIPT_URL, {
             method: 'POST',
@@ -411,11 +368,13 @@
         .then(() => {
             descriptionInput.value = '';
             amountInput.value = '';
-            init(); // Ambil ulang data segar langsung dari cloud
+            pinInput.value = ''; // Reset form PIN kembali kosong
+            init();
+            alert('Data berhasil disimpan! ✅');
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Gagal mengirim data. Periksa jaringan internet Anda.');
+            alert('Gagal mengirim data.');
         })
         .finally(() => {
             submitBtn.disabled = false;
@@ -425,9 +384,8 @@
 
     function init() {
         const cacheBusterUrl = SCRIPT_URL + '?_ts=' + new Date().getTime();
-
         loadingStatus.style.display = 'block';
-        loadingStatus.innerText = '🔄 Menyinkronkan dengan DATABASE_KEUANGAN Cloud...';
+        loadingStatus.innerText = '🔄 Menyinkronkan dengan Cloud...';
 
         fetch(cacheBusterUrl)
         .then(response => response.json())
@@ -439,9 +397,7 @@
         })
         .catch(error => {
             console.error('Gagal mengambil data:', error);
-            loadingStatus.innerText = '⚠️ Mode Offline. Gagal tersambung ke server.';
-            renderTransactions();
-            updateBudget();
+            loadingStatus.innerText = '⚠️ Gagal memuat data cloud.';
         });
     }
 
