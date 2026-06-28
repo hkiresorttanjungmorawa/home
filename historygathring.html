@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Analisis Riwayat Gathering</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --bg-finance: #0f172a; --card-bg: #1e293b; --emerald-money: #10b981; --rose-expense: #f43f5e; --gold-accent: #f59e0b; --text-light: #f8fafc; --text-muted: #94a3b8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-finance); color: var(--text-light); padding: 16px; display: flex; justify-content: center; }
+        .phone-wrapper { width: 100%; max-width: 480px; margin: 0 auto; padding-bottom: 40px; }
+        header { margin: 15px 0 25px 0; display: flex; align-items: center; justify-content: space-between; }
+        header h2 { font-size: 20px; font-weight: 700; }
+        .btn-back { background-color: var(--card-bg); color: var(--text-light); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; border: 1px solid #334155; }
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+        .summary-box { background-color: var(--card-bg); padding: 12px 8px; border-radius: 14px; border: 1px solid #334155; text-align: center; }
+        .summary-box .label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+        .summary-box .value { font-size: 13px; font-weight: 700; margin-top: 4px; }
+        .summary-box .value.in { color: var(--emerald-money); }
+        .summary-box .value.out { color: var(--rose-expense); }
+        .summary-box .value.pend { color: var(--gold-accent); }
+        .chart-card { background-color: var(--card-bg); border-radius: 18px; padding: 20px; margin-bottom: 20px; border: 1px solid #334155; }
+        .chart-container { position: relative; width: 100%; max-height: 220px; display: flex; justify-content: center; }
+        #loading-status { text-align: center; color: #94a3b8; margin: 40px 0; }
+        .transaction-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .transaction-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 14px 16px; background-color: var(--card-bg); border-radius: 12px; border: 1px solid #334155; gap: 16px; }
+        .item-info { flex: 1; min-width: 0; word-break: break-word; }
+        .item-info .title { font-size: 14px; font-weight: 500; white-space: normal; }
+        .item-info .date { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .item-amount { font-size: 14px; font-weight: 600; white-space: nowrap; flex-shrink: 0; text-align: right; }
+        .item-amount.income { color: var(--emerald-money); }
+        .item-amount.expense { color: var(--rose-expense); }
+        .item-amount.pending { color: var(--gold-accent); }
+    </style>
+</head>
+<body>
+<div class="phone-wrapper">
+    <header><h2>Analisis Gathering 📊</h2><a href="danagathring.html" class="btn-back">⬅️ Kembali</a></header>
+    <div class="summary-grid">
+        <div class="summary-box"><div class="label">Total Masuk</div><div id="month-income" class="value in">Rp 0</div></div>
+        <div class="summary-box"><div class="label">Total Keluar</div><div id="month-expense" class="value out">Rp 0</div></div>
+        <div class="summary-box"><div class="label">Total Transit</div><div id="month-pending" class="value pend">Rp 0</div></div>
+    </div>
+    <div class="chart-card" id="chart-box" style="display: none;"><div class="chart-container"><canvas id="ratioChart"></canvas></div></div>
+    <div id="loading-status">Sedang mengunduh data analisis gathering...</div>
+    <ul id="transaction-list" class="transaction-list"></ul>
+</div>
+<script>
+    // MASUKKAN URL WEB APP APPS SCRIPT YANG SAMA DI SINI
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
+    
+    const transactionList = document.getElementById('transaction-list'), loadingStatus = document.getElementById('loading-status'), monthIncomeEl = document.getElementById('month-income'), monthExpenseEl = document.getElementById('month-expense'), monthPendingEl = document.getElementById('month-pending'), chartBox = document.getElementById('chart-box');
+    let ratioChartInstance = null;
+    
+    function formatRupiah(a) { return 'Rp ' + parseInt(a).toLocaleString('id-ID'); }
+    
+    function renderChart(i, e, p) {
+        const ctx = document.getElementById('ratioChart').getContext('2d');
+        if (ratioChartInstance) { ratioChartInstance.destroy(); }
+        if (i === 0 && e === 0 && p === 0) { chartBox.style.display = 'none'; return; }
+        chartBox.style.display = 'block';
+        ratioChartInstance = new Chart(ctx, { type: 'doughnut', data: { labels: ['Pemasukan', 'Pengeluaran', 'Transit (Pending)'], datasets: [{ data: [i, e, p], backgroundColor: ['#10b981', '#f43f5e', '#f59e0b'], borderWidth: 2, borderColor: '#1e293b' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#f8fafc', font: { family: 'Inter', size: 11 } } } } } });
+    }
+    
+    function init() {
+        fetch(SCRIPT_URL + '?aksi=gathering&_ts=' + new Date().getTime()).then(r => r.json()).then(d => {
+            loadingStatus.style.display = 'none'; transactionList.innerHTML = '';
+            if (!d || d.length === 0) { transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px; padding: 20px;">Belum ada riwayat transaksi gathering.</li>'; return; }
+            let tIn = 0, tOut = 0, tPend = 0;
+            [...d].reverse().forEach(t => {
+                let td = '-', cls = 'expense', bdg = 'Keluar';
+                if (t.jenis === 'Pemasukan') { td = '+'; cls = 'income'; bdg = 'Masuk'; }
+                else if (t.jenis === 'Pending') { td = '⏳'; cls = 'pending'; bdg = 'Transit'; }
+                
+                const formatTgl = t.tanggal ? new Date(t.tanggal).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', hour: '2-digit', minute:'2-digit'}) : 'Baru Saja';
+                const li = document.createElement('li'); li.className = 'transaction-item';
+                li.innerHTML = `<div class="item-info"><div class="title"><b>${t.nama}</b>: ${t.keterangan}</div><div class="date">${formatTgl} - Dana ${bdg}</div></div><div class="item-amount ${cls}">${td} ${formatRupiah(t.jumlah)}</div>`;
+                transactionList.appendChild(li);
+            });
+            d.forEach(t => {
+                const n = parseInt(t.jumlah) || 0;
+                if (t.jenis === 'Pemasukan') tIn += n; else if (t.jenis === 'Pengeluaran') tOut += n; else if (t.jenis === 'Pending') tPend += n;
+            });
+            monthIncomeEl.innerText = formatRupiah(tIn); monthExpenseEl.innerText = formatRupiah(tOut); monthPendingEl.innerText = formatRupiah(tPend);
+            renderChart(tIn, tOut, tPend);
+        }).catch(err => {
+            loadingStatus.innerText = 'Gagal memuat data. Periksa kembali koneksi atau URL Script.';
+            console.error(err);
+        });
+    }
+    init();
+</script>
+</body>
+</html>
