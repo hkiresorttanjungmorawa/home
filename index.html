@@ -84,8 +84,8 @@
         }
 
         .stat-item h3 { font-size: 14px; font-weight: 600; margin-top: 2px; }
-        .stat-item .income-val { color: #34d399; }
-        .stat-item .expense-val { color: #fca5a5; }
+        .stat-item .pemasukan-val { color: #34d399; }
+        .stat-item .pengeluaran-val { color: #fca5a5; }
         .stat-item .pending-val { color: #fde047; }
 
         #loading-status {
@@ -222,8 +222,8 @@
         .item-info .title { font-size: 14px; font-weight: 500; }
         .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         .item-amount { font-size: 15px; font-weight: 600; }
-        .item-amount.income { color: var(--emerald-money); }
-        .item-amount.expense { color: var(--rose-expense); }
+        .item-amount.pemasukan { color: var(--emerald-money); }
+        .item-amount.pengeluaran { color: var(--rose-expense); }
         .item-amount.pending { color: var(--gold-accent); }
     </style>
 </head>
@@ -242,11 +242,11 @@
         <div class="stats-grid">
             <div class="stat-item">
                 <div style="font-size:10px; color:#cbd5e1;">Masuk</div>
-                <h3 id="total-income" class="income-val">Rp 0</h3>
+                <h3 id="total-pemasukan" class="pemasukan-val">Rp 0</h3>
             </div>
             <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
                 <div style="font-size:10px; color:#cbd5e1;">Keluar</div>
-                <h3 id="total-expense" class="expense-val">Rp 0</h3>
+                <h3 id="total-pengeluaran" class="pengeluaran-val">Rp 0</h3>
             </div>
             <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
                 <div style="font-size:10px; color:#cbd5e1;">Transit</div>
@@ -266,19 +266,19 @@
         <div class="form-collapsible collapsed" id="form-body">
             <form id="finance-form">
                 <div class="form-group">
-                    <label for="description">KETERANGAN / KEPERLUAN</label>
-                    <input type="text" id="description" placeholder="Contoh: Pembayaran Pending, Kopi, Gaji" required autocomplete="off">
+                    <label for="keterangan">KETERANGAN / KEPERLUAN</label>
+                    <input type="text" id="keterangan" placeholder="Contoh: Gaji, Makan, Kopi, Transfer Transit" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label for="amount">JUMLAH (RUPIAH)</label>
-                    <input type="text" id="amount" placeholder="0" required inputmode="numeric">
+                    <label for="jumlah">JUMLAH (RUPIAH)</label>
+                    <input type="text" id="jumlah" placeholder="0" required inputmode="numeric">
                 </div>
                 <div class="form-group">
-                    <label for="type">JENIS ARUS KAS</label>
-                    <select id="type">
-                        <option value="income">🟢 Pemasukan (Uang Masuk)</option>
-                        <option value="expense">🔴 Pengeluaran (Uang Keluar)</option>
-                        <option value="pending">🟡 Pending (Uang Transit)</option>
+                    <label for="jenis">JENIS ARUS KAS</label>
+                    <select id="jenis">
+                        <option value="Pemasukan">🟢 Pemasukan (Uang Masuk)</option>
+                        <option value="Pengeluaran">🔴 Pengeluaran (Uang Keluar)</option>
+                        <option value="Pending">🟡 Pending (Uang Transit)</option>
                     </select>
                 </div>
 
@@ -307,24 +307,24 @@
     const PIN_RAHASIA = '1234'; 
 
     const form = document.getElementById('finance-form');
-    const descriptionInput = document.getElementById('description');
-    const amountInput = document.getElementById('amount');
-    const typeInput = document.getElementById('type');
+    const keteranganInput = document.getElementById('keterangan');
+    const jumlahInput = document.getElementById('jumlah');
+    const jenisInput = document.getElementById('jenis');
     const pinInput = document.getElementById('secure-pin');
     const submitBtn = document.getElementById('submit-btn');
     const transactionList = document.getElementById('transaction-list');
     const loadingStatus = document.getElementById('loading-status');
     
     const totalBalanceEl = document.getElementById('total-balance');
-    const totalIncomeEl = document.getElementById('total-income');
-    const totalExpenseEl = document.getElementById('total-expense');
+    const totalPemasukanEl = document.getElementById('total-pemasukan');
+    const totalPengeluaranEl = document.getElementById('total-pengeluaran');
     const totalPendingEl = document.getElementById('total-pending');
 
     const formToggleBtn = document.getElementById('form-toggle-btn');
     const formBody = document.getElementById('form-body');
     const toggleIcon = document.getElementById('toggle-icon');
 
-    let transactions = [];
+    let daftarTransaksi = [];
 
     formToggleBtn.addEventListener('click', function() {
         formBody.classList.toggle('collapsed');
@@ -335,7 +335,7 @@
         }
     });
 
-    amountInput.addEventListener('keyup', function(e) {
+    jumlahInput.addEventListener('keyup', function(e) {
         let numberString = this.value.replace(/[^,\d]/g, '').toString();
         let split        = numberString.split(',');
         let sisa         = split[0].length % 3;
@@ -353,65 +353,63 @@
         return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
     }
 
-    function updateBudget() {
-        // Logika kalkulasi dari 1 data kolom terpadu
+    function perbaruiKalkulasiSaldo() {
         let total = 0;
-        let income = 0;
-        let expense = 0;
-        let pending = 0;
+        let masuk = 0;
+        let keluar = 0;
+        let tunda = 0;
 
-        transactions.forEach(t => {
-            const val = parseInt(t.amount) || 0;
-            if (t.type === 'income') {
-                income += val;
-                total += val;
-            } else if (t.type === 'expense') {
-                expense += val;
-                total -= val;
-            } else if (t.type === 'pending') {
-                pending += val;
-                // Pending tidak menambah/mengurangi saldo real berjalan
+        daftarTransaksi.forEach(t => {
+            const nominal = parseInt(t.jumlah) || 0;
+            if (t.jenis === 'Pemasukan') {
+                masuk += nominal;
+                total += nominal;
+            } else if (t.jenis === 'Pengeluaran') {
+                keluar += nominal;
+                total -= nominal;
+            } else if (t.jenis === 'Pending') {
+                tunda += nominal;
             }
         });
 
         totalBalanceEl.innerText = formatRupiah(total);
-        totalIncomeEl.innerText = formatRupiah(income);
-        totalExpenseEl.innerText = formatRupiah(expense);
-        totalPendingEl.innerText = formatRupiah(pending);
+        totalPemasukanEl.innerText = formatRupiah(masuk);
+        totalPengeluaranEl.innerText = formatRupiah(keluar);
+        totalPendingEl.innerText = formatRupiah(tunda);
         
         totalBalanceEl.style.color = total < 0 ? '#f43f5e' : '#f8fafc';
     }
 
-    function renderTransactions() {
+    function renderDaftarTransaksi() {
         transactionList.innerHTML = '';
-        if (transactions.length === 0) {
+        if (daftarTransaksi.length === 0) {
             transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px; padding:10px;">Belum ada catatan transaksi</li>';
             return;
         }
 
-        transactions.slice(-5).reverse().forEach((transaction) => {
-            let sign = '-';
-            let amountClass = 'expense';
-            let badgeType = 'Keluar';
+        daftarTransaksi.slice(-5).reverse().forEach((transaksi) => {
+            let tanda = '-';
+            let kelasNominal = 'pengeluaran';
+            let teksBadge = 'Keluar';
 
-            if (transaction.type === 'income') {
-                sign = '+';
-                amountClass = 'income';
-                badgeType = 'Masuk';
-            } else if (transaction.type === 'pending') {
-                sign = '⏳';
-                amountClass = 'pending';
-                badgeType = 'Transit';
+            if (transaksi.jenis === 'Pemasukan') {
+                tanda = '+';
+                kelasNominal = 'pemasukan';
+                teksBadge = 'Masuk';
+            } else if (transaksi.jenis === 'Pending') {
+                tanda = '⏳';
+                kelasNominal = 'pending';
+                teksBadge = 'Transit';
             }
             
             const li = document.createElement('li');
             li.classList.add('transaction-item');
             li.innerHTML = `
                 <div class="item-info">
-                    <div class="title">${transaction.description}</div>
-                    <div class="subtitle">Dana ${badgeType}</div>
+                    <div class="title">${transaksi.keterangan}</div>
+                    <div class="subtitle">Dana ${teksBadge}</div>
                 </div>
-                <div class="item-amount ${amountClass}">${sign} ${formatRupiah(transaction.amount)}</div>
+                <div class="item-amount ${kelasNominal}">${tanda} ${formatRupiah(transaksi.jumlah)}</div>
             `;
             transactionList.appendChild(li);
         });
@@ -427,11 +425,11 @@
             return;
         }
 
-        const cleanAmount = amountInput.value.replace(/\./g, '');
-        const newTransaction = {
-            description: descriptionInput.value,
-            amount: parseInt(cleanAmount),
-            type: typeInput.value
+        const jumlahBersih = jumlahInput.value.replace(/\./g, '');
+        const dataBaru = {
+            keterangan: keteranganInput.value,
+            jumlah: parseInt(jumlahBersih),
+            jenis: jenisInput.value
         };
 
         submitBtn.disabled = true;
@@ -439,13 +437,13 @@
 
         fetch(SCRIPT_URL, {
             method: 'POST',
-            body: JSON.stringify(newTransaction)
+            body: JSON.stringify(dataBaru)
         })
         .then(() => {
-            descriptionInput.value = '';
-            amountInput.value = '';
+            keteranganInput.value = '';
+            jumlahInput.value = '';
             pinInput.value = '';
-            init();
+            muatDataCloud();
             alert('Data berhasil disimpan! ✅');
             formBody.classList.add('collapsed');
             toggleIcon.innerText = 'Buka 🔽';
@@ -460,17 +458,17 @@
         });
     });
 
-    function init() {
-        const cacheBusterUrl = SCRIPT_URL + '?_ts=' + new Date().getTime();
+    function muatDataCloud() {
+        const urlAntiCache = SCRIPT_URL + '?_ts=' + new Date().getTime();
         loadingStatus.style.display = 'block';
 
-        fetch(cacheBusterUrl)
+        fetch(urlAntiCache)
         .then(response => response.json())
         .then(data => {
-            transactions = (data && data.length > 0) ? data : [];
+            daftarTransaksi = (data && data.length > 0) ? data : [];
             loadingStatus.style.display = 'none';
-            renderTransactions();
-            updateBudget();
+            renderDaftarTransaksi();
+            perbaruiKalkulasiSaldo();
         })
         .catch(error => {
             console.error('Gagal mengambil data:', error);
@@ -478,7 +476,7 @@
         });
     }
 
-    init();
+    muatDataCloud();
 </script>
 </body>
 </html>
