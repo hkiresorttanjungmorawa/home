@@ -107,11 +107,44 @@
             border: 1px solid #334155;
         }
 
+        .section-header-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
         .section-title {
             font-size: 15px;
             font-weight: 600;
-            margin-bottom: 15px;
             color: var(--text-light);
+        }
+
+        .toggle-icon {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+            background: #0f172a;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        /* Konten Form yang bisa di-collapse */
+        .form-collapsible {
+            max-height: 1000px; /* Angka maksimal tinggi form */
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+            opacity: 1;
+            margin-top: 15px;
+        }
+
+        .form-collapsible.collapsed {
+            max-height: 0 !important;
+            opacity: 0;
+            pointer-events: none;
+            margin-top: 0;
         }
 
         .form-group {
@@ -141,7 +174,6 @@
             border-color: var(--emerald-money);
         }
 
-        /* Desain Khusus Kolom PIN Keamanan */
         .pin-input {
             border: 1px dashed var(--gold-accent) !important;
             letter-spacing: 4px;
@@ -221,35 +253,41 @@
     <div id="loading-status">Menghubungkan ke DATABASE_KEUANGAN...</div>
 
     <div class="section-card">
-        <div class="section-title">✍️ Catat Transaksi Baru</div>
-        <form id="finance-form">
-            <div class="form-group">
-                <label for="description">KETERANGAN / KEPERLUAN</label>
-                <input type="text" id="description" placeholder="Contoh: Gaji, Kopi, Makan" required autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label for="amount">JUMLAH (RUPIAH)</label>
-                <input type="text" id="amount" placeholder="0" required inputmode="numeric">
-            </div>
-            <div class="form-group">
-                <label for="type">JENIS ARUS KAS</label>
-                <select id="type">
-                    <option value="income">🟢 Pemasukan (Uang Masuk)</option>
-                    <option value="expense">🔴 Pengeluaran (Uang Keluar)</option>
-                </select>
-            </div>
+        <div class="section-header-toggle" id="form-toggle-btn">
+            <div class="section-title">✍️ Catat Transaksi Baru</div>
+            <div class="toggle-icon" id="toggle-icon">Sembunyikan 🔼</div>
+        </div>
+        
+        <div class="form-collapsible" id="form-body">
+            <form id="finance-form">
+                <div class="form-group">
+                    <label for="description">KETERANGAN / KEPERLUAN</label>
+                    <input type="text" id="description" placeholder="Contoh: Gaji, Kopi, Makan" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="amount">JUMLAH (RUPIAH)</label>
+                    <input type="text" id="amount" placeholder="0" required inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label for="type">JENIS ARUS KAS</label>
+                    <select id="type">
+                        <option value="income">🟢 Pemasukan (Uang Masuk)</option>
+                        <option value="expense">🔴 Pengeluaran (Uang Keluar)</option>
+                    </select>
+                </div>
 
-            <div class="form-group" style="margin-top: 20px; border-top: 1px dashed #334155; padding-top: 15px;">
-                <label for="secure-pin" style="color: var(--gold-accent); text-align: center; font-weight: 600;">🔑 MASUKKAN PIN OTORISASI</label>
-                <input type="password" id="secure-pin" class="pin-input" placeholder="••••" maxlength="8" required inputmode="numeric">
-            </div>
+                <div class="form-group" style="margin-top: 20px; border-top: 1px dashed #334155; padding-top: 15px;">
+                    <label for="secure-pin" style="color: var(--gold-accent); text-align: center; font-weight: 600;">🔑 MASUKKAN PIN OTORISASI</label>
+                    <input type="password" id="secure-pin" class="pin-input" placeholder="••••" maxlength="8" required inputmode="numeric">
+                </div>
 
-            <button type="submit" id="submit-btn">Simpan Transaksi</button>
-        </form>
+                <button type="submit" id="submit-btn">Simpan Transaksi</button>
+            </form>
+        </div>
     </div>
 
     <div class="section-card">
-        <div class="section-title">🕒 5 Transaksi Terakhir</div>
+        <div class="section-title" style="margin-bottom: 15px;">🕒 5 Transaksi Terakhir</div>
         <ul id="transaction-list" class="transaction-list"></ul>
         
         <a href="history.html" style="display: block; text-align: center; margin-top: 15px; background-color: #0f172a; color: #34d399; text-decoration: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; border: 1px solid #334155;">
@@ -261,8 +299,7 @@
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
     
-    // 🔏 UBAH PASSWORD/PIN KAMU DI SINI
-    const PIN_RAHASIA = '4114'; 
+    const PIN_RAHASIA = '1234'; 
 
     const form = document.getElementById('finance-form');
     const descriptionInput = document.getElementById('description');
@@ -277,7 +314,22 @@
     const totalIncomeEl = document.getElementById('total-income');
     const totalExpenseEl = document.getElementById('total-expense');
 
+    // Elemen untuk Fitur Minimize
+    const formToggleBtn = document.getElementById('form-toggle-btn');
+    const formBody = document.getElementById('form-body');
+    const toggleIcon = document.getElementById('toggle-icon');
+
     let transactions = [];
+
+    // Logika interaksi meminimize form (Buka/Tutup)
+    formToggleBtn.addEventListener('click', function() {
+        formBody.classList.toggle('collapsed');
+        if (formBody.classList.contains('collapsed')) {
+            toggleIcon.innerText = 'Buka 🔽';
+        } else {
+            toggleIcon.innerText = 'Sembunyikan 🔼';
+        }
+    });
 
     amountInput.addEventListener('keyup', function(e) {
         let numberString = this.value.replace(/[^,\d]/g, '').toString();
@@ -338,7 +390,6 @@
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // VALIDASI PIN SEBELUM DATA DIKIRIM KE CLOUD
         if (pinInput.value !== PIN_RAHASIA) {
             alert('❌ PIN Otorisasi Salah! Akses ditolak.');
             pinInput.value = '';
@@ -368,9 +419,13 @@
         .then(() => {
             descriptionInput.value = '';
             amountInput.value = '';
-            pinInput.value = ''; // Reset form PIN kembali kosong
+            pinInput.value = '';
             init();
             alert('Data berhasil disimpan! ✅');
+            
+            // Otomatis tutup form setelah berhasil menginput agar layar kembali lega
+            formBody.classList.add('collapsed');
+            toggleIcon.innerText = 'Buka 🔽';
         })
         .catch(error => {
             console.error('Error:', error);
