@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Video Background */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Layar Pembuka / Cover */
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .btn-fullscreen {
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .btn-fullscreen:active {
+            transform: scale(0.95);
+        }
+
+        /* Tombol Kontrol Musik Piringan Hitam */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 54px;
+            height: 54px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: none; /* Sembunyi sebelum proposal dibuka */
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            padding: 2px;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-btn svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Animasi Berputar saat Musik Play */
+        .music-btn.playing svg {
+            animation: spin 2.5s linear infinite;
+        }
+
+        /* Tampilan saat Musik Mute */
+        .music-btn.muted {
+            opacity: 0.4;
+        }
+
+        .music-btn.muted svg {
+            animation: none;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Video Background -->
+    <video id="myVideo" autoplay loop muted playsinline>
+        <source src="Background.mp4" type="video/mp4">
+    </video>
+
+    <!-- Audio Musik Latar -->
+    <audio id="myAudio" loop>
+        <source src="Musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Tombol Piringan Hitam dengan Refleksi Cahaya -->
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+        <svg viewBox="0 0 100 100">
+            <!-- Body Utama Piringan -->
+            <circle cx="50" cy="50" r="48" fill="#111111" stroke="#333" stroke-width="1"/>
+            
+            <!-- Alur Garis Piringan -->
+            <circle cx="50" cy="50" r="41" fill="none" stroke="#222" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="33" fill="none" stroke="#222" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="25" fill="none" stroke="#222" stroke-width="1.5"/>
+            
+            <!-- Refleksi Kilauan Cahaya (Membuat Efek Putaran Kelihatan Jelas) -->
+            <path d="M50 50 L20 10 A48 48 0 0 1 80 10 Z" fill="rgba(255, 255, 255, 0.15)"/>
+            <path d="M50 50 L80 90 A48 48 0 0 1 20 90 Z" fill="rgba(255, 255, 255, 0.15)"/>
+
+            <!-- Label Merah Tengah -->
+            <circle cx="50" cy="50" r="16" fill="#e50914"/>
+            <!-- Titik aksen asimetris pada label -->
+            <circle cx="43" cy="45" r="3" fill="#ffffff" opacity="0.6"/>
+            
+            <!-- Lubang Tengah -->
+            <circle cx="50" cy="50" r="4" fill="#111111"/>
+        </svg>
+    </button>
+
+    <!-- Tombol Pembuka -->
+    <div class="cover" id="coverScreen">
+        <h2>Proposal Digital</h2>
+        <button class="btn-fullscreen" onclick="openFullscreen()">Buka Proposal</button>
+    </div>
+
+    <script>
+        var audio = document.getElementById('myAudio');
+        var musicBtn = document.getElementById('musicBtn');
+
+        function openFullscreen() {
+            var elem = document.documentElement;
+            var video = document.getElementById('myVideo');
+
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+
+            video.play();
+            audio.play().then(function() {
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+            }).catch(function(error) {
+                console.log("Audio diblokir oleh browser:", error);
+            });
+
+            document.getElementById('coverScreen').style.display = 'none';
+            musicBtn.style.display = 'flex';
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.classList.add('muted');
+            }
+        }
+    </script>
+
+</body>
+</html>
