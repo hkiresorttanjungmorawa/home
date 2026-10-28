@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proposal Digital</title>
+    <!-- Import Font Bersambung (Dancing Script) dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -16,7 +21,26 @@
             height: 100%;
             overflow: hidden;
             background-color: #000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Progress Bar Otomatis di Paling Atas (Biru Langit) */
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            display: none;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: #00b4d8;
+            box-shadow: 0 0 10px #00b4d8;
         }
 
         /* Video Background */
@@ -30,59 +54,153 @@
             z-index: 1;
         }
 
-        /* Layar Pembuka / Cover */
+        /* Layar Pembuka / Cover (Opening Awal - Tanpa Blur/Overlay Gelap) */
         .cover {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 3;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            z-index: 4;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #fff;
+            color: #000000;
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
         }
 
+        /* Logo Salib Tema Biru */
+        .cross-logo {
+            width: 50px;
+            height: 65px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 8px rgba(0, 180, 216, 0.6));
+        }
+
+        .cross-logo svg {
+            width: 100%;
+            height: 100%;
+            fill: #0077b6;
+        }
+
+        .cover-badge {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #0077b6;
+            font-weight: 800;
+            margin-bottom: 14px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1.5px solid #00b4d8;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Teks Judul Berwarna Hitam */
+        .cover-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            color: #000000;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+            max-width: 360px;
+        }
+
+        /* Penekanan Khusus HKI RESORT KHUSUS TANJUNG MORAWA */
+        .cover-main-header {
+            font-size: 1.55rem;
+            font-weight: 900;
+            color: #0077b6;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(255, 255, 255, 0.8);
+            max-width: 380px;
+            line-height: 1.3;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Box Penerima Tamu/Undangan */
+        .recipient-box {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1.5px solid #00b4d8;
+            border-radius: 14px;
+            padding: 10px 22px 14px 22px;
+            margin-bottom: 24px;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .recipient-box .yth {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0077b6;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        /* Gaya Tulisan Bersambung Khusus Nama Penerima */
+        .recipient-box .name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1.2;
+        }
+
+        /* Tombol Buka Proposal */
         .btn-fullscreen {
-            padding: 14px 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 32px;
             font-size: 1rem;
-            font-weight: bold;
-            color: #000;
-            background-color: #fff;
-            border: none;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            border: 1.5px solid #90e0ef;
             border-radius: 30px;
             cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
-            transition: transform 0.2s ease;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.7), 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-fullscreen svg {
+            width: 22px;
+            height: 22px;
+            fill: #ffffff;
         }
 
         .btn-fullscreen:active {
             transform: scale(0.95);
+            box-shadow: 0 0 10px rgba(0, 180, 216, 0.9);
         }
 
         /* Tombol Kontrol Musik Piringan Hitam */
         .music-btn {
             position: fixed;
-            top: 20px;
+            bottom: 90px;
             right: 20px;
-            width: 54px;
-            height: 54px;
+            width: 52px;
+            height: 52px;
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 180, 216, 0.4);
             border-radius: 50%;
-            display: none; /* Sembunyi sebelum proposal dibuka */
+            display: none;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            z-index: 2;
+            z-index: 3;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             padding: 2px;
             transition: opacity 0.3s ease;
@@ -93,12 +211,10 @@
             height: 100%;
         }
 
-        /* Animasi Berputar saat Musik Play */
         .music-btn.playing svg {
             animation: spin 2.5s linear infinite;
         }
 
-        /* Tampilan saat Musik Mute */
         .music-btn.muted {
             opacity: 0.4;
         }
@@ -110,9 +226,135 @@
         @keyframes spin {
             100% { transform: rotate(360deg); }
         }
+
+        /* Area Konten Utama */
+        .main-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px 85px 20px;
+        }
+
+        .content-card {
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            padding: 24px;
+            color: #ffffff;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            touch-action: pan-y;
+            transition: all 0.3s ease;
+        }
+
+        /* Khusus Tab Opening setelah dibuka */
+        .content-card.opening-mode {
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: none;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Bottom Navigation Bar Menyatu */
+        .nav-tabs-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            padding: 8px 10px;
+            z-index: 3;
+            display: none;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-tabs-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 16px;
+            margin: 0 2px;
+            background: transparent;
+            color: #888888;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            margin-bottom: 4px;
+        }
+
+        .tab-btn.active {
+            color: #0077b6;
+            font-weight: 700;
+        }
+
+        /* Section Tiap Sheet */
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
+        .tab-pane h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 180, 216, 0.4);
+            padding-bottom: 8px;
+            color: #00b4d8;
+        }
+
+        .tab-pane p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Indikator Waktu Slide -->
+    <div class="progress-bar-container" id="progressBarContainer">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+    </div>
 
     <!-- Video Background -->
     <video id="myVideo" autoplay loop muted playsinline>
@@ -124,40 +366,156 @@
         <source src="Musik.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Tombol Piringan Hitam dengan Refleksi Cahaya -->
+    <!-- Tombol Piringan Hitam -->
     <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
         <svg viewBox="0 0 100 100">
-            <!-- Body Utama Piringan -->
             <circle cx="50" cy="50" r="48" fill="#111111" stroke="#333" stroke-width="1"/>
-            
-            <!-- Alur Garis Piringan -->
             <circle cx="50" cy="50" r="41" fill="none" stroke="#222" stroke-width="1.5"/>
             <circle cx="50" cy="50" r="33" fill="none" stroke="#222" stroke-width="1.5"/>
             <circle cx="50" cy="50" r="25" fill="none" stroke="#222" stroke-width="1.5"/>
-            
-            <!-- Refleksi Kilauan Cahaya (Membuat Efek Putaran Kelihatan Jelas) -->
             <path d="M50 50 L20 10 A48 48 0 0 1 80 10 Z" fill="rgba(255, 255, 255, 0.15)"/>
             <path d="M50 50 L80 90 A48 48 0 0 1 20 90 Z" fill="rgba(255, 255, 255, 0.15)"/>
-
-            <!-- Label Merah Tengah -->
             <circle cx="50" cy="50" r="16" fill="#e50914"/>
-            <!-- Titik aksen asimetris pada label -->
             <circle cx="43" cy="45" r="3" fill="#ffffff" opacity="0.6"/>
-            
-            <!-- Lubang Tengah -->
             <circle cx="50" cy="50" r="4" fill="#111111"/>
         </svg>
     </button>
 
-    <!-- Tombol Pembuka -->
+    <!-- Layar Pembuka / Opening Awal -->
     <div class="cover" id="coverScreen">
-        <h2>Proposal Digital</h2>
-        <button class="btn-fullscreen" onclick="openFullscreen()">Buka Proposal</button>
+        <!-- Logo Salib Biru -->
+        <div class="cross-logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
+            </svg>
+        </div>
+
+        <div class="cover-badge">Proposal Digital</div>
+        <div class="cover-title">Pengadaan Lahan & Pembangunan Rumah Dinas Pendeta</div>
+        <div class="cover-main-header">HKI RESORT KHUSUS TANJUNG MORAWA</div>
+        
+        <div class="recipient-box">
+            <div class="yth">Kepada YTH</div>
+            <div class="name">Bapak/Ibu/Saudara/Saudari Terkasih</div>
+        </div>
+
+        <button class="btn-fullscreen" onclick="openFullscreen()">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <span>Buka Proposal</span>
+        </button>
+    </div>
+
+    <!-- Area Konten Utama -->
+    <div class="main-container" id="mainContainer">
+        <div class="content-card" id="contentCard">
+            
+            <!-- Tab Opening saat Di-klik Kembali -->
+            <div id="tab-opening" class="tab-pane">
+                <div class="cross-logo" style="margin: 0 auto 12px auto;">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
+                    </svg>
+                </div>
+                <div class="cover-badge" style="display: inline-block;">Proposal Digital</div>
+                <div class="cover-title" style="margin-top: 10px;">Pengadaan Lahan & Pembangunan Rumah Dinas Pendeta</div>
+                <div class="cover-main-header" style="margin-bottom: 24px;">HKI RESORT KHUSUS TANJUNG MORAWA</div>
+                
+                <div class="recipient-box" style="margin: 0 auto;">
+                    <div class="yth">Kepada YTH</div>
+                    <div class="name">Bapak/Ibu/Saudara/Saudari Terkasih</div>
+                </div>
+            </div>
+
+            <div id="tab-salam" class="tab-pane active">
+                <h3>Salam</h3>
+                <p>Isi kata sambutan / salam pembuka di sini...</p>
+            </div>
+
+            <div id="tab-latar" class="tab-pane">
+                <h3>Latar</h3>
+                <p>Isi latar belakang kegiatan / proyek di sini...</p>
+            </div>
+
+            <div id="tab-quote" class="tab-pane">
+                <h3>Quote</h3>
+                <p>Isi kata-kata mutiara / quote pendukung di sini...</p>
+            </div>
+
+            <div id="tab-rab1" class="tab-pane">
+                <h3>RAB I</h3>
+                <p>Isi Rencana Anggaran Biaya Tahap I di sini...</p>
+            </div>
+
+            <div id="tab-rab2" class="tab-pane">
+                <h3>RAB II</h3>
+                <p>Isi Rencana Anggaran Biaya Tahap II di sini...</p>
+            </div>
+
+            <div id="tab-donasi" class="tab-pane">
+                <h3>Donasi</h3>
+                <p>Isi rincian nomor rekening & saluran donasi di sini...</p>
+            </div>
+
+            <div id="tab-terimakasih" class="tab-pane">
+                <h3>Terima Kasih</h3>
+                <p>Isi ucapan terima kasih dan penutup di sini...</p>
+            </div>
+
+            <div id="tab-panitia" class="tab-pane">
+                <h3>Panitia</h3>
+                <p>Isi susunan struktur panitia di sini...</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Navigasi 9 Tab -->
+    <div class="nav-tabs-container" id="navTabs">
+        <button class="tab-btn" onclick="manualTabClick('tab-opening', this)">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Opening</span>
+        </button>
+        <button class="tab-btn active" id="btnSalamTab" onclick="manualTabClick('tab-salam', this)">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            <span>Salam</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-latar', this)">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span>Latar</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-quote', this)">
+            <svg viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+            <span>Quote</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-rab1', this)">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+            <span>RAB I</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-rab2', this)">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+            <span>RAB II</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-donasi', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>Donasi</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-terimakasih', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <span>Terima Kasih</span>
+        </button>
+        <button class="tab-btn" onclick="manualTabClick('tab-panitia', this)">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <span>Panitia</span>
+        </button>
     </div>
 
     <script>
         var audio = document.getElementById('myAudio');
         var musicBtn = document.getElementById('musicBtn');
+        var autoPlayTimer = null;
+        var slideDuration = 10000;
 
         function openFullscreen() {
             var elem = document.documentElement;
@@ -180,7 +538,15 @@
             });
 
             document.getElementById('coverScreen').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+            document.getElementById('navTabs').style.display = 'block';
+            document.getElementById('progressBarContainer').style.display = 'block';
             musicBtn.style.display = 'flex';
+
+            var btnSalam = document.getElementById('btnSalamTab');
+            switchTab('tab-salam', btnSalam);
+
+            startAutoPlay();
         }
 
         function toggleMusic() {
@@ -192,6 +558,105 @@
                 audio.pause();
                 musicBtn.classList.remove('playing');
                 musicBtn.classList.add('muted');
+            }
+        }
+
+        function switchTab(tabId, btnElement) {
+            var panes = document.getElementsByClassName('tab-pane');
+            for (var i = 0; i < panes.length; i++) {
+                panes[i].classList.remove('active');
+            }
+
+            var buttons = document.getElementsByClassName('tab-btn');
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove('active');
+            }
+
+            var contentCard = document.getElementById('contentCard');
+
+            if (tabId === 'tab-opening') {
+                contentCard.classList.add('opening-mode');
+            } else {
+                contentCard.classList.remove('opening-mode');
+            }
+
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+            btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+
+        function startProgressBar() {
+            var barFill = document.getElementById('progressBarFill');
+            barFill.style.transition = 'none';
+            barFill.style.width = '0%';
+
+            setTimeout(function() {
+                barFill.style.transition = 'width ' + slideDuration + 'ms linear';
+                barFill.style.width = '100%';
+            }, 50);
+        }
+
+        function stopProgressBar() {
+            var barFill = document.getElementById('progressBarFill');
+            var container = document.getElementById('progressBarContainer');
+            barFill.style.transition = 'none';
+            barFill.style.width = '0%';
+            container.style.display = 'none';
+        }
+
+        function startAutoPlay() {
+            clearTimeout(autoPlayTimer);
+            startProgressBar();
+
+            autoPlayTimer = setTimeout(function() {
+                var buttons = Array.from(document.getElementsByClassName('tab-btn'));
+                var activeIndex = buttons.findIndex(btn => btn.classList.contains('active'));
+
+                if (activeIndex < buttons.length - 1) {
+                    var nextBtn = buttons[activeIndex + 1];
+                    var nextTabId = nextBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    switchTab(nextTabId, nextBtn);
+                    startAutoPlay();
+                } else {
+                    clearTimeout(autoPlayTimer);
+                    stopProgressBar();
+                }
+            }, slideDuration);
+        }
+
+        function manualTabClick(tabId, btnElement) {
+            switchTab(tabId, btnElement);
+            clearTimeout(autoPlayTimer);
+            stopProgressBar();
+        }
+
+        // Swipe Gesture
+        var touchstartX = 0;
+        var touchendX = 0;
+        var card = document.getElementById('contentCard');
+
+        card.addEventListener('touchstart', function(event) {
+            touchstartX = event.changedTouches[0].screenX;
+        }, false);
+
+        card.addEventListener('touchend', function(event) {
+            touchendX = event.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            var buttons = Array.from(document.getElementsByClassName('tab-btn'));
+            var activeIndex = buttons.findIndex(btn => btn.classList.contains('active'));
+
+            if (touchendX < touchstartX - 50) {
+                if (activeIndex < buttons.length - 1) {
+                    buttons[activeIndex + 1].click();
+                }
+            }
+            if (touchendX > touchstartX + 50) {
+                if (activeIndex > 0) {
+                    buttons[activeIndex - 1].click();
+                }
             }
         }
     </script>
