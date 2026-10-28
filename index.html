@@ -2,502 +2,199 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KAS SEKTOR</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal Digital</title>
     <style>
-        :root {
-            --bg-finance: #0f172a;
-            --card-bg: #1e293b;
-            --emerald-money: #10b981;
-            --rose-expense: #f43f5e;
-            --gold-accent: #f59e0b;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background-color: var(--bg-finance);
-            color: var(--text-light);
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .phone-wrapper {
+        body, html {
             width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            padding-bottom: 40px;
-        }
-
-        header {
-            margin: 15px 0 25px 0;
-            text-align: center;
-        }
-
-        header h2 {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        header p {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .main-card {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.4);
-            margin-bottom: 25px;
-            position: relative;
+            height: 100%;
             overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .main-card h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 6px 0 16px 0;
+        /* Video Background */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            padding-top: 15px;
-        }
-
-        .stat-item h3 { font-size: 14px; font-weight: 600; margin-top: 2px; }
-        .stat-item .pemasukan-val { color: #34d399; }
-        .stat-item .pengeluaran-val { color: #fca5a5; }
-        .stat-item .pending-val { color: #fde047; }
-
-        #loading-status {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: var(--gold-accent);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            text-align: center;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .section-card {
-            background-color: var(--card-bg);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #334155;
-        }
-
-        .section-header-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .section-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-light);
-        }
-
-        .toggle-icon {
-            font-size: 14px;
-            color: var(--text-muted);
-            transition: transform 0.3s ease;
-            background: #0f172a;
-            padding: 4px 10px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-        }
-
-        .form-collapsible {
-            max-height: 1000px;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
-            opacity: 1;
-            margin-top: 15px;
-        }
-
-        .form-collapsible.collapsed {
-            max-height: 0 !important;
-            opacity: 0;
-            pointer-events: none;
-            margin-top: 0;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        input, select {
+        /* Layar Pembuka / Cover */
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            color: var(--text-light);
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--emerald-money);
-        }
-
-        .pin-input {
-            border: 1px dashed var(--gold-accent) !important;
-            letter-spacing: 4px;
-            text-align: center;
-            font-weight: bold;
-            color: var(--gold-accent) !important;
-        }
-
-        button {
-            width: 100%;
-            background-color: var(--emerald-money);
-            color: #062f21;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-        }
-
-        button:disabled {
-            background-color: #334155;
-            color: var(--text-muted);
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .transaction-list {
-            list-style: none;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
         }
 
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start; /* Mengubah ke flex-start agar angka tetap di atas jika teks panjang */
-            padding: 14px 16px;
-            background-color: #0f172a;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            gap: 16px; /* Jarak aman antara teks dan angka */
+        .btn-fullscreen {
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #000;
+            background-color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            transition: transform 0.2s ease;
         }
 
-        .item-info {
-            flex: 1;
-            min-width: 0;
-            word-break: break-word; /* Memaksa kata yang sangat panjang untuk patah/turun */
+        .btn-fullscreen:active {
+            transform: scale(0.95);
         }
 
-        .item-info .title { 
-            font-size: 14px; 
-            font-weight: 500; 
-            white-space: normal; /* Mengizinkan teks turun ke baris baru jika penuh */
-            overflow: visible; 
-            text-overflow: clip; 
+        /* Tombol Kontrol Musik Piringan Hitam */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 54px;
+            height: 54px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: none; /* Sembunyi sebelum proposal dibuka */
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            padding: 2px;
+            transition: opacity 0.3s ease;
         }
-        
-        .item-info .subtitle { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-        
-        .item-amount { 
-            font-size: 15px; 
-            font-weight: 600; 
-            white-space: nowrap; 
-            flex-shrink: 0; /* Angka rupiah tidak akan pernah menciut atau terganggu */
-            text-align: right;
+
+        .music-btn svg {
+            width: 100%;
+            height: 100%;
         }
-        .item-amount.pemasukan { color: var(--emerald-money); }
-        .item-amount.pengeluaran { color: var(--rose-expense); }
-        .item-amount.pending { color: var(--gold-accent); }
+
+        /* Animasi Berputar saat Musik Play */
+        .music-btn.playing svg {
+            animation: spin 2.5s linear infinite;
+        }
+
+        /* Tampilan saat Musik Mute */
+        .music-btn.muted {
+            opacity: 0.4;
+        }
+
+        .music-btn.muted svg {
+            animation: none;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
 
-<div class="phone-wrapper">
-    <header>
-        <h2>KAS SEKTOR 💵</h2>
-        <p>(Kolekte Ke II Sektor)</p>
-    </header>
-    
-    <div class="main-card">
-        <div style="font-size:12px; color:#a7f3d0;">Saldo KAS Saat ini</div>
-        <h1 id="total-balance">Rp 0</h1>
-        
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div style="font-size:10px; color:#cbd5e1;">Masuk</div>
-                <h3 id="total-pemasukan" class="pemasukan-val">Rp 0</h3>
-            </div>
-            <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
-                <div style="font-size:10px; color:#cbd5e1;">Keluar</div>
-                <h3 id="total-pengeluaran" class="pengeluaran-val">Rp 0</h3>
-            </div>
-            <div class="stat-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
-                <div style="font-size:10px; color:#cbd5e1;">Transit</div>
-                <h3 id="total-pending" class="pending-val">Rp 0</h3>
-            </div>
-        </div>
-    </div>
+    <!-- Video Background -->
+    <video id="myVideo" autoplay loop muted playsinline>
+        <source src="Background.mp4" type="video/mp4">
+    </video>
 
-    <div id="loading-status">Menghubungkan ke DATABASE_KEUANGAN...</div>
+    <!-- Audio Musik Latar -->
+    <audio id="myAudio" loop>
+        <source src="Musik.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="section-card">
-        <div class="section-header-toggle" id="form-toggle-btn">
-            <div class="section-title">✍️ Catat Transaksi</div>
-            <div class="toggle-icon" id="toggle-icon">Buka 🔽</div>
-        </div>
-        
-        <div class="form-collapsible collapsed" id="form-body">
-            <form id="finance-form">
-                <div class="form-group">
-                    <label for="keterangan">KETERANGAN / KEPERLUAN</label>
-                    <input type="text" id="keterangan" placeholder="Wajib Di Isi" required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="jumlah">JUMLAH (RUPIAH)</label>
-                    <input type="text" id="jumlah" placeholder="0" required inputmode="numeric">
-                </div>
-                <div class="form-group">
-                    <label for="jenis">JENIS ARUS KAS</label>
-                    <select id="jenis">
-                        <option value="Pemasukan">🟢 Pemasukan (Uang Masuk)</option>
-                        <option value="Pengeluaran">🔴 Pengeluaran (Uang Keluar)</option>
-                        <option value="Pending">🟡 Pending (Uang Transit)</option>
-                    </select>
-                </div>
-
-                <div class="form-group" style="margin-top: 20px; border-top: 1px dashed #334155; padding-top: 15px;">
-                    <label for="secure-pin" style="color: var(--gold-accent); text-align: center; font-weight: 600;">🔑 MASUKKAN PIN OTORISASI</label>
-                    <input type="password" id="secure-pin" class="pin-input" placeholder="••••" maxlength="8" required inputmode="numeric">
-                </div>
-
-                <button type="submit" id="submit-btn">Simpan Transaksi</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="section-card">
-        <div class="section-title" style="margin-bottom: 15px;">🕒 5 Transaksi Terakhir</div>
-        <ul id="transaction-list" class="transaction-list"></ul>
-        
-        <a href="history.html" style="display: block; text-align: center; margin-top: 15px; background-color: #0f172a; color: #3b82f6; text-decoration: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; border: 1px solid #334155;">📊 Lihat Semua Riwayat Keuangan</a>
-        
-        <a href="danagathring.html" style="display: block; text-align: center; margin-top: 10px; background-color: #1e293b; color: #f59e0b; text-decoration: none; padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 600; border: 1px dashed #f59e0b;">👥 Masuk ke Catatan Dana Gathering</a>
-    </div>
-</div>
-
-<script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfImd3maczBiWntXKsnGvH-2hC9NqX_C0H3PPRVhChCE0Z7gKVVE7R1Qu4YuGob_TD/exec';
-    const PIN_RAHASIA = '951753'; 
-
-    const form = document.getElementById('finance-form');
-    const keteranganInput = document.getElementById('keterangan');
-    const jumlahInput = document.getElementById('jumlah');
-    const jenisInput = document.getElementById('jenis');
-    const pinInput = document.getElementById('secure-pin');
-    const submitBtn = document.getElementById('submit-btn');
-    const transactionList = document.getElementById('transaction-list');
-    const loadingStatus = document.getElementById('loading-status');
-    
-    const totalBalanceEl = document.getElementById('total-balance');
-    const totalPemasukanEl = document.getElementById('total-pemasukan');
-    const totalPengeluaranEl = document.getElementById('total-pengeluaran');
-    const totalPendingEl = document.getElementById('total-pending');
-
-    const formToggleBtn = document.getElementById('form-toggle-btn');
-    const formBody = document.getElementById('form-body');
-    const toggleIcon = document.getElementById('toggle-icon');
-
-    let daftarTransaksi = [];
-
-    formToggleBtn.addEventListener('click', function() {
-        formBody.classList.toggle('collapsed');
-        if (formBody.classList.contains('collapsed')) {
-            toggleIcon.innerText = 'Buka 🔽';
-        } else {
-            toggleIcon.innerText = 'Sembunyikan 🔼';
-        }
-    });
-
-    jumlahInput.addEventListener('keyup', function(e) {
-        let numberString = this.value.replace(/[^,\d]/g, '').toString();
-        let split        = numberString.split(',');
-        let sisa         = split[0].length % 3;
-        let rupiah       = split[0].substr(0, sisa);
-        let ribuan       = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            let separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-        this.value = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-    });
-
-    function formatRupiah(angka) {
-        return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
-    }
-
-    function perbaruiKalkulasiSaldo() {
-        let total = 0;
-        let masuk = 0;
-        let keluar = 0;
-        let tunda = 0;
-
-        daftarTransaksi.forEach(t => {
-            const nominal = parseInt(t.jumlah) || 0;
-            if (t.jenis === 'Pemasukan') {
-                masuk += nominal;
-                total += nominal;
-            } else if (t.jenis === 'Pengeluaran') {
-                keluar += nominal;
-                total -= nominal;
-            } else if (t.jenis === 'Pending') {
-                tunda += nominal;
-            }
-        });
-
-        totalBalanceEl.innerText = formatRupiah(total);
-        totalPemasukanEl.innerText = formatRupiah(masuk);
-        totalPengeluaranEl.innerText = formatRupiah(keluar);
-        totalPendingEl.innerText = formatRupiah(tunda);
-        
-        totalBalanceEl.style.color = total < 0 ? '#f43f5e' : '#f8fafc';
-    }
-
-    function renderDaftarTransaksi() {
-        transactionList.innerHTML = '';
-        if (daftarTransaksi.length === 0) {
-            transactionList.innerHTML = '<li style="text-align:center; color:#6b7280; font-size:13px; padding:10px;">Belum ada catatan transaksi</li>';
-            return;
-        }
-
-        daftarTransaksi.slice(-5).reverse().forEach((transaksi) => {
-            let tanda = '-';
-            let kelasNominal = 'pengeluaran';
-            let teksBadge = 'Keluar';
-
-            if (transaksi.jenis === 'Pemasukan') {
-                tanda = '+';
-                kelasNominal = 'pemasukan';
-                teksBadge = 'Masuk';
-            } else if (transaksi.jenis === 'Pending') {
-                tanda = '⏳';
-                kelasNominal = 'pending';
-                teksBadge = 'Transit';
-            }
+    <!-- Tombol Piringan Hitam dengan Refleksi Cahaya -->
+    <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+        <svg viewBox="0 0 100 100">
+            <!-- Body Utama Piringan -->
+            <circle cx="50" cy="50" r="48" fill="#111111" stroke="#333" stroke-width="1"/>
             
-            const li = document.createElement('li');
-            li.classList.add('transaction-item');
-            li.innerHTML = `
-                <div class="item-info">
-                    <div class="title">${transaksi.keterangan}</div>
-                    <div class="subtitle">Dana ${teksBadge}</div>
-                </div>
-                <div class="item-amount ${kelasNominal}">${tanda} ${formatRupiah(transaksi.jumlah)}</div>
-            `;
-            transactionList.appendChild(li);
-        });
-    }
+            <!-- Alur Garis Piringan -->
+            <circle cx="50" cy="50" r="41" fill="none" stroke="#222" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="33" fill="none" stroke="#222" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="25" fill="none" stroke="#222" stroke-width="1.5"/>
+            
+            <!-- Refleksi Kilauan Cahaya (Membuat Efek Putaran Kelihatan Jelas) -->
+            <path d="M50 50 L20 10 A48 48 0 0 1 80 10 Z" fill="rgba(255, 255, 255, 0.15)"/>
+            <path d="M50 50 L80 90 A48 48 0 0 1 20 90 Z" fill="rgba(255, 255, 255, 0.15)"/>
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+            <!-- Label Merah Tengah -->
+            <circle cx="50" cy="50" r="16" fill="#e50914"/>
+            <!-- Titik aksen asimetris pada label -->
+            <circle cx="43" cy="45" r="3" fill="#ffffff" opacity="0.6"/>
+            
+            <!-- Lubang Tengah -->
+            <circle cx="50" cy="50" r="4" fill="#111111"/>
+        </svg>
+    </button>
 
-        if (pinInput.value !== PIN_RAHASIA) {
-            alert('❌ PIN Otorisasi Salah! Akses ditolak.');
-            pinInput.value = '';
-            pinInput.focus();
-            return;
+    <!-- Tombol Pembuka -->
+    <div class="cover" id="coverScreen">
+        <h2>Proposal Digital</h2>
+        <button class="btn-fullscreen" onclick="openFullscreen()">Buka Proposal</button>
+    </div>
+
+    <script>
+        var audio = document.getElementById('myAudio');
+        var musicBtn = document.getElementById('musicBtn');
+
+        function openFullscreen() {
+            var elem = document.documentElement;
+            var video = document.getElementById('myVideo');
+
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+
+            video.play();
+            audio.play().then(function() {
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+            }).catch(function(error) {
+                console.log("Audio diblokir oleh browser:", error);
+            });
+
+            document.getElementById('coverScreen').style.display = 'none';
+            musicBtn.style.display = 'flex';
         }
 
-        const jumlahBersih = jumlahInput.value.replace(/\./g, '');
-        const dataBaru = {
-            keterangan: keteranganInput.value,
-            jumlah: parseInt(jumlahBersih),
-            jenis: jenisInput.value
-        };
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.classList.add('muted');
+            }
+        }
+    </script>
 
-        submitBtn.disabled = true;
-        submitBtn.innerText = 'Memverifikasi PIN & mengirim...';
-
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify(dataBaru)
-        })
-        .then(() => {
-            keteranganInput.value = '';
-            jumlahInput.value = '';
-            pinInput.value = '';
-            muatDataCloud();
-            alert('Data berhasil disimpan! ✅');
-            formBody.classList.add('collapsed');
-            toggleIcon.innerText = 'Buka 🔽';
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Gagal mengirim data.');
-        })
-        .finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.innerText = 'Simpan Transaksi';
-        });
-    });
-
-    function muatDataCloud() {
-        const urlAntiCache = SCRIPT_URL + '?_ts=' + new Date().getTime();
-        loadingStatus.style.display = 'block';
-
-        fetch(urlAntiCache)
-        .then(response => response.json())
-        .then(data => {
-            daftarTransaksi = (data && data.length > 0) ? data : [];
-            loadingStatus.style.display = 'none';
-            renderDaftarTransaksi();
-            perbaruiKalkulasiSaldo();
-        })
-        .catch(error => {
-            console.error('Gagal mengambil data:', error);
-            loadingStatus.innerText = '⚠️ Gagal memuat data cloud.';
-        });
-    }
-
-    muatDataCloud();
-</script>
 </body>
 </html>
