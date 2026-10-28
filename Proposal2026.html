@@ -3,28 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Mencegah Force Dark Mode di Chrome & Opera Mobile -->
+    <meta name="color-scheme" content="only light">
+    <meta name="supported-color-schemes" content="only light">
     <title>Proposal Digital</title>
-    <!-- Import Font Bersambung (Dancing Script) dari Google Fonts -->
+    
+    <!-- Import Font Bersambung (Dancing Script) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
     <style>
+        /* Mencegah penyesuaian warna otomatis di seluruh elemen */
+        :root {
+            color-scheme: only light !important;
+            supported-color-schemes: only light !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            forced-color-adjust: none !important;
+            -webkit-forced-color-adjust: none !important;
         }
 
-        body, html {
+        html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #000;
+            background-color: #000000 !important;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color-scheme: only light !important;
         }
 
-        /* Progress Bar Otomatis di Paling Atas (Biru Langit) */
+        /* Progress Bar Otomatis di Paling Atas */
         .progress-bar-container {
             position: fixed;
             top: 0;
@@ -39,7 +52,7 @@
         .progress-bar-fill {
             width: 0%;
             height: 100%;
-            background: #00b4d8;
+            background-color: #00b4d8 !important;
             box-shadow: 0 0 10px #00b4d8;
         }
 
@@ -54,22 +67,21 @@
             z-index: 1;
         }
 
-        /* Layar Pembuka / Cover (Opening Awal - Tanpa Blur/Overlay Gelap) */
+        /* Layar Pembuka / Cover (Opening Awal) */
         .cover {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
             z-index: 4;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #000000;
             text-align: center;
             padding: 30px 20px;
         }
@@ -79,46 +91,46 @@
             width: 50px;
             height: 65px;
             margin-bottom: 12px;
-            filter: drop-shadow(0 2px 8px rgba(0, 180, 216, 0.6));
+            filter: drop-shadow(0 2px 8px rgba(0, 180, 216, 0.8));
         }
 
         .cross-logo svg {
             width: 100%;
             height: 100%;
-            fill: #0077b6;
+            fill: #0077b6 !important;
         }
 
         .cover-badge {
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #0077b6;
+            color: #0077b6 !important;
             font-weight: 800;
             margin-bottom: 14px;
-            background: rgba(255, 255, 255, 0.85);
+            background: #ffffff !important;
             padding: 6px 18px;
             border-radius: 20px;
-            border: 1.5px solid #00b4d8;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            border: 1.5px solid #00b4d8 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Teks Judul Berwarna Hitam */
+        /* Teks Judul Hitam dengan stroke pelindung */
         .cover-title {
             font-size: 1.15rem;
             font-weight: 800;
             line-height: 1.4;
             margin-bottom: 10px;
-            color: #000000;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+            color: #000000 !important;
+            text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff, 0 1px 2px #ffffff;
             max-width: 360px;
         }
 
-        /* Penekanan Khusus HKI RESORT KHUSUS TANJUNG MORAWA */
+        /* Header HKI RESORT KHUSUS TANJUNG MORAWA */
         .cover-main-header {
             font-size: 1.55rem;
             font-weight: 900;
-            color: #0077b6;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 2px 4px rgba(255, 255, 255, 0.8);
+            color: #0077b6 !important;
+            text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 15px rgba(0, 180, 216, 0.8);
             max-width: 380px;
             line-height: 1.3;
             margin-bottom: 24px;
@@ -127,31 +139,32 @@
 
         /* Box Penerima Tamu/Undangan */
         .recipient-box {
-            background: rgba(255, 255, 255, 0.88);
-            border: 1.5px solid #00b4d8;
+            background-color: #ffffff !important;
+            background: #ffffff !important;
+            border: 1.5px solid #00b4d8 !important;
             border-radius: 14px;
             padding: 10px 22px 14px 22px;
             margin-bottom: 24px;
             max-width: 340px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .recipient-box .yth {
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #0077b6;
+            color: #0077b6 !important;
             margin-bottom: 2px;
             font-weight: 700;
         }
 
-        /* Gaya Tulisan Bersambung Khusus Nama Penerima */
+        /* Tulisan Bersambung */
         .recipient-box .name {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Dancing Script', cursive !important;
             font-size: 1.55rem;
             font-weight: 700;
-            color: #000000;
+            color: #000000 !important;
             line-height: 1.2;
         }
 
@@ -164,9 +177,10 @@
             padding: 14px 32px;
             font-size: 1rem;
             font-weight: 700;
-            color: #ffffff;
-            background: linear-gradient(135deg, #0077b6, #00b4d8);
-            border: 1.5px solid #90e0ef;
+            color: #ffffff !important;
+            background-color: #0077b6 !important;
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            border: 1.5px solid #90e0ef !important;
             border-radius: 30px;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 180, 216, 0.7), 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -176,12 +190,7 @@
         .btn-fullscreen svg {
             width: 22px;
             height: 22px;
-            fill: #ffffff;
-        }
-
-        .btn-fullscreen:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 10px rgba(0, 180, 216, 0.9);
+            fill: #ffffff !important;
         }
 
         /* Tombol Kontrol Musik Piringan Hitam */
@@ -191,10 +200,10 @@
             right: 20px;
             width: 52px;
             height: 52px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5) !important;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 180, 216, 0.4);
+            border: 1px solid rgba(0, 180, 216, 0.5) !important;
             border-radius: 50%;
             display: none;
             justify-content: center;
@@ -203,7 +212,6 @@
             z-index: 3;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             padding: 2px;
-            transition: opacity 0.3s ease;
         }
 
         .music-btn svg {
@@ -217,10 +225,6 @@
 
         .music-btn.muted {
             opacity: 0.4;
-        }
-
-        .music-btn.muted svg {
-            animation: none;
         }
 
         @keyframes spin {
@@ -243,29 +247,28 @@
         }
 
         .content-card {
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(0, 0, 0, 0.65) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             width: 100%;
             max-width: 420px;
             height: 100%;
             padding: 24px;
-            color: #ffffff;
+            color: #ffffff !important;
             overflow-y: auto;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
             touch-action: pan-y;
-            transition: all 0.3s ease;
         }
 
-        /* Khusus Tab Opening setelah dibuka */
+        /* Tab Opening Mode Transparan */
         .content-card.opening-mode {
-            background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            border: none;
-            box-shadow: none;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border: none !important;
+            box-shadow: none !important;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -273,14 +276,15 @@
             text-align: center;
         }
 
-        /* Bottom Navigation Bar Menyatu */
+        /* Bottom Nav Bar */
         .nav-tabs-container {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: #ffffff;
-            border-top: 1px solid #e0e0e0;
+            background-color: #ffffff !important;
+            background: #ffffff !important;
+            border-top: 1px solid #e0e0e0 !important;
             padding: 8px 10px;
             z-index: 3;
             display: none;
@@ -293,10 +297,6 @@
         .nav-tabs-container::-webkit-scrollbar {
             display: none;
         }
-        .nav-tabs-container {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
 
         .tab-btn {
             display: inline-flex;
@@ -305,31 +305,30 @@
             justify-content: center;
             padding: 6px 16px;
             margin: 0 2px;
-            background: transparent;
-            color: #888888;
+            background: transparent !important;
+            color: #777777 !important;
             border: none;
             font-size: 0.75rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .tab-btn svg {
             width: 22px;
             height: 22px;
-            fill: currentColor;
+            fill: currentColor !important;
             margin-bottom: 4px;
         }
 
         .tab-btn.active {
-            color: #0077b6;
+            color: #0077b6 !important;
             font-weight: 700;
         }
 
-        /* Section Tiap Sheet */
         .tab-pane {
             display: none;
         }
+
         .tab-pane.active {
             display: block;
         }
@@ -337,15 +336,15 @@
         .tab-pane h3 {
             font-size: 1.4rem;
             margin-bottom: 12px;
-            border-bottom: 2px solid rgba(0, 180, 216, 0.4);
+            border-bottom: 2px solid #00b4d8 !important;
             padding-bottom: 8px;
-            color: #00b4d8;
+            color: #00b4d8 !important;
         }
 
         .tab-pane p {
             font-size: 0.95rem;
             line-height: 1.6;
-            color: #e0e0e0;
+            color: #e0e0e0 !important;
         }
     </style>
 </head>
@@ -383,7 +382,6 @@
 
     <!-- Layar Pembuka / Opening Awal -->
     <div class="cover" id="coverScreen">
-        <!-- Logo Salib Biru -->
         <div class="cross-logo">
             <svg viewBox="0 0 24 24">
                 <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
@@ -411,7 +409,6 @@
     <div class="main-container" id="mainContainer">
         <div class="content-card" id="contentCard">
             
-            <!-- Tab Opening saat Di-klik Kembali -->
             <div id="tab-opening" class="tab-pane">
                 <div class="cross-logo" style="margin: 0 auto 12px auto;">
                     <svg viewBox="0 0 24 24">
