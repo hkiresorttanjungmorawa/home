@@ -2,19 +2,17 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Mencegah Force Dark Mode di Chrome & Opera Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="color-scheme" content="only light">
     <meta name="supported-color-schemes" content="only light">
     <title>Proposal Digital</title>
     
-    <!-- Import Font Bersambung (Dancing Script) -->
+    <!-- Import Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* Mencegah penyesuaian warna otomatis di seluruh elemen */
         :root {
             color-scheme: only light !important;
             supported-color-schemes: only light !important;
@@ -28,13 +26,16 @@
             -webkit-forced-color-adjust: none !important;
         }
 
+        /* Menjaga Font Stabil & Mencegah Zoom Teks Otomatis di Berbagai HP */
         html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
             background-color: #000000 !important;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
             color-scheme: only light !important;
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
         }
 
         /* Progress Bar Otomatis di Paling Atas */
@@ -56,7 +57,7 @@
             box-shadow: 0 0 10px #00b4d8;
         }
 
-        /* Video Background */
+        /* Video Background Utama */
         video {
             position: fixed;
             top: 0;
@@ -67,23 +68,26 @@
             z-index: 1;
         }
 
-        /* Layar Pembuka / Cover (Opening Awal) */
-        .cover {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Layar Pembuka / Cover (Opening Awal) & Tab Opening */
+        .cover, .opening-layout {
             width: 100%;
             height: 100%;
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
-            z-index: 4;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 30px 20px;
+            padding: 20px 15px;
+        }
+
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 4;
         }
 
         /* Logo Salib Tema Biru */
@@ -101,7 +105,7 @@
         }
 
         .cover-badge {
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 3.2vw, 0.85rem) !important;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #0077b6 !important;
@@ -112,11 +116,11 @@
             border-radius: 20px;
             border: 1.5px solid #00b4d8 !important;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: inline-block;
         }
 
-        /* Teks Judul Hitam dengan stroke pelindung */
         .cover-title {
-            font-size: 1.15rem;
+            font-size: clamp(1rem, 4vw, 1.15rem) !important;
             font-weight: 800;
             line-height: 1.4;
             margin-bottom: 10px;
@@ -125,9 +129,8 @@
             max-width: 360px;
         }
 
-        /* Header HKI RESORT KHUSUS TANJUNG MORAWA */
         .cover-main-header {
-            font-size: 1.55rem;
+            font-size: clamp(1.25rem, 5vw, 1.55rem) !important;
             font-weight: 900;
             color: #0077b6 !important;
             text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 15px rgba(0, 180, 216, 0.8);
@@ -151,7 +154,7 @@
         }
 
         .recipient-box .yth {
-            font-size: 0.8rem;
+            font-size: clamp(0.7rem, 3vw, 0.8rem) !important;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #0077b6 !important;
@@ -159,10 +162,9 @@
             font-weight: 700;
         }
 
-        /* Tulisan Bersambung */
         .recipient-box .name {
             font-family: 'Dancing Script', cursive !important;
-            font-size: 1.55rem;
+            font-size: clamp(1.3rem, 5vw, 1.55rem) !important;
             font-weight: 700;
             color: #000000 !important;
             line-height: 1.2;
@@ -175,7 +177,7 @@
             justify-content: center;
             gap: 10px;
             padding: 14px 32px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3.8vw, 1rem) !important;
             font-weight: 700;
             color: #ffffff !important;
             background-color: #0077b6 !important;
@@ -196,10 +198,10 @@
         /* Tombol Kontrol Musik Piringan Hitam */
         .music-btn {
             position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 52px;
-            height: 52px;
+            bottom: 85px;
+            right: 18px;
+            width: 48px;
+            height: 48px;
             background: rgba(0, 0, 0, 0.5) !important;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -243,37 +245,23 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px 85px 20px;
+            padding: 0 0 65px 0;
+            background: transparent !important;
         }
 
         .content-card {
-            background: rgba(0, 0, 0, 0.65) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px;
-            height: 100%;
-            padding: 24px;
-            color: #ffffff !important;
-            overflow-y: auto;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            touch-action: pan-y;
-        }
-
-        /* Tab Opening Mode Transparan */
-        .content-card.opening-mode {
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
             border: none !important;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            padding: 10px 15px;
+            color: #000000 !important;
+            overflow-y: auto;
             box-shadow: none !important;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            touch-action: pan-y;
         }
 
         /* Bottom Nav Bar */
@@ -303,21 +291,21 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 6px 16px;
+            padding: 6px 14px;
             margin: 0 2px;
             background: transparent !important;
             color: #777777 !important;
             border: none;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 500;
             cursor: pointer;
         }
 
         .tab-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: currentColor !important;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .tab-btn.active {
@@ -327,24 +315,154 @@
 
         .tab-pane {
             display: none;
+            height: 100%;
+            background: transparent !important;
         }
 
         .tab-pane.active {
             display: block;
         }
 
-        .tab-pane h3 {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-            border-bottom: 2px solid #00b4d8 !important;
-            padding-bottom: 8px;
-            color: #00b4d8 !important;
+        /* --- TAB SALAM: TANPA BACKGROUND PUTIH (TRANSPARAN SEPERTI OPENING) --- */
+        .salam-container {
+            max-width: 380px;
+            width: 92%;
+            min-height: 100%;
+            margin: 0 auto;
+            padding: 15px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: transparent !important;
         }
 
-        .tab-pane p {
-            font-size: 0.95rem;
+        .salam-header {
+            font-size: clamp(1.05rem, 4.2vw, 1.25rem) !important;
+            font-weight: 900;
+            color: #0077b6 !important;
+            margin-bottom: 14px;
+            text-align: center;
+            text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 12px rgba(0, 180, 216, 0.8);
+            letter-spacing: 0.3px;
+        }
+
+        .sk-badge {
+            font-size: clamp(0.78rem, 3.2vw, 0.85rem) !important;
+            background: #ffffff !important;
+            border: 1.5px solid #00b4d8;
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: #000000 !important;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .sk-badge span {
+            color: #0077b6 !important;
+            font-weight: 900;
+            display: block;
+            margin-top: 4px;
+            font-size: clamp(0.82rem, 3.5vw, 0.9rem) !important;
+        }
+
+        .salam-text {
+            font-size: clamp(0.88rem, 3.6vw, 0.98rem) !important;
             line-height: 1.6;
-            color: #e0e0e0 !important;
+            color: #000000 !important;
+            font-weight: 800;
+            margin-bottom: 16px;
+            text-align: center;
+            text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff, 0 1px 2px #ffffff;
+        }
+
+        .location-highlight {
+            color: #0077b6 !important;
+            font-weight: 900;
+            text-decoration: underline;
+            text-decoration-color: #00b4d8;
+        }
+
+        .dana-box {
+            background: #ffffff !important;
+            border: 2px solid #00b4d8;
+            border-radius: 14px;
+            padding: clamp(12px, 3.5vw, 16px);
+            text-align: center;
+            margin: 16px 0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+        }
+
+        .dana-box .title {
+            font-size: clamp(0.72rem, 2.8vw, 0.78rem) !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0077b6 !important;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+
+        .dana-box .amount {
+            font-size: clamp(1.35rem, 5.5vw, 1.55rem) !important;
+            font-weight: 900;
+            color: #0077b6 !important;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .dana-box .terbilang {
+            font-size: clamp(0.75rem, 3vw, 0.8rem) !important;
+            font-style: italic;
+            color: #333333 !important;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .bless-text {
+            font-size: clamp(0.98rem, 4vw, 1.1rem) !important;
+            font-weight: 900 !important;
+            color: #0077b6 !important;
+            text-align: center;
+            margin-top: 14px !important;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff, 0 0 10px rgba(0, 180, 216, 0.8);
+        }
+
+        /* --- ANIMASI MASUK SUPER HALUS DAN ANGGUN (1.8 DETIK) --- */
+        @keyframes smoothFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-pane.active .anim-1 {
+            animation: smoothFadeUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .tab-pane.active .anim-2 {
+            animation: smoothFadeUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+            opacity: 0;
+        }
+        .tab-pane.active .anim-3 {
+            animation: smoothFadeUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+            opacity: 0;
+        }
+        .tab-pane.active .anim-4 {
+            animation: smoothFadeUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+            opacity: 0;
+        }
+        .tab-pane.active .anim-5 {
+            animation: smoothFadeUp 1.8s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+            opacity: 0;
         }
     </style>
 </head>
@@ -355,7 +473,7 @@
         <div class="progress-bar-fill" id="progressBarFill"></div>
     </div>
 
-    <!-- Video Background -->
+    <!-- Video Background Utama -->
     <video id="myVideo" autoplay loop muted playsinline>
         <source src="Background.mp4" type="video/mp4">
     </video>
@@ -380,7 +498,7 @@
         </svg>
     </button>
 
-    <!-- Layar Pembuka / Opening Awal -->
+    <!-- Layar Pembuka / Cover (Opening Awal) -->
     <div class="cover" id="coverScreen">
         <div class="cross-logo">
             <svg viewBox="0 0 24 24">
@@ -409,60 +527,89 @@
     <div class="main-container" id="mainContainer">
         <div class="content-card" id="contentCard">
             
+            <!-- Tab Opening -->
             <div id="tab-opening" class="tab-pane">
-                <div class="cross-logo" style="margin: 0 auto 12px auto;">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
-                    </svg>
-                </div>
-                <div class="cover-badge" style="display: inline-block;">Proposal Digital</div>
-                <div class="cover-title" style="margin-top: 10px;">Pengadaan Lahan & Pembangunan Rumah Dinas Pendeta</div>
-                <div class="cover-main-header" style="margin-bottom: 24px;">HKI RESORT KHUSUS TANJUNG MORAWA</div>
-                
-                <div class="recipient-box" style="margin: 0 auto;">
-                    <div class="yth">Kepada YTH</div>
-                    <div class="name">Bapak/Ibu/Saudara/Saudari Terkasih</div>
+                <div class="opening-layout">
+                    <div class="cross-logo anim-1">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
+                        </svg>
+                    </div>
+
+                    <div class="cover-badge anim-2">Proposal Digital</div>
+                    <div class="cover-title anim-3">Pengadaan Lahan & Pembangunan Rumah Dinas Pendeta</div>
+                    <div class="cover-main-header anim-4">HKI RESORT KHUSUS TANJUNG MORAWA</div>
+                    
+                    <div class="recipient-box anim-5">
+                        <div class="yth">Kepada YTH</div>
+                        <div class="name">Bapak/Ibu/Saudara/Saudari Terkasih</div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Tab Salam (Tanpa Background / Menggunakan Latar Video Utama) -->
             <div id="tab-salam" class="tab-pane active">
-                <h3>Salam</h3>
-                <p>Isi kata sambutan / salam pembuka di sini...</p>
+                <div class="salam-container">
+
+                    <p class="salam-header anim-1">Salam Kasih dalam Tuhan Yesus Kristus,</p>
+                    
+                    <div class="sk-badge anim-2">
+                        Berdasarkan Keputusan Sidang HKI Resort Khusus Tanjung Morawa pada 23 Agustus 2026:
+                        <span>SK : 100.2-PRK.TM/001/VIII/2026</span>
+                    </div>
+
+                    <p class="salam-text anim-3">
+                        Kami Panitia Pengadaan Lahan dan Pembangunan Rumah Dinas Pendeta HKI Resort Khusus Tanjung Morawa memohon dukungan doa serta kasih Bapak/Ibu/Saudara/i untuk pembangunan Rumah Dinas Pendeta di <span class="location-highlight">Jl. Medan-Tanjung Morawa Km 14,5</span>.
+                    </p>
+
+                    <div class="dana-box anim-4">
+                        <div class="title">Adapun Dana Yang Dibutuhkan</div>
+                        <div class="amount">Rp 756.500.000</div>
+                        <div class="terbilang">(Tujuh Ratus Lima Puluh Enam Juta Lima Ratus Ribu Rupiah)</div>
+                    </div>
+
+                    <p class="salam-text anim-5" style="margin-bottom: 0;">
+                        Besar harapan kami atas uluran tangan Anda demi kelancaran pelayanan ini. Atas perhatiannya, kami ucapkan terima kasih.
+                    </p>
+
+                    <p class="bless-text anim-5">Tuhan Yesus Memberkati.</p>
+
+                </div>
             </div>
 
-            <div id="tab-latar" class="tab-pane">
-                <h3>Latar</h3>
-                <p>Isi latar belakang kegiatan / proyek di sini...</p>
+            <div id="tab-latar" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">Latar</h3>
+                <p class="anim-2">Isi latar belakang kegiatan / proyek di sini...</p>
             </div>
 
-            <div id="tab-quote" class="tab-pane">
-                <h3>Quote</h3>
-                <p>Isi kata-kata mutiara / quote pendukung di sini...</p>
+            <div id="tab-quote" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">Quote</h3>
+                <p class="anim-2">Isi kata-kata mutiara / quote pendukung di sini...</p>
             </div>
 
-            <div id="tab-rab1" class="tab-pane">
-                <h3>RAB I</h3>
-                <p>Isi Rencana Anggaran Biaya Tahap I di sini...</p>
+            <div id="tab-rab1" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">RAB I</h3>
+                <p class="anim-2">Isi Rencana Anggaran Biaya Tahap I di sini...</p>
             </div>
 
-            <div id="tab-rab2" class="tab-pane">
-                <h3>RAB II</h3>
-                <p>Isi Rencana Anggaran Biaya Tahap II di sini...</p>
+            <div id="tab-rab2" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">RAB II</h3>
+                <p class="anim-2">Isi Rencana Anggaran Biaya Tahap II di sini...</p>
             </div>
 
-            <div id="tab-donasi" class="tab-pane">
-                <h3>Donasi</h3>
-                <p>Isi rincian nomor rekening & saluran donasi di sini...</p>
+            <div id="tab-donasi" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">Donasi</h3>
+                <p class="anim-2">Isi rincian nomor rekening & saluran donasi di sini...</p>
             </div>
 
-            <div id="tab-terimakasih" class="tab-pane">
-                <h3>Terima Kasih</h3>
-                <p>Isi ucapan terima kasih dan penutup di sini...</p>
+            <div id="tab-terimakasih" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">Terima Kasih</h3>
+                <p class="anim-2">Isi ucapan terima kasih dan penutup di sini...</p>
             </div>
 
-            <div id="tab-panitia" class="tab-pane">
-                <h3>Panitia</h3>
-                <p>Isi susunan struktur panitia di sini...</p>
+            <div id="tab-panitia" class="tab-pane" style="padding: 20px 15px;">
+                <h3 class="anim-1">Panitia</h3>
+                <p class="anim-2">Isi susunan struktur panitia di sini...</p>
             </div>
 
         </div>
@@ -569,16 +716,18 @@
                 buttons[j].classList.remove('active');
             }
 
-            var contentCard = document.getElementById('contentCard');
-
-            if (tabId === 'tab-opening') {
-                contentCard.classList.add('opening-mode');
-            } else {
-                contentCard.classList.remove('opening-mode');
-            }
-
-            document.getElementById(tabId).classList.add('active');
+            var activePane = document.getElementById(tabId);
+            activePane.classList.add('active');
             btnElement.classList.add('active');
+
+            // Trigger ulang animasi teks saat berpindah tab
+            var animElements = activePane.querySelectorAll('[class*="anim-"]');
+            animElements.forEach(function(el) {
+                el.style.animation = 'none';
+                el.offsetHeight;
+                el.style.animation = '';
+            });
+
             btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
 
