@@ -447,7 +447,7 @@
             bottom: 72px;
             right: 18px;
             z-index: 8;
-            display: none; /* Awalnya tersembunyi, baru muncul setelah Buka Proposal */
+            display: none;
             align-items: center;
             justify-content: center;
             gap: 6px;
@@ -482,7 +482,7 @@
             bottom: 72px;
             left: 18px;
             z-index: 8;
-            display: none; /* Awalnya tersembunyi */
+            display: none;
             align-items: center;
             justify-content: center;
             gap: 6px;
@@ -857,7 +857,6 @@
             -webkit-overflow-scrolling: touch;
             margin-bottom: 8px;
             touch-action: pan-x;
-            scroll-snap-type: x mandatory;
         }
 
         .panitia-scroll-container::-webkit-scrollbar {
@@ -874,7 +873,6 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            scroll-snap-align: center;
         }
 
         .game-avatar-ring {
@@ -1019,7 +1017,7 @@
             line-height: 1;
         }
 
-        /* --- MODAL ZOOM FOTO INTERAKTIF (PINCH & PAN) --- */
+        /* --- MODAL ZOOM FOTO INTERAKTIF (TOMBOL CLOSE HANYA 'X' TANPA LINGKARAN) --- */
         .image-modal {
             display: none;
             position: fixed;
@@ -1059,24 +1057,29 @@
             cursor: grab;
         }
 
+        /* Tombol Close X Tanpa Lingkaran Background */
         .modal-close {
             position: absolute;
-            top: 20px;
-            right: 25px;
+            top: 15px;
+            right: 20px;
             color: #ffffff;
-            font-size: 32px;
-            font-weight: bold;
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1;
             cursor: pointer;
             z-index: 101;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 5px;
+            user-select: none;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-close:active {
+            transform: scale(0.85);
+            opacity: 0.7;
         }
 
         .zoom-hint-toast {
@@ -1456,7 +1459,7 @@
                         Panitia Utama
                     </p>
 
-                    <!-- Panitia Utama: Auto-Scrolling Horizontal Ring (Ultra Smooth) -->
+                    <!-- Panitia Utama: Auto-Scrolling Horizontal -->
                     <div class="panitia-scroll-container anim-2" id="panitiaScrollContainer">
                         <!-- Penasehat -->
                         <div class="panitia-game-card">
@@ -1679,9 +1682,9 @@
         var btnPrevFixed = document.getElementById('btnPrevFixed');
         
         var panitiaScrollContainer = document.getElementById('panitiaScrollContainer');
-        var panitiaAutoScrollActive = false;
-        var panitiaAnimFrameId = null;
-        var hasUserInteractedPanitia = false;
+        var panitiaTimer = null;
+        var panitiaResumeTimeout = null;
+        var scrollDirection = 1; // 1 = Kanan, -1 = Kiri
 
         function openFullscreen() {
             var elem = document.documentElement;
@@ -1756,27 +1759,25 @@
             btnPrevFixed.style.animation = '';
 
             // Pengaturan Sembunyi / Tampil Tombol Lanjut & Kembali
-            var allButtons = Array.from(document.getElementsByClassName('tab-btn'));
-
-            // Tombol Kembali
             if (tabId === 'tab-opening' || tabId === 'tab-salam') {
                 btnPrevFixed.style.display = 'none';
             } else {
                 btnPrevFixed.style.display = 'inline-flex';
             }
 
-            // Tombol Lanjut
             if (tabId === 'tab-panitia') {
                 btnNextFixed.style.display = 'none';
             } else {
                 btnNextFixed.style.display = 'inline-flex';
             }
 
-            // Atur Auto-Scroll Foto Panitia Utama (Lembut dan berhenti saat disentuh)
+            // Jalankan Auto-Scroll Foto Panitia Utama jika berada di slide Panitia
             if (tabId === 'tab-panitia') {
-                startPanitiaAutoScrollSmooth();
+                if (panitiaScrollContainer) panitiaScrollContainer.scrollLeft = 0;
+                scrollDirection = 1;
+                startPanitiaAutoScroll();
             } else {
-                stopPanitiaAutoScrollSmooth();
+                stopPanitiaAutoScroll();
             }
 
             btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
@@ -1825,50 +1826,48 @@
             switchTab(tabId, btnElement);
         }
 
-        /* --- FUNGSI AUTO-SCROLL FOTO PANITIA UTAMA (SANGAT LEMBUT & MATI SAAT DISENTUH) --- */
-        function startPanitiaAutoScrollSmooth() {
-            stopPanitiaAutoScrollSmooth();
-            if (hasUserInteractedPanitia) return; // Jika pernah di-scroll manual, jangan jalankan lagi
-
+        /* --- FUNGSI AUTO-SCROLL FOTO PANITIA UTAMA DENGAN JEDA 5 DETIK --- */
+        function startPanitiaAutoScroll() {
+            stopPanitiaAutoScroll();
             if (!panitiaScrollContainer) return;
-            panitiaScrollContainer.scrollLeft = 0; // Reset ke ujung kiri saat baru masuk
 
-            panitiaAutoScrollActive = true;
-            
-            // Menggunakan requestAnimationFrame dengan kelajuan sangat lembut (0.35px per frame)
-            function step() {
-                if (!panitiaAutoScrollActive || hasUserInteractedPanitia) return;
-
+            panitiaTimer = setInterval(function() {
                 var maxScrollLeft = panitiaScrollContainer.scrollWidth - panitiaScrollContainer.clientWidth;
-                if (panitiaScrollContainer.scrollLeft < maxScrollLeft - 2) {
-                    panitiaScrollContainer.scrollLeft += 0.35; // Kecepatan sangat pelan dan lembut
-                    panitiaAnimFrameId = requestAnimationFrame(step);
-                } else {
-                    stopPanitiaAutoScrollSmooth(); // Matikan setelah mencapai ujung kanan
+                if (maxScrollLeft <= 0) return;
+
+                if (panitiaScrollContainer.scrollLeft >= maxScrollLeft - 1) {
+                    scrollDirection = -1;
+                } else if (panitiaScrollContainer.scrollLeft <= 1) {
+                    scrollDirection = 1;
                 }
-            }
 
-            panitiaAnimFrameId = requestAnimationFrame(step);
+                panitiaScrollContainer.scrollLeft += 0.3 * scrollDirection;
+            }, 16);
         }
 
-        function stopPanitiaAutoScrollSmooth() {
-            panitiaAutoScrollActive = false;
-            if (panitiaAnimFrameId) {
-                cancelAnimationFrame(panitiaAnimFrameId);
-                panitiaAnimFrameId = null;
+        function stopPanitiaAutoScroll() {
+            if (panitiaTimer) {
+                clearInterval(panitiaTimer);
+                panitiaTimer = null;
             }
         }
 
-        // Event listener saat pengunjung menggeser foto panitia secara manual -> AUTO-SCROLL MATI PERMANEN
+        function handleUserInteraction() {
+            stopPanitiaAutoScroll();
+            if (panitiaResumeTimeout) clearTimeout(panitiaResumeTimeout);
+
+            // Jeda 5 detik tanpa aktivitas sebelum melanjutkan auto-scroll
+            panitiaResumeTimeout = setTimeout(function() {
+                startPanitiaAutoScroll();
+            }, 5000);
+        }
+
         if (panitiaScrollContainer) {
-            function disableAutoScrollOnTouch() {
-                hasUserInteractedPanitia = true;
-                stopPanitiaAutoScrollSmooth();
-            }
-
-            panitiaScrollContainer.addEventListener('touchstart', disableAutoScrollOnTouch, { passive: true });
-            panitiaScrollContainer.addEventListener('mousedown', disableAutoScrollOnTouch, { passive: true });
-            panitiaScrollContainer.addEventListener('wheel', disableAutoScrollOnTouch, { passive: true });
+            panitiaScrollContainer.addEventListener('touchstart', handleUserInteraction, { passive: true });
+            panitiaScrollContainer.addEventListener('touchend', handleUserInteraction, { passive: true });
+            panitiaScrollContainer.addEventListener('mousedown', handleUserInteraction, { passive: true });
+            panitiaScrollContainer.addEventListener('mouseup', handleUserInteraction, { passive: true });
+            panitiaScrollContainer.addEventListener('wheel', handleUserInteraction, { passive: true });
         }
 
         /* --- FUNGSI SALIN NO REKENING --- */
