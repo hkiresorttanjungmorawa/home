@@ -27,7 +27,7 @@
     <!-- Import Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -53,25 +53,6 @@
             color-scheme: only light !important;
             -webkit-text-size-adjust: 100% !important;
             text-size-adjust: 100% !important;
-        }
-
-        /* Progress Bar Otomatis di Paling Atas */
-        .progress-bar-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            z-index: 10;
-            display: none;
-        }
-
-        .progress-bar-fill {
-            width: 0%;
-            height: 100%;
-            background-color: #00b4d8 !important;
-            box-shadow: 0 0 10px #00b4d8;
         }
 
         /* Video Background Utama */
@@ -212,24 +193,24 @@
             fill: #ffffff !important;
         }
 
-        /* Tombol Kontrol Musik Piringan Hitam */
+        /* Tombol Kontrol Musik Piringan Hitam (ATAS KANAN) */
         .music-btn {
             position: fixed;
-            bottom: 85px;
+            top: 15px;
             right: 18px;
-            width: 48px;
-            height: 48px;
-            background: rgba(0, 0, 0, 0.5) !important;
+            width: 44px;
+            height: 44px;
+            background: rgba(0, 0, 0, 0.6) !important;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 180, 216, 0.5) !important;
+            border: 1.5px solid rgba(0, 180, 216, 0.7) !important;
             border-radius: 50%;
             display: none;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            z-index: 3;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             padding: 2px;
         }
 
@@ -340,13 +321,13 @@
             display: block;
         }
 
-        /* --- TAB SALAM: TANPA BACKGROUND PUTIH --- */
-        .salam-container {
+        /* --- STYLES UNTUK TAB SLIDE UMUM --- */
+        .slide-layout-container {
             max-width: 380px;
             width: 92%;
             min-height: 100%;
             margin: 0 auto;
-            padding: 15px 0;
+            padding: 15px 0 25px 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -355,7 +336,7 @@
             background: transparent !important;
         }
 
-        .salam-header {
+        .slide-main-header {
             font-size: clamp(1.05rem, 4.2vw, 1.25rem) !important;
             font-weight: 900;
             color: #0077b6 !important;
@@ -363,6 +344,16 @@
             text-align: center;
             text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 12px rgba(0, 180, 216, 0.8);
             letter-spacing: 0.3px;
+        }
+
+        .sub-header-box {
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
+            font-weight: 800;
+            color: #0077b6 !important;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            text-align: center;
+            text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff;
         }
 
         .sk-badge {
@@ -387,12 +378,12 @@
             font-size: clamp(0.82rem, 3.5vw, 0.9rem) !important;
         }
 
-        .salam-text {
-            font-size: clamp(0.88rem, 3.6vw, 0.98rem) !important;
+        .slide-text {
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
             line-height: 1.6;
             color: #000000 !important;
             font-weight: 800;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             text-align: center;
             text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff, 0 1px 2px #ffffff;
         }
@@ -410,7 +401,7 @@
             border-radius: 14px;
             padding: clamp(12px, 3.5vw, 16px);
             text-align: center;
-            margin: 16px 0;
+            margin: 14px 0;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
             width: 100%;
         }
@@ -450,6 +441,660 @@
             text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff, 0 0 10px rgba(0, 180, 216, 0.8);
         }
 
+        /* --- TOMBOL NAVIGASI BOTTOM (KEMBALI & LANJUT) --- */
+        .btn-next-fixed {
+            position: fixed;
+            bottom: 72px;
+            right: 18px;
+            z-index: 8;
+            display: none; /* Awalnya tersembunyi, baru muncul setelah Buka Proposal */
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 18px 8px 20px;
+            font-size: clamp(0.78rem, 3.2vw, 0.85rem) !important;
+            font-weight: 800;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            border: 1.5px solid #90e0ef !important;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(0, 180, 216, 0.6), 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        .btn-next-fixed svg {
+            width: 16px;
+            height: 16px;
+            fill: #ffffff !important;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-next-fixed:active {
+            transform: scale(0.94);
+        }
+
+        .btn-prev-fixed {
+            position: fixed;
+            bottom: 72px;
+            left: 18px;
+            z-index: 8;
+            display: none; /* Awalnya tersembunyi */
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 20px 8px 18px;
+            font-size: clamp(0.78rem, 3.2vw, 0.85rem) !important;
+            font-weight: 800;
+            color: #0077b6 !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .btn-prev-fixed svg {
+            width: 16px;
+            height: 16px;
+            fill: #0077b6 !important;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-prev-fixed:active {
+            transform: scale(0.94);
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 4px 12px rgba(0, 180, 216, 0.5); }
+            100% { box-shadow: 0 4px 22px rgba(0, 180, 216, 0.95); }
+        }
+
+        /* --- STYLES KHUSUS SLIDE QUOTE (TEXTBOX EMAS) --- */
+        .gold-quote-box {
+            background: linear-gradient(135deg, rgba(255, 223, 138, 0.95), rgba(212, 160, 23, 0.92), rgba(255, 239, 184, 0.95)) !important;
+            border: 2px solid #fff2a8 !important;
+            border-radius: 20px;
+            padding: clamp(22px, 6vw, 30px) clamp(18px, 5vw, 24px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: clamp(2rem, 8vw, 2.8rem) !important;
+            color: #7a5200 !important;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6);
+        }
+
+        .quote-verse {
+            font-size: clamp(1rem, 4.3vw, 1.25rem) !important;
+            font-weight: 800;
+            color: #3b2500 !important;
+            line-height: 1.55;
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .quote-source {
+            font-family: 'Cinzel', serif, 'Plus Jakarta Sans' !important;
+            font-size: clamp(0.95rem, 3.8vw, 1.1rem) !important;
+            font-weight: 900;
+            color: #5c3d00 !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            border-top: 1.5px solid rgba(92, 61, 0, 0.3);
+            padding-top: 10px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* --- STYLES KHUSUS SLIDE RAB (GALERI FOTO GRID) --- */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 100%;
+            margin: 12px 0 16px 0;
+        }
+
+        .photo-gallery.two-items {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #00b4d8;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .photo-item:active {
+            transform: scale(0.95);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-item .zoom-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(0, 119, 182, 0.85);
+            color: #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .btn-maps {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 22px;
+            font-size: clamp(0.82rem, 3.5vw, 0.92rem) !important;
+            font-weight: 800;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            border: 1.5px solid #90e0ef !important;
+            border-radius: 25px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.5);
+            transition: transform 0.2s ease;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .btn-maps svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff !important;
+        }
+
+        /* --- STYLES KHUSUS SLIDE DONASI (KARTU ATM BANK SUMUT) --- */
+        .atm-card-container {
+            width: 100%;
+            max-width: 340px;
+            aspect-ratio: 1.586 / 1;
+            background: linear-gradient(135deg, #002d62 0%, #0055a5 50%, #0077b6 100%) !important;
+            border-radius: 16px;
+            padding: 18px 20px;
+            color: #ffffff !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+            margin: 10px 0 16px 0;
+        }
+
+        .atm-card-container::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -25%;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .atm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .atm-bank-name {
+            font-size: clamp(1rem, 4.2vw, 1.2rem);
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-style: italic;
+        }
+
+        .atm-chip {
+            width: 38px;
+            height: 28px;
+            background: linear-gradient(135deg, #ffe066 0%, #d4af37 100%);
+            border-radius: 6px;
+            border: 1px solid #b38f00;
+            position: relative;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.6);
+        }
+
+        .atm-chip::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .atm-body {
+            z-index: 1;
+            margin: 6px 0;
+        }
+
+        .atm-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #90e0ef;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .atm-number-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .atm-number {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: clamp(1.05rem, 4.5vw, 1.25rem);
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-copy-chip {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            color: #ffffff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-chip:active {
+            transform: scale(0.92);
+            background: #00b4d8;
+        }
+
+        .btn-copy-chip svg {
+            width: 12px;
+            height: 12px;
+            fill: #ffffff;
+        }
+
+        .atm-footer {
+            z-index: 1;
+        }
+
+        .atm-holder-name {
+            font-size: clamp(0.72rem, 3vw, 0.82rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Tombol WA Konfirmasi */
+        .btn-wa-confirm {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 22px;
+            font-size: clamp(0.85rem, 3.6vw, 0.95rem) !important;
+            font-weight: 800;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            border: 1.5px solid #86efac !important;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 4px 18px rgba(37, 211, 102, 0.5);
+            transition: transform 0.2s ease;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .btn-wa-confirm svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff !important;
+        }
+
+        .btn-wa-confirm:active {
+            transform: scale(0.96);
+        }
+
+        /* Notifikasi Toast Salin Rekening */
+        .copy-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: rgba(0, 180, 216, 0.95);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            border: 1.5px solid #ffffff;
+            z-index: 105;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- STYLES KHUSUS SLIDE PANITIA --- */
+        .panitia-center-layout {
+            max-width: 380px;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            padding: 10px 0 25px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: transparent !important;
+        }
+
+        .panitia-scroll-container {
+            width: 100%;
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 8px 18px 8px;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 8px;
+            touch-action: pan-x;
+            scroll-snap-type: x mandatory;
+        }
+
+        .panitia-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .panitia-game-card {
+            background: transparent !important;
+            border: none !important;
+            min-width: 160px;
+            width: 160px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            scroll-snap-align: center;
+        }
+
+        .game-avatar-ring {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            background: rgba(0, 119, 182, 0.2) !important;
+            border: 2.5px solid #00b4d8 !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.6), inset 0 0 10px rgba(0, 180, 216, 0.4);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .game-avatar-ring svg {
+            width: 58px;
+            height: 58px;
+            fill: #ffffff !important;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+
+        .game-avatar-ring img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .game-role-badge {
+            font-size: 0.68rem !important;
+            font-weight: 900;
+            color: #00b4d8 !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 3px;
+            text-shadow: 0 0 8px #ffffff, 0 0 4px #ffffff;
+            white-space: nowrap;
+        }
+
+        .game-profile-name {
+            font-size: clamp(0.85rem, 3.6vw, 0.95rem) !important;
+            font-weight: 900;
+            color: #0077b6 !important;
+            line-height: 1.3;
+            text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 1px 2px #ffffff;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            max-width: 150px;
+        }
+
+        /* Sub-Tabs Sektor Dana */
+        .sektor-tabs-wrapper {
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        .sektor-tabs-nav {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+        }
+
+        .sektor-tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sektor-btn {
+            background: rgba(255, 255, 255, 0.85) !important;
+            border: 1.5px solid #00b4d8 !important;
+            color: #0077b6 !important;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: clamp(0.72rem, 3vw, 0.78rem) !important;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .sektor-btn.active {
+            background: #0077b6 !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(0, 119, 182, 0.4);
+        }
+
+        .sektor-content-box {
+            background: #ffffff !important;
+            border: 2px solid #00b4d8 !important;
+            border-radius: 14px;
+            padding: 12px 14px;
+            max-height: 230px;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            text-align: left;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+
+        .sektor-pane {
+            display: none;
+        }
+
+        .sektor-pane.active {
+            display: block;
+        }
+
+        .sektor-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sektor-list li {
+            font-size: clamp(0.78rem, 3.1vw, 0.85rem) !important;
+            font-weight: 700;
+            color: #222222 !important;
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sektor-list li:last-child {
+            border-bottom: none;
+        }
+
+        .sektor-list li::before {
+            content: '•';
+            color: #00b4d8;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* --- MODAL ZOOM FOTO INTERAKTIF (PINCH & PAN) --- */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 99;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        .modal-viewport {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-modal img {
+            max-width: 95vw;
+            max-height: 85vh;
+            border-radius: 12px;
+            border: 2px solid #00b4d8;
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.6);
+            object-fit: contain;
+            transform-origin: center center;
+            will-change: transform;
+            cursor: grab;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 101;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .zoom-hint-toast {
+            position: absolute;
+            bottom: 25px;
+            background: rgba(0, 119, 182, 0.85);
+            color: #ffffff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
         /* --- ANIMASI MASUK (1.8 DETIK) --- */
         @keyframes smoothFadeUp {
             0% {
@@ -485,9 +1130,9 @@
 </head>
 <body>
 
-    <!-- Indikator Waktu Slide -->
-    <div class="progress-bar-container" id="progressBarContainer">
-        <div class="progress-bar-fill" id="progressBarFill"></div>
+    <!-- Toast Notifikasi Copied -->
+    <div class="copy-toast" id="copyToast">
+        ✅ No. Rekening Berhasil Disalin!
     </div>
 
     <!-- Video Background Utama -->
@@ -500,7 +1145,16 @@
         <source src="Musik.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Tombol Piringan Hitam -->
+    <!-- Modal Zoom Foto Interaktif dengan Support Touch Gesture -->
+    <div class="image-modal" id="imageModal">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-viewport" id="modalViewport">
+            <img id="modalImg" src="" alt="Foto Zoom">
+        </div>
+        <div class="zoom-hint-toast">💡 Gunakan 2 jari untuk zoom / geser foto</div>
+    </div>
+
+    <!-- Tombol Piringan Hitam (Musik) Ditaruh di Atas Kanan -->
     <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
         <svg viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="48" fill="#111111" stroke="#333" stroke-width="1"/>
@@ -513,6 +1167,18 @@
             <circle cx="43" cy="45" r="3" fill="#ffffff" opacity="0.6"/>
             <circle cx="50" cy="50" r="4" fill="#111111"/>
         </svg>
+    </button>
+
+    <!-- Tombol Kembali Dikunci di Posisi Bawah Kiri -->
+    <button class="btn-prev-fixed" id="btnPrevFixed" onclick="goToPrevSlide()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        <span>Kembali</span>
+    </button>
+
+    <!-- Tombol Lanjut Dikunci di Posisi Bawah Kanan -->
+    <button class="btn-next-fixed" id="btnNextFixed" onclick="goToNextSlide()">
+        <span>Lanjut</span>
+        <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
     </button>
 
     <!-- Layar Pembuka / Cover (Opening Awal) -->
@@ -566,16 +1232,16 @@
 
             <!-- Tab Salam -->
             <div id="tab-salam" class="tab-pane active">
-                <div class="salam-container">
+                <div class="slide-layout-container">
 
-                    <p class="salam-header anim-1">Salam Kasih dalam Tuhan Yesus Kristus,</p>
+                    <p class="slide-main-header anim-1">Salam Kasih dalam Tuhan Yesus Kristus,</p>
                     
                     <div class="sk-badge anim-2">
                         Berdasarkan Keputusan Sidang HKI Resort Khusus Tanjung Morawa pada 23 Agustus 2026:
                         <span>SK : 100.2-PRK.TM/001/VIII/2026</span>
                     </div>
 
-                    <p class="salam-text anim-3">
+                    <p class="slide-text anim-3">
                         Kami Panitia Pengadaan Lahan dan Pembangunan Rumah Dinas Pendeta HKI Resort Khusus Tanjung Morawa memohon dukungan doa serta kasih Bapak/Ibu/Saudara/i untuk pembangunan Rumah Dinas Pendeta di <span class="location-highlight">Jl. Medan-Tanjung Morawa Km 14,5</span>.
                     </p>
 
@@ -585,7 +1251,7 @@
                         <div class="terbilang">(Tujuh Ratus Lima Puluh Enam Juta Lima Ratus Ribu Rupiah)</div>
                     </div>
 
-                    <p class="salam-text anim-5" style="margin-bottom: 0;">
+                    <p class="slide-text anim-5" style="margin-bottom: 0;">
                         Besar harapan kami atas uluran tangan Anda demi kelancaran pelayanan ini. Atas perhatiannya, kami ucapkan terima kasih.
                     </p>
 
@@ -594,45 +1260,379 @@
                 </div>
             </div>
 
-            <div id="tab-latar" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">Latar</h3>
-                <p class="anim-2">Isi latar belakang kegiatan / proyek di sini...</p>
+            <!-- Tab Latar -->
+            <div id="tab-latar" class="tab-pane">
+                <div class="slide-layout-container">
+                    
+                    <p class="slide-main-header anim-1">📖 Mengapa Dukungan Anda Sangat Berarti?</p>
+
+                    <div class="sub-header-box anim-2">🏠 Rumah Layak untuk Hamba Tuhan</div>
+                    <p class="slide-text anim-2">
+                        Tempat tinggal pendeta yang saat ini berada di belakang gereja sudah sangat terbatas dan sangat mendesak untuk dikembalikan fungsinya sebagai ruang konsistori serta Sekolah Minggu anak-anak kita. Hamba Tuhan memerlukan tempat yang layak untuk beristirahat dan memproses pelayanan.
+                    </p>
+
+                    <div class="sub-header-box anim-3" style="margin-top: 14px;">🙏 Ketulusan di Tengah Keterbatasan</div>
+                    <p class="slide-text anim-3">
+                        Diampu oleh 147 KK jemaat dengan latar belakang penuh perjuangan—mulai dari buruh pabrik, pedagang pasar, petani, tukang becak, hingga pengemudi ojek online—jemaat telah berupaya sekuat tenaga.
+                    </p>
+
+                    <p class="slide-text anim-4" style="margin-bottom: 0;">
+                        Namun, untuk mewujudkan rumah dinas ini, kami sangat merindukan uluran tangan kasih dari Bapak/Ibu/Saudara/i sekalian, mari kita bersama-sama mewujudkan tempat teduh ini bagi pelayan-Nya.
+                    </p>
+
+                </div>
             </div>
 
-            <div id="tab-quote" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">Quote</h3>
-                <p class="anim-2">Isi kata-kata mutiara / quote pendukung di sini...</p>
+            <!-- Tab Quote -->
+            <div id="tab-quote" class="tab-pane">
+                <div class="slide-layout-container">
+                    
+                    <div class="gold-quote-box anim-1">
+                        <div class="quote-icon">“</div>
+                        <p class="quote-verse">
+                            Bertolong-tolonganlah menanggung bebanmu! Demikianlah kamu memenuhi hukum Kristus.
+                        </p>
+                        <div class="quote-source">— Galatia 6:2 —</div>
+                    </div>
+
+                </div>
             </div>
 
-            <div id="tab-rab1" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">RAB I</h3>
-                <p class="anim-2">Isi Rencana Anggaran Biaya Tahap I di sini...</p>
+            <!-- Tab RAB I (Pengadaan Lahan + Foto + Maps) -->
+            <div id="tab-rab1" class="tab-pane">
+                <div class="slide-layout-container">
+                    
+                    <p class="slide-main-header anim-1">Rencana Anggaran Biaya I</p>
+
+                    <p class="slide-text anim-2" style="font-weight: 900; color: #0077b6;">
+                        Pengadaan Lahan (Ukuran 7 x 25 Meter)
+                    </p>
+
+                    <p class="slide-text anim-2" style="font-size: clamp(0.8rem, 3.2vw, 0.9rem); margin-bottom: 10px;">
+                        📍 <strong>Lokasi:</strong> Jl. Medan - Tanjung Morawa (depan Gereja HKI Resort Khusus Tanjung Morawa)
+                    </p>
+
+                    <div class="dana-box anim-3">
+                        <div class="title">Anggaran Pengadaan Lahan</div>
+                        <div class="amount">Rp 400.000.000</div>
+                    </div>
+
+                    <!-- Galeri 3 Foto Lokasi -->
+                    <div class="photo-gallery anim-4">
+                        <div class="photo-item" onclick="openModal('Ukuran Lebar.jpeg')">
+                            <img src="Ukuran Lebar.jpeg" alt="Ukuran Lebar">
+                            <div class="zoom-badge">🔍</div>
+                        </div>
+                        <div class="photo-item" onclick="openModal('Ukuran Panjang I.jpeg')">
+                            <img src="Ukuran Panjang I.jpeg" alt="Ukuran Panjang I">
+                            <div class="zoom-badge">🔍</div>
+                        </div>
+                        <div class="photo-item" onclick="openModal('Ukuran Panjang II.jpeg')">
+                            <img src="Ukuran Panjang II.jpeg" alt="Ukuran Panjang II">
+                            <div class="zoom-badge">🔍</div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Google Maps -->
+                    <a href="https://maps.app.goo.gl/8efuJVa42wc4YSEp8?g_st=awb" target="_blank" class="btn-maps anim-5">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                        <span>Lihat Lokasi di Google Maps</span>
+                    </a>
+
+                </div>
             </div>
 
-            <div id="tab-rab2" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">RAB II</h3>
-                <p class="anim-2">Isi Rencana Anggaran Biaya Tahap II di sini...</p>
+            <!-- Tab RAB II (Pembangunan Rumah Dinas Pendeta) -->
+            <div id="tab-rab2" class="tab-pane">
+                <div class="slide-layout-container">
+                    
+                    <p class="slide-main-header anim-1">Rencana Anggaran Biaya II</p>
+
+                    <p class="slide-text anim-2" style="font-weight: 900; color: #0077b6;">
+                        Pembangunan Rumah Dinas Pendeta
+                    </p>
+
+                    <div class="dana-box anim-3">
+                        <div class="title">Anggaran Pembangunan</div>
+                        <div class="amount">Rp 356.500.000</div>
+                    </div>
+
+                    <!-- Galeri 2 Foto Dokumen RAB II -->
+                    <div class="photo-gallery two-items anim-4">
+                        <div class="photo-item" onclick="openModal('RAB I.jpg')">
+                            <img src="RAB I.jpg" alt="Rincian RAB I">
+                            <div class="zoom-badge">🔍</div>
+                        </div>
+                        <div class="photo-item" onclick="openModal('RAB II.jpg')">
+                            <img src="RAB II.jpg" alt="Rincian RAB II">
+                            <div class="zoom-badge">🔍</div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <div id="tab-donasi" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">Donasi</h3>
-                <p class="anim-2">Isi rincian nomor rekening & saluran donasi di sini...</p>
+            <!-- Tab Donasi (Desain Kartu ATM Bank Sumut + Tombol Salin & WA) -->
+            <div id="tab-donasi" class="tab-pane">
+                <div class="slide-layout-container">
+                    
+                    <p class="slide-main-header anim-1">Saluran Dukungan & Donasi</p>
+                    
+                    <p class="slide-text anim-2" style="margin-bottom: 8px;">
+                        Bagi Bapak/Ibu/Saudara/i yang tergerak untuk memberikan donasi kasih, dapat disalurkan melalui rekening berikut:
+                    </p>
+
+                    <!-- Kartu ATM Bank Sumut -->
+                    <div class="atm-card-container anim-3">
+                        <div class="atm-header">
+                            <div class="atm-bank-name">BANK SUMUT</div>
+                            <div class="atm-chip"></div>
+                        </div>
+
+                        <div class="atm-body">
+                            <div class="atm-label">Nomor Rekening</div>
+                            <div class="atm-number-row">
+                                <div class="atm-number" id="rekeningNum">10702040302273</div>
+                                <button class="btn-copy-chip" onclick="copyRekening('10702040302273')">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                    </svg>
+                                    <span>Salin</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="atm-footer">
+                            <div class="atm-label">Atas Nama</div>
+                            <div class="atm-holder-name">HKI TANJUNG MORAWA</div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Konfirmasi WhatsApp -->
+                    <a href="https://wa.me/6282174396438?text=Shalom%20Panitia%20Pembangunan%20HKI%20Resort%20Khusus%20Tanjung%20Morawa%2C%20saya%20ingin%20mengonfirmasi%20transfer%20donasi%20pembangunan." target="_blank" class="btn-wa-confirm anim-4">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.705 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        <span>Konfirmasi Donasi via WA</span>
+                    </a>
+
+                </div>
             </div>
 
-            <div id="tab-terimakasih" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">Terima Kasih</h3>
-                <p class="anim-2">Isi ucapan terima kasih dan penutup di sini...</p>
+            <!-- Tab Terima Kasih -->
+            <div id="tab-terimakasih" class="tab-pane">
+                <div class="slide-layout-container">
+                    
+                    <div class="cross-logo anim-1">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
+                        </svg>
+                    </div>
+
+                    <p class="slide-main-header anim-2">Terima Kasih</p>
+
+                    <p class="slide-text anim-3">
+                        Demikian proposal ini diperbuat dengan sebenarnya. Besar harapan kami, di dalam satu tubuh Kristus, kita dapat saling membantu dan saling menopang dalam program Pengadaan Lahan dan Pembangunan Rumah Dinas Pendeta ini.
+                    </p>
+
+                    <p class="slide-text anim-4" style="margin-bottom: 0;">
+                        Akhir kata, kami mengucapkan banyak terima kasih.
+                    </p>
+
+                    <p class="bless-text anim-5">Tuhan Yesus Memberkati Kita Semua.</p>
+
+                </div>
             </div>
 
-            <div id="tab-panitia" class="tab-pane" style="padding: 20px 15px;">
-                <h3 class="anim-1">Panitia</h3>
-                <p class="anim-2">Isi susunan struktur panitia di sini...</p>
+            <!-- Tab Panitia (Tampilan Game Character Selection Transparan di Tengah) -->
+            <div id="tab-panitia" class="tab-pane">
+                <div class="panitia-center-layout">
+                    
+                    <p class="slide-main-header anim-1" style="margin-bottom: 4px;">Susunan Kepanitiaan</p>
+
+                    <p class="slide-text anim-2" style="font-weight: 900; color: #0077b6; margin-bottom: 8px; text-align: center;">
+                        Panitia Utama
+                    </p>
+
+                    <!-- Panitia Utama: Auto-Scrolling Horizontal Ring (Ultra Smooth) -->
+                    <div class="panitia-scroll-container anim-2" id="panitiaScrollContainer">
+                        <!-- Penasehat -->
+                        <div class="panitia-game-card">
+                            <div class="game-avatar-ring">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="game-role-badge">Penasehat</div>
+                            <div class="game-profile-name">Pdt. Rimhot Simamora, MTh</div>
+                        </div>
+
+                        <!-- Penanggungjawab -->
+                        <div class="panitia-game-card">
+                            <div class="game-avatar-ring">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="game-role-badge">Penanggungjawab</div>
+                            <div class="game-profile-name">Pdt. Rio Pendi Nababan, MTh</div>
+                        </div>
+
+                        <!-- Ketua -->
+                        <div class="panitia-game-card">
+                            <div class="game-avatar-ring">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="game-role-badge">Ketua</div>
+                            <div class="game-profile-name">I. Pakpahan</div>
+                        </div>
+
+                        <!-- Sekretaris -->
+                        <div class="panitia-game-card">
+                            <div class="game-avatar-ring">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="game-role-badge">Sekretaris</div>
+                            <div class="game-profile-name">C. Batubara</div>
+                        </div>
+
+                        <!-- Bendahara -->
+                        <div class="panitia-game-card">
+                            <div class="game-avatar-ring">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="game-role-badge">Bendahara</div>
+                            <div class="game-profile-name">M. Siburian</div>
+                        </div>
+                    </div>
+
+                    <!-- Seksi Dana Per Sektor (Sub-Tabs) -->
+                    <p class="slide-text anim-3" style="font-weight: 900; color: #0077b6; margin-bottom: 4px; text-align: center;">
+                        Seksi Dana Per Sektor
+                    </p>
+
+                    <div class="sektor-tabs-wrapper anim-4">
+                        <!-- Navigation Sub-Tabs -->
+                        <div class="sektor-tabs-nav">
+                            <button class="sektor-btn active" onclick="switchSektor('sektor-1', this)">Sektor I</button>
+                            <button class="sektor-btn" onclick="switchSektor('sektor-2', this)">Sektor II</button>
+                            <button class="sektor-btn" onclick="switchSektor('sektor-3', this)">Sektor III</button>
+                            <button class="sektor-btn" onclick="switchSektor('sektor-4', this)">Sektor IV</button>
+                            <button class="sektor-btn" onclick="switchSektor('sektor-5', this)">Sektor V</button>
+                        </div>
+
+                        <!-- Content Display Scrollable Box -->
+                        <div class="sektor-content-box">
+                            <!-- Sektor I -->
+                            <div id="sektor-1" class="sektor-pane active">
+                                <ul class="sektor-list">
+                                    <li>St. D. Br. Manullang</li>
+                                    <li>St. R. Br. Sianipar</li>
+                                    <li>St. R.A. Sitinjak br Sihotang(+)</li>
+                                    <li>H. Siregar br Sianturi</li>
+                                    <li>R. Sirait br Simatupang</li>
+                                    <li>N. Siburian br Siringoringo</li>
+                                    <li>C. Siahaan br Hutabarat</li>
+                                    <li>P. Siahaan br Silalahi</li>
+                                    <li>R.F.Malau br Aritonang</li>
+                                    <li>Louse br Sarumpaet</li>
+                                    <li>H. Siregar br Simajuntak</li>
+                                    <li>A. Damanik br Simbolon</li>
+                                </ul>
+                            </div>
+
+                            <!-- Sektor II -->
+                            <div id="sektor-2" class="sektor-pane">
+                                <ul class="sektor-list">
+                                    <li>St. M. Simbolon</li>
+                                    <li>Cst. P. Pakpahan</li>
+                                    <li>Cst. J. Br. Siregar</li>
+                                    <li>P. Pakpahan / br Nainggolan</li>
+                                    <li>R. Aritonang / br Hutagalung</li>
+                                    <li>M. Aritonang / br Sirait</li>
+                                    <li>M. Marbun / br Siadari</li>
+                                    <li>W. Sihombing / br Sitorus</li>
+                                    <li>A.N. Simamora / br Marpaung</li>
+                                    <li>D. Marbun / br Saragih</li>
+                                    <li>M. Tamba / br Purba</li>
+                                    <li>H.D. Siburian / br Sagala</li>
+                                    <li>E. Purba / br. Manik</li>
+                                </ul>
+                            </div>
+
+                            <!-- Sektor III -->
+                            <div id="sektor-3" class="sektor-pane">
+                                <ul class="sektor-list">
+                                    <li>St. H. Sinaga</li>
+                                    <li>St. M. Br. Sinaga</li>
+                                    <li>S.M. Siahaan / br. Pakpahan</li>
+                                    <li>B. Sitompul / br. Sirait</li>
+                                    <li>B. Pakpahan / br. Siahaan</li>
+                                    <li>D. Hasibuan / br. Manurung</li>
+                                    <li>W. Sinaga / br. Togatorop</li>
+                                    <li>R. Purba / br. Marbun</li>
+                                    <li>Z. Sirait / br. Panjaitan</li>
+                                    <li>D. Sirait / br. Pakpahan</li>
+                                    <li>B. Sihombing / br. Siahaan</li>
+                                    <li>L. Silalahi / br. Hutasoit</li>
+                                </ul>
+                            </div>
+
+                            <!-- Sektor IV -->
+                            <div id="sektor-4" class="sektor-pane">
+                                <ul class="sektor-list">
+                                    <li>St. A. Simamora</li>
+                                    <li>St. P. Br. Hotang</li>
+                                    <li>Cst. P. Simamora</li>
+                                    <li>Tp. Sidabutar / br Hotang</li>
+                                    <li>AP. Lbn Tobing / br Simbolon</li>
+                                    <li>E. Pakpahan / br Tumanggor</li>
+                                    <li>A. Rumapea / br Sidabutar</li>
+                                    <li>I. Aritonang / br Siahaan</li>
+                                    <li>G. Pakpahan / br Tumanggor</li>
+                                    <li>P. Sirait / br Sianturi</li>
+                                    <li>R. Sidabuke / br Manik</li>
+                                    <li>J. Lbn Tobing / br Simbolon</li>
+                                    <li>J. Sitanggang / br Tobing</li>
+                                    <li>J. Lbn Tobing / br Pasaribu</li>
+                                </ul>
+                            </div>
+
+                            <!-- Sektor V -->
+                            <div id="sektor-5" class="sektor-pane">
+                                <ul class="sektor-list">
+                                    <li>St. AL. Simanukkalit</li>
+                                    <li>Cst. T. Sitorus</li>
+                                    <li>J. Siagian br Napitu</li>
+                                    <li>M. Manurung br Sinaga</li>
+                                    <li>R. Tanjung br Siregar</li>
+                                    <li>P. Sinaga br Bakkara</li>
+                                    <li>M. Lumban Gaol br Pasaribu</li>
+                                    <li>H. Tampubolon</li>
+                                    <li>A. Hutagalung br Sinaga</li>
+                                    <li>G. Tampubolon br Siregar</li>
+                                    <li>H. Siregar br Pakpahan</li>
+                                    <li>A. Sinaga br Hutapea</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Navigasi 9 Tab -->
+    <!-- Navigasi 9 Tab Bottom -->
     <div class="nav-tabs-container" id="navTabs">
         <button class="tab-btn" onclick="manualTabClick('tab-opening', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -675,8 +1675,13 @@
     <script>
         var audio = document.getElementById('myAudio');
         var musicBtn = document.getElementById('musicBtn');
-        var autoPlayTimer = null;
-        var slideDuration = 10000;
+        var btnNextFixed = document.getElementById('btnNextFixed');
+        var btnPrevFixed = document.getElementById('btnPrevFixed');
+        
+        var panitiaScrollContainer = document.getElementById('panitiaScrollContainer');
+        var panitiaAutoScrollActive = false;
+        var panitiaAnimFrameId = null;
+        var hasUserInteractedPanitia = false;
 
         function openFullscreen() {
             var elem = document.documentElement;
@@ -701,13 +1706,10 @@
             document.getElementById('coverScreen').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'flex';
             document.getElementById('navTabs').style.display = 'block';
-            document.getElementById('progressBarContainer').style.display = 'block';
             musicBtn.style.display = 'flex';
 
             var btnSalam = document.getElementById('btnSalamTab');
             switchTab('tab-salam', btnSalam);
-
-            startAutoPlay();
         }
 
         function toggleMusic() {
@@ -737,7 +1739,7 @@
             activePane.classList.add('active');
             btnElement.classList.add('active');
 
-            // Trigger ulang animasi teks saat berpindah tab
+            // Reset dan trigger ulang animasi teks & tombol
             var animElements = activePane.querySelectorAll('[class*="anim-"]');
             animElements.forEach(function(el) {
                 el.style.animation = 'none';
@@ -745,83 +1747,248 @@
                 el.style.animation = '';
             });
 
+            btnNextFixed.style.animation = 'none';
+            btnNextFixed.offsetHeight;
+            btnNextFixed.style.animation = '';
+
+            btnPrevFixed.style.animation = 'none';
+            btnPrevFixed.offsetHeight;
+            btnPrevFixed.style.animation = '';
+
+            // Pengaturan Sembunyi / Tampil Tombol Lanjut & Kembali
+            var allButtons = Array.from(document.getElementsByClassName('tab-btn'));
+
+            // Tombol Kembali
+            if (tabId === 'tab-opening' || tabId === 'tab-salam') {
+                btnPrevFixed.style.display = 'none';
+            } else {
+                btnPrevFixed.style.display = 'inline-flex';
+            }
+
+            // Tombol Lanjut
+            if (tabId === 'tab-panitia') {
+                btnNextFixed.style.display = 'none';
+            } else {
+                btnNextFixed.style.display = 'inline-flex';
+            }
+
+            // Atur Auto-Scroll Foto Panitia Utama (Lembut dan berhenti saat disentuh)
+            if (tabId === 'tab-panitia') {
+                startPanitiaAutoScrollSmooth();
+            } else {
+                stopPanitiaAutoScrollSmooth();
+            }
+
             btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            document.getElementById('contentCard').scrollTop = 0;
         }
 
-        function startProgressBar() {
-            var barFill = document.getElementById('progressBarFill');
-            barFill.style.transition = 'none';
-            barFill.style.width = '0%';
+        function switchSektor(sektorId, btnElement) {
+            var panes = document.getElementsByClassName('sektor-pane');
+            for (var i = 0; i < panes.length; i++) {
+                panes[i].classList.remove('active');
+            }
 
-            setTimeout(function() {
-                barFill.style.transition = 'width ' + slideDuration + 'ms linear';
-                barFill.style.width = '100%';
-            }, 50);
+            var buttons = document.getElementsByClassName('sektor-btn');
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove('active');
+            }
+
+            document.getElementById(sektorId).classList.add('active');
+            btnElement.classList.add('active');
         }
 
-        function stopProgressBar() {
-            var barFill = document.getElementById('progressBarFill');
-            var container = document.getElementById('progressBarContainer');
-            barFill.style.transition = 'none';
-            barFill.style.width = '0%';
-            container.style.display = 'none';
+        /* --- FUNGSI PINDAH SLIDE MELALUI TOMBOL "LANJUT" DAN "KEMBALI" --- */
+        function goToNextSlide() {
+            var buttons = Array.from(document.getElementsByClassName('tab-btn'));
+            var activeIndex = buttons.findIndex(btn => btn.classList.contains('active'));
+
+            if (activeIndex < buttons.length - 1) {
+                var nextBtn = buttons[activeIndex + 1];
+                var nextTabId = nextBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                switchTab(nextTabId, nextBtn);
+            }
         }
 
-        function startAutoPlay() {
-            clearTimeout(autoPlayTimer);
-            startProgressBar();
+        function goToPrevSlide() {
+            var buttons = Array.from(document.getElementsByClassName('tab-btn'));
+            var activeIndex = buttons.findIndex(btn => btn.classList.contains('active'));
 
-            autoPlayTimer = setTimeout(function() {
-                var buttons = Array.from(document.getElementsByClassName('tab-btn'));
-                var activeIndex = buttons.findIndex(btn => btn.classList.contains('active'));
-
-                if (activeIndex < buttons.length - 1) {
-                    var nextBtn = buttons[activeIndex + 1];
-                    var nextTabId = nextBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
-                    switchTab(nextTabId, nextBtn);
-                    startAutoPlay();
-                } else {
-                    clearTimeout(autoPlayTimer);
-                    stopProgressBar();
-                }
-            }, slideDuration);
+            if (activeIndex > 0) {
+                var prevBtn = buttons[activeIndex - 1];
+                var prevTabId = prevBtn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                switchTab(prevTabId, prevBtn);
+            }
         }
 
         function manualTabClick(tabId, btnElement) {
             switchTab(tabId, btnElement);
-            clearTimeout(autoPlayTimer);
-            stopProgressBar();
         }
 
-        // Swipe Gesture
-        var touchstartX = 0;
-        var touchendX = 0;
-        var card = document.getElementById('contentCard');
+        /* --- FUNGSI AUTO-SCROLL FOTO PANITIA UTAMA (SANGAT LEMBUT & MATI SAAT DISENTUH) --- */
+        function startPanitiaAutoScrollSmooth() {
+            stopPanitiaAutoScrollSmooth();
+            if (hasUserInteractedPanitia) return; // Jika pernah di-scroll manual, jangan jalankan lagi
 
-        card.addEventListener('touchstart', function(event) {
-            touchstartX = event.changedTouches[0].screenX;
-        }, false);
+            if (!panitiaScrollContainer) return;
+            panitiaScrollContainer.scrollLeft = 0; // Reset ke ujung kiri saat baru masuk
 
-        card.addEventListener('touchend', function(event) {
-            touchendX = event.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
+            panitiaAutoScrollActive = true;
+            
+            // Menggunakan requestAnimationFrame dengan kelajuan sangat lembut (0.35px per frame)
+            function step() {
+                if (!panitiaAutoScrollActive || hasUserInteractedPanitia) return;
 
-        function handleSwipe() {
-            var buttons = Array.from(document.getElementsByClassName('tab-btn'));
-            var activeIndex = buttons.findIndex(btn => btn.classList.contains('active'));
-
-            if (touchendX < touchstartX - 50) {
-                if (activeIndex < buttons.length - 1) {
-                    buttons[activeIndex + 1].click();
+                var maxScrollLeft = panitiaScrollContainer.scrollWidth - panitiaScrollContainer.clientWidth;
+                if (panitiaScrollContainer.scrollLeft < maxScrollLeft - 2) {
+                    panitiaScrollContainer.scrollLeft += 0.35; // Kecepatan sangat pelan dan lembut
+                    panitiaAnimFrameId = requestAnimationFrame(step);
+                } else {
+                    stopPanitiaAutoScrollSmooth(); // Matikan setelah mencapai ujung kanan
                 }
             }
-            if (touchendX > touchstartX + 50) {
-                if (activeIndex > 0) {
-                    buttons[activeIndex - 1].click();
-                }
+
+            panitiaAnimFrameId = requestAnimationFrame(step);
+        }
+
+        function stopPanitiaAutoScrollSmooth() {
+            panitiaAutoScrollActive = false;
+            if (panitiaAnimFrameId) {
+                cancelAnimationFrame(panitiaAnimFrameId);
+                panitiaAnimFrameId = null;
             }
         }
+
+        // Event listener saat pengunjung menggeser foto panitia secara manual -> AUTO-SCROLL MATI PERMANEN
+        if (panitiaScrollContainer) {
+            function disableAutoScrollOnTouch() {
+                hasUserInteractedPanitia = true;
+                stopPanitiaAutoScrollSmooth();
+            }
+
+            panitiaScrollContainer.addEventListener('touchstart', disableAutoScrollOnTouch, { passive: true });
+            panitiaScrollContainer.addEventListener('mousedown', disableAutoScrollOnTouch, { passive: true });
+            panitiaScrollContainer.addEventListener('wheel', disableAutoScrollOnTouch, { passive: true });
+        }
+
+        /* --- FUNGSI SALIN NO REKENING --- */
+        function copyRekening(number) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(number);
+            } else {
+                var textArea = document.createElement("textarea");
+                textArea.value = number;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            }
+
+            var toast = document.getElementById('copyToast');
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        /* --- FUNGSI PINCH TO ZOOM & PAN UNTUK MODAL FOTO --- */
+        var modal = document.getElementById('imageModal');
+        var modalImg = document.getElementById('modalImg');
+        var viewport = document.getElementById('modalViewport');
+
+        var scale = 1;
+        var lastScale = 1;
+        var posX = 0;
+        var posY = 0;
+        var startTouchX = 0;
+        var startTouchY = 0;
+        var initialDistance = 0;
+        var isDragging = false;
+        var lastTapTime = 0;
+
+        function updateTransform() {
+            modalImg.style.transform = 'translate(' + posX + 'px, ' + posY + 'px) scale(' + scale + ')';
+        }
+
+        function resetZoom() {
+            scale = 1;
+            lastScale = 1;
+            posX = 0;
+            posY = 0;
+            updateTransform();
+        }
+
+        function openModal(imgSrc) {
+            resetZoom();
+            modal.style.display = 'flex';
+            modalImg.src = imgSrc;
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            resetZoom();
+        }
+
+        function getDistance(touches) {
+            var dx = touches[0].clientX - touches[1].clientX;
+            var dy = touches[0].clientY - touches[1].clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        viewport.addEventListener('touchstart', function(e) {
+            var touches = e.touches;
+
+            var currentTime = new Date().getTime();
+            var tapLength = currentTime - lastTapTime;
+            if (touches.length === 1 && tapLength < 300 && tapLength > 0) {
+                if (scale > 1.2) {
+                    resetZoom();
+                } else {
+                    scale = 2.5;
+                    lastScale = 2.5;
+                    updateTransform();
+                }
+                e.preventDefault();
+                return;
+            }
+            lastTapTime = currentTime;
+
+            if (touches.length === 1) {
+                isDragging = true;
+                startTouchX = touches[0].clientX - posX;
+                startTouchY = touches[0].clientY - posY;
+            } else if (touches.length === 2) {
+                isDragging = false;
+                initialDistance = getDistance(touches);
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('touchmove', function(e) {
+            var touches = e.touches;
+
+            if (touches.length === 1 && isDragging && scale > 1) {
+                e.preventDefault();
+                posX = touches[0].clientX - startTouchX;
+                posY = touches[0].clientY - startTouchY;
+                updateTransform();
+            } else if (touches.length === 2) {
+                e.preventDefault();
+                var currentDistance = getDistance(touches);
+                if (initialDistance > 0) {
+                    var factor = currentDistance / initialDistance;
+                    scale = Math.min(Math.max(lastScale * factor, 1), 4.5);
+                    updateTransform();
+                }
+            }
+        }, { passive: false });
+
+        viewport.addEventListener('touchend', function(e) {
+            lastScale = scale;
+            isDragging = false;
+            if (scale <= 1) {
+                resetZoom();
+            }
+        });
     </script>
 
 </body>
