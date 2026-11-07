@@ -2,8 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <!-- Meta Viewport: Mengizinkan Pinch-to-Zoom hingga 5x untuk Keterbacaan Lansia -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <!-- Meta Viewport: Gesture zoom bawaan browser tetap dikunci agar layout slide utama tidak pecah -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Penguncian Skema Warna Sistem & Browser (Anti-Dark Mode) -->
     <meta name="color-scheme" content="only light">
     <meta name="supported-color-schemes" content="only light">
     
@@ -48,6 +50,7 @@
         :root {
             color-scheme: only light !important;
             supported-color-schemes: only light !important;
+            --text-zoom-scale: 1; /* Variable CSS untuk skala zoom teks */
         }
 
         * {
@@ -58,12 +61,11 @@
             -webkit-forced-color-adjust: none !important;
         }
 
-        /* Menjaga Font Stabil Namun Mendukung Zoom Layar oleh Pengguna */
         html, body {
             width: 100%;
             height: 100%;
             height: 100dvh;
-            overflow: auto;
+            overflow: hidden;
             background-color: #000000 !important;
             font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
             color-scheme: light !important;
@@ -132,7 +134,7 @@
             color: #0077b6 !important;
             font-weight: 800;
             margin-bottom: 14px;
-            background: #ffffff !important;
+            background-color: #ffffff !important;
             padding: 6px 18px;
             border-radius: 20px;
             border: 1.5px solid #00b4d8 !important;
@@ -175,7 +177,7 @@
         }
 
         .recipient-box .yth {
-            font-size: clamp(0.7rem, 3vw, 0.8rem) !important;
+            font-size: calc(clamp(0.7rem, 3vw, 0.8rem) * var(--text-zoom-scale)) !important;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #0077b6 !important;
@@ -185,9 +187,10 @@
 
         .recipient-box .name {
             font-family: 'Dancing Script', cursive !important;
-            font-size: clamp(1.3rem, 5vw, 1.55rem) !important;
+            font-size: calc(clamp(1.3rem, 5vw, 1.55rem) * var(--text-zoom-scale)) !important;
             font-weight: 700;
             color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
             line-height: 1.2;
         }
 
@@ -262,6 +265,56 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* DESAIN BAR HORIZONTAL MENYATU & TRANSPARAN DI POSISI TENGAH BAWAH (DI ANTARA KEMBALI DAN LANJUT) */
+        .zoom-controls-wrapper {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 73px; /* Sejajar secara vertikal dengan tombol Kembali & Lanjut */
+            z-index: 9;
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.65) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(0, 180, 216, 0.8) !important;
+            border-radius: 30px;
+            padding: 2px 6px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-zoom-control {
+            width: 34px;
+            height: 34px;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-zoom-control:active {
+            transform: scale(0.88);
+            background: rgba(0, 180, 216, 0.3) !important;
+        }
+
+        .btn-zoom-control svg {
+            width: 20px;
+            height: 20px;
+            fill: #0077b6 !important;
+        }
+
+        .zoom-divider {
+            width: 1px;
+            height: 18px;
+            background-color: rgba(0, 119, 182, 0.35);
+            margin: 0 2px;
+        }
+
         /* Area Konten Utama */
         .main-container {
             position: fixed;
@@ -275,10 +328,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 0 0 65px 0;
+            padding: 0 0 60px 0;
             background: transparent !important;
         }
 
+        /* BATAS SCROLL TULISAN: Diberi padding-bottom 130px agar saat di-zoom, teks tidak tertutup tombol bottom */
         .content-card {
             background: transparent !important;
             backdrop-filter: none !important;
@@ -287,11 +341,11 @@
             border-radius: 0;
             width: 100%;
             height: 100%;
-            padding: 10px 15px;
+            padding: 10px 15px 130px 15px; /* Bottom padding 130px mengunci batas scroll di atas tombol */
             color: #000000 !important;
             overflow-y: auto;
             box-shadow: none !important;
-            touch-action: pan-y pinch-zoom;
+            touch-action: pan-y;
         }
 
         /* Bottom Nav Bar */
@@ -369,7 +423,7 @@
         }
 
         .slide-main-header {
-            font-size: clamp(1.05rem, 4.2vw, 1.25rem) !important;
+            font-size: calc(clamp(1.05rem, 4.2vw, 1.25rem) * var(--text-zoom-scale)) !important;
             font-weight: 900;
             color: #0077b6 !important;
             margin-bottom: 14px;
@@ -379,7 +433,7 @@
         }
 
         .sub-header-box {
-            font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
+            font-size: calc(clamp(0.85rem, 3.5vw, 0.95rem) * var(--text-zoom-scale)) !important;
             font-weight: 800;
             color: #0077b6 !important;
             margin-top: 10px;
@@ -389,12 +443,14 @@
         }
 
         .sk-badge {
-            font-size: clamp(0.78rem, 3.2vw, 0.85rem) !important;
+            font-size: calc(clamp(0.78rem, 3.2vw, 0.85rem) * var(--text-zoom-scale)) !important;
+            background-color: #ffffff !important;
             background: #ffffff !important;
-            border: 1.5px solid #00b4d8;
+            border: 1.5px solid #00b4d8 !important;
             border-radius: 12px;
             padding: 10px 14px;
             color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
             line-height: 1.45;
             margin-bottom: 16px;
             font-weight: 700;
@@ -404,16 +460,18 @@
 
         .sk-badge span {
             color: #0077b6 !important;
+            -webkit-text-fill-color: #0077b6 !important;
             font-weight: 900;
             display: block;
             margin-top: 4px;
-            font-size: clamp(0.82rem, 3.5vw, 0.9rem) !important;
+            font-size: calc(clamp(0.82rem, 3.5vw, 0.9rem) * var(--text-zoom-scale)) !important;
         }
 
         .slide-text {
-            font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
+            font-size: calc(clamp(0.85rem, 3.5vw, 0.95rem) * var(--text-zoom-scale)) !important;
             line-height: 1.6;
             color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
             font-weight: 800;
             margin-bottom: 14px;
             text-align: center;
@@ -422,14 +480,16 @@
 
         .location-highlight {
             color: #0077b6 !important;
+            -webkit-text-fill-color: #0077b6 !important;
             font-weight: 900;
             text-decoration: underline;
             text-decoration-color: #00b4d8;
         }
 
         .dana-box {
+            background-color: #ffffff !important;
             background: #ffffff !important;
-            border: 2px solid #00b4d8;
+            border: 2px solid #00b4d8 !important;
             border-radius: 14px;
             padding: clamp(12px, 3.5vw, 16px);
             text-align: center;
@@ -439,34 +499,38 @@
         }
 
         .dana-box .title {
-            font-size: clamp(0.72rem, 2.8vw, 0.78rem) !important;
+            font-size: calc(clamp(0.72rem, 2.8vw, 0.78rem) * var(--text-zoom-scale)) !important;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #0077b6 !important;
+            -webkit-text-fill-color: #0077b6 !important;
             font-weight: 800;
             margin-bottom: 3px;
         }
 
         .dana-box .amount {
-            font-size: clamp(1.35rem, 5.5vw, 1.55rem) !important;
+            font-size: calc(clamp(1.35rem, 5.5vw, 1.55rem) * var(--text-zoom-scale)) !important;
             font-weight: 900;
             color: #0077b6 !important;
+            -webkit-text-fill-color: #0077b6 !important;
             margin-bottom: 2px;
             letter-spacing: 0.5px;
         }
 
         .dana-box .terbilang {
-            font-size: clamp(0.75rem, 3vw, 0.8rem) !important;
+            font-size: calc(clamp(0.75rem, 3vw, 0.8rem) * var(--text-zoom-scale)) !important;
             font-style: italic;
             color: #333333 !important;
+            -webkit-text-fill-color: #333333 !important;
             font-weight: 600;
             line-height: 1.3;
         }
 
         .bless-text {
-            font-size: clamp(0.98rem, 4vw, 1.1rem) !important;
+            font-size: calc(clamp(0.98rem, 4vw, 1.1rem) * var(--text-zoom-scale)) !important;
             font-weight: 900 !important;
             color: #0077b6 !important;
+            -webkit-text-fill-color: #0077b6 !important;
             text-align: center;
             margin-top: 14px !important;
             letter-spacing: 0.5px;
@@ -477,14 +541,14 @@
         .btn-next-fixed {
             position: fixed;
             bottom: 72px;
-            right: 18px;
+            right: 14px;
             z-index: 8;
             display: none;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 8px 18px 8px 20px;
-            font-size: clamp(0.78rem, 3.2vw, 0.85rem) !important;
+            gap: 4px;
+            padding: 8px 14px;
+            font-size: clamp(0.75rem, 3vw, 0.82rem) !important;
             font-weight: 800;
             color: #ffffff !important;
             background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
@@ -499,8 +563,8 @@
         }
 
         .btn-next-fixed svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             fill: #ffffff !important;
             transition: transform 0.2s ease;
         }
@@ -512,14 +576,14 @@
         .btn-prev-fixed {
             position: fixed;
             bottom: 72px;
-            left: 18px;
+            left: 14px;
             z-index: 8;
             display: none;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 8px 20px 8px 18px;
-            font-size: clamp(0.78rem, 3.2vw, 0.85rem) !important;
+            gap: 4px;
+            padding: 8px 14px;
+            font-size: clamp(0.75rem, 3vw, 0.82rem) !important;
             font-weight: 800;
             color: #0077b6 !important;
             background: rgba(255, 255, 255, 0.92) !important;
@@ -533,8 +597,8 @@
         }
 
         .btn-prev-fixed svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             fill: #0077b6 !important;
             transition: transform 0.2s ease;
         }
@@ -571,9 +635,10 @@
         }
 
         .quote-verse {
-            font-size: clamp(1rem, 4.3vw, 1.25rem) !important;
+            font-size: calc(clamp(1rem, 4.3vw, 1.25rem) * var(--text-zoom-scale)) !important;
             font-weight: 800;
             color: #3b2500 !important;
+            -webkit-text-fill-color: #3b2500 !important;
             line-height: 1.55;
             margin-bottom: 16px;
             letter-spacing: 0.3px;
@@ -582,9 +647,10 @@
 
         .quote-source {
             font-family: 'Cinzel', serif, 'Plus Jakarta Sans' !important;
-            font-size: clamp(0.95rem, 3.8vw, 1.1rem) !important;
+            font-size: calc(clamp(0.95rem, 3.8vw, 1.1rem) * var(--text-zoom-scale)) !important;
             font-weight: 900;
             color: #5c3d00 !important;
+            -webkit-text-fill-color: #5c3d00 !important;
             text-transform: uppercase;
             letter-spacing: 2px;
             display: inline-block;
@@ -652,7 +718,7 @@
             justify-content: center;
             gap: 8px;
             padding: 12px 22px;
-            font-size: clamp(0.82rem, 3.5vw, 0.92rem) !important;
+            font-size: calc(clamp(0.82rem, 3.5vw, 0.92rem) * var(--text-zoom-scale)) !important;
             font-weight: 800;
             color: #ffffff !important;
             background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
@@ -819,7 +885,7 @@
             justify-content: center;
             gap: 10px;
             padding: 13px 22px;
-            font-size: clamp(0.85rem, 3.6vw, 0.95rem) !important;
+            font-size: calc(clamp(0.85rem, 3.6vw, 0.95rem) * var(--text-zoom-scale)) !important;
             font-weight: 800;
             color: #ffffff !important;
             background: linear-gradient(135deg, #25D366, #128C7E) !important;
@@ -865,7 +931,7 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* --- STYLES KHUSUS SLIDE PANITIA & FOTO PNG TRANSPARAN --- */
+        /* --- STYLES KHUSUS SLIDE PANITIA --- */
         .panitia-center-layout {
             max-width: 380px;
             width: 100%;
@@ -907,7 +973,6 @@
             text-align: center;
         }
 
-        /* Ring Avatar Foto Panitia Transparan */
         .game-avatar-ring {
             width: 105px;
             height: 105px;
@@ -933,7 +998,7 @@
         }
 
         .game-role-badge {
-            font-size: 0.68rem !important;
+            font-size: calc(0.68rem * var(--text-zoom-scale)) !important;
             font-weight: 900;
             color: #00b4d8 !important;
             text-transform: uppercase;
@@ -944,7 +1009,7 @@
         }
 
         .game-profile-name {
-            font-size: clamp(0.85rem, 3.6vw, 0.95rem) !important;
+            font-size: calc(clamp(0.85rem, 3.6vw, 0.95rem) * var(--text-zoom-scale)) !important;
             font-weight: 900;
             color: #0077b6 !important;
             line-height: 1.3;
@@ -996,6 +1061,7 @@
         }
 
         .sektor-content-box {
+            background-color: #ffffff !important;
             background: #ffffff !important;
             border: 2px solid #00b4d8 !important;
             border-radius: 14px;
@@ -1023,9 +1089,10 @@
         }
 
         .sektor-list li {
-            font-size: clamp(0.78rem, 3.1vw, 0.85rem) !important;
+            font-size: calc(clamp(0.78rem, 3.1vw, 0.85rem) * var(--text-zoom-scale)) !important;
             font-weight: 700;
             color: #222222 !important;
+            -webkit-text-fill-color: #222222 !important;
             padding: 5px 0;
             border-bottom: 1px solid #f0f0f0;
             display: flex;
@@ -1044,7 +1111,7 @@
             line-height: 1;
         }
 
-        /* --- MODAL ZOOM FOTO INTERAKTIF --- */
+        /* --- MODAL ZOOM FOTO INTERAKTIF (PINCH TO ZOOM 2 JARI DI HP DUKUNGAN PENUH) --- */
         .image-modal {
             display: none;
             position: fixed;
@@ -1060,7 +1127,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            touch-action: none;
+            touch-action: none; /* Mencegah scroll default halaman saat melakukan gestur zoom gambar */
         }
 
         .modal-viewport {
@@ -1071,6 +1138,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            touch-action: none;
         }
 
         .image-modal img {
@@ -1082,10 +1150,10 @@
             object-fit: contain;
             transform-origin: center center;
             will-change: transform;
-            cursor: grab;
+            transition: transform 0.05s ease-out;
+            touch-action: none;
         }
 
-        /* Tombol Close X Tanpa Lingkaran Background */
         .modal-close {
             position: absolute;
             top: 15px;
@@ -1108,22 +1176,6 @@
         .modal-close:active {
             transform: scale(0.85);
             opacity: 0.7;
-        }
-
-        .zoom-hint-toast {
-            position: absolute;
-            bottom: 25px;
-            background: rgba(0, 119, 182, 0.85);
-            color: #ffffff;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            z-index: 100;
-            pointer-events: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         /* --- ANIMASI MASUK --- */
@@ -1176,13 +1228,12 @@
         <source src="Musik.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Modal Zoom Foto Interaktif -->
+    <!-- Modal Zoom Foto Interaktif dengan Dukungan Pinch-to-Zoom 2 Jari -->
     <div class="image-modal" id="imageModal">
         <span class="modal-close" onclick="closeModal()">&times;</span>
         <div class="modal-viewport" id="modalViewport">
             <img id="modalImg" src="" alt="Foto Zoom">
         </div>
-        <div class="zoom-hint-toast">💡 Gunakan 2 jari untuk zoom / geser foto</div>
     </div>
 
     <!-- Tombol Piringan Hitam (Musik) Ditaruh di Atas Kanan -->
@@ -1205,6 +1256,27 @@
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
         <span>Kembali</span>
     </button>
+
+    <!-- BAR TOMBOL ZOOM TEKS DITARUH DI TENGAH-TENGAH SEJAJAR DENGAN KEMBALI & LANJUT -->
+    <div class="zoom-controls-wrapper" id="zoomControls">
+        <!-- Tombol Zoom Out (-) -->
+        <button class="btn-zoom-control" onclick="adjustTextZoom(-0.1)" title="Perkecil Teks">
+            <svg viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                <path d="M7 9h5v1.5H7z"/>
+            </svg>
+        </button>
+
+        <div class="zoom-divider"></div>
+
+        <!-- Tombol Zoom In (+) -->
+        <button class="btn-zoom-control" onclick="adjustTextZoom(0.1)" title="Perbesar Teks">
+            <svg viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/>
+            </svg>
+        </button>
+    </div>
 
     <!-- Tombol Lanjut Dikunci di Posisi Bawah Kanan -->
     <button class="btn-next-fixed" id="btnNextFixed" onclick="goToNextSlide()">
@@ -1337,7 +1409,7 @@
                         Pengadaan Lahan (Ukuran 7 x 25 Meter)
                     </p>
 
-                    <p class="slide-text anim-2" style="font-size: clamp(0.8rem, 3.2vw, 0.9rem); margin-bottom: 10px;">
+                    <p class="slide-text anim-2" style="font-size: calc(clamp(0.8rem, 3.2vw, 0.9rem) * var(--text-zoom-scale)); margin-bottom: 10px;">
                         📍 <strong>Lokasi:</strong> Jl. Medan - Tanjung Morawa (depan Gereja HKI Resort Khusus Tanjung Morawa)
                     </p>
 
@@ -1687,11 +1759,19 @@
         var musicBtn = document.getElementById('musicBtn');
         var btnNextFixed = document.getElementById('btnNextFixed');
         var btnPrevFixed = document.getElementById('btnPrevFixed');
+        var zoomControls = document.getElementById('zoomControls');
         
         var panitiaScrollContainer = document.getElementById('panitiaScrollContainer');
         var panitiaTimer = null;
         var panitiaResumeTimeout = null;
         var scrollDirection = 1;
+
+        // --- SKRIP KONTROL MENGUBAH UKURAN TEKS TERKONTROL ---
+        var currentTextScale = 1.0;
+        function adjustTextZoom(delta) {
+            currentTextScale = Math.min(Math.max(currentTextScale + delta, 0.8), 1.6);
+            document.documentElement.style.setProperty('--text-zoom-scale', currentTextScale);
+        }
 
         // --- SKRIP NAMA PENERIMA DINAMIS DARI URL PARAMETER ---
         window.addEventListener('DOMContentLoaded', function() {
@@ -1790,6 +1870,7 @@
             document.getElementById('mainContainer').style.display = 'flex';
             document.getElementById('navTabs').style.display = 'block';
             musicBtn.style.display = 'flex';
+            zoomControls.style.display = 'flex';
 
             var btnSalam = document.getElementById('btnSalamTab');
             switchTab('tab-salam', btnSalam);
@@ -1963,101 +2044,79 @@
             }, 2500);
         }
 
+        // --- SISTEM PINCH-TO-ZOOM 2 JARI & DRAG UNTUK MODAL GAMBAR DOKUMEN ---
         var modal = document.getElementById('imageModal');
         var modalImg = document.getElementById('modalImg');
-        var viewport = document.getElementById('modalViewport');
 
-        var scale = 1;
-        var lastScale = 1;
-        var posX = 0;
-        var posY = 0;
-        var startTouchX = 0;
-        var startTouchY = 0;
-        var initialDistance = 0;
+        var imgScale = 1;
+        var startDist = 0;
+        var initialScale = 1;
         var isDragging = false;
-        var lastTapTime = 0;
+        var startX = 0, startY = 0;
+        var translateX = 0, translateY = 0;
 
-        function updateTransform() {
-            modalImg.style.transform = 'translate(' + posX + 'px, ' + posY + 'px) scale(' + scale + ')';
+        function updateModalImgTransform() {
+            modalImg.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + imgScale + ')';
         }
 
-        function resetZoom() {
-            scale = 1;
-            lastScale = 1;
-            posX = 0;
-            posY = 0;
-            updateTransform();
+        function getDistance(touches) {
+            return Math.hypot(
+                touches[0].clientX - touches[1].clientX,
+                touches[0].clientY - touches[1].clientY
+            );
         }
 
         function openModal(imgSrc) {
-            resetZoom();
             modal.style.display = 'flex';
             modalImg.src = imgSrc;
+            imgScale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateModalImgTransform();
         }
 
         function closeModal() {
             modal.style.display = 'none';
-            resetZoom();
         }
 
-        function getDistance(touches) {
-            var dx = touches[0].clientX - touches[1].clientX;
-            var dy = touches[0].clientY - touches[1].clientY;
-            return Math.sqrt(dx * dx + dy * dy);
-        }
-
-        viewport.addEventListener('touchstart', function(e) {
-            var touches = e.touches;
-
-            var currentTime = new Date().getTime();
-            var tapLength = currentTime - lastTapTime;
-            if (touches.length === 1 && tapLength < 300 && tapLength > 0) {
-                if (scale > 1.2) {
-                    resetZoom();
-                } else {
-                    scale = 2.5;
-                    lastScale = 2.5;
-                    updateTransform();
-                }
-                e.preventDefault();
-                return;
-            }
-            lastTapTime = currentTime;
-
-            if (touches.length === 1) {
+        // Event Listener Touch untuk Pinch-to-Zoom & Drag pada Gambar Modal
+        modal.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                startDist = getDistance(e.touches);
+                initialScale = imgScale;
+            } else if (e.touches.length === 1 && imgScale > 1) {
                 isDragging = true;
-                startTouchX = touches[0].clientX - posX;
-                startTouchY = touches[0].clientY - posY;
-            } else if (touches.length === 2) {
-                isDragging = false;
-                initialDistance = getDistance(touches);
+                startX = e.touches[0].clientX - translateX;
+                startY = e.touches[0].clientY - translateY;
             }
         }, { passive: false });
 
-        viewport.addEventListener('touchmove', function(e) {
-            var touches = e.touches;
-
-            if (touches.length === 1 && isDragging && scale > 1) {
+        modal.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
                 e.preventDefault();
-                posX = touches[0].clientX - startTouchX;
-                posY = touches[0].clientY - startTouchY;
-                updateTransform();
-            } else if (touches.length === 2) {
-                e.preventDefault();
-                var currentDistance = getDistance(touches);
-                if (initialDistance > 0) {
-                    var factor = currentDistance / initialDistance;
-                    scale = Math.min(Math.max(lastScale * factor, 1), 4.5);
-                    updateTransform();
+                var dist = getDistance(e.touches);
+                if (startDist > 0) {
+                    imgScale = Math.min(Math.max(initialScale * (dist / startDist), 1), 4);
+                    if (imgScale === 1) {
+                        translateX = 0;
+                        translateY = 0;
+                    }
+                    updateModalImgTransform();
                 }
+            } else if (e.touches.length === 1 && isDragging && imgScale > 1) {
+                e.preventDefault();
+                translateX = e.touches[0].clientX - startX;
+                translateY = e.touches[0].clientY - startY;
+                updateModalImgTransform();
             }
         }, { passive: false });
 
-        viewport.addEventListener('touchend', function(e) {
-            lastScale = scale;
-            isDragging = false;
-            if (scale <= 1) {
-                resetZoom();
+        modal.addEventListener('touchend', function(e) {
+            if (e.touches.length < 2) {
+                startDist = 0;
+            }
+            if (e.touches.length === 0) {
+                isDragging = false;
             }
         });
     </script>
