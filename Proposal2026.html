@@ -2,11 +2,26 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Meta Viewport: Mengizinkan Pinch-to-Zoom hingga 5x untuk Keterbacaan Lansia -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="color-scheme" content="only light">
     <meta name="supported-color-schemes" content="only light">
     
     <title>Proposal Digital - HKI Resort Khusus Tanjung Morawa</title>
+
+    <!-- Skrip Deteksi & Buka Otomatis di Google Chrome (Khusus Android In-App Browser) -->
+    <script>
+        (function() {
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            var isAndroid = /android/i.test(ua);
+            var isInApp = /FBAN|FBAV|Instagram|WhatsApp|Line/i.test(ua);
+
+            if (isAndroid && isInApp) {
+                var currentUrl = window.location.href.replace(/^https?:\/\//, '');
+                window.location.href = "intent://" + currentUrl + "#Intent;scheme=https;package=com.android.chrome;end";
+            }
+        })();
+    </script>
     
     <!-- Meta Tag Preview WhatsApp & Social Media (Open Graph) -->
     <meta property="og:type" content="website">
@@ -43,16 +58,19 @@
             -webkit-forced-color-adjust: none !important;
         }
 
-        /* Menjaga Font Stabil & Mencegah Zoom Teks Otomatis di Berbagai HP */
+        /* Menjaga Font Stabil Namun Mendukung Zoom Layar oleh Pengguna */
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            height: 100dvh;
+            overflow: auto;
             background-color: #000000 !important;
             font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
-            color-scheme: only light !important;
+            color-scheme: light !important;
+            -webkit-color-scheme: light !important;
             -webkit-text-size-adjust: 100% !important;
             text-size-adjust: 100% !important;
+            touch-action: manipulation;
         }
 
         /* Video Background Utama */
@@ -62,6 +80,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             object-fit: cover;
             z-index: 1;
         }
@@ -70,6 +89,7 @@
         .cover, .opening-layout {
             width: 100%;
             height: 100%;
+            height: 100dvh;
             background: transparent !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
@@ -88,18 +108,21 @@
             z-index: 4;
         }
 
-        /* Logo Salib Tema Biru */
+        /* Logo HKI */
         .cross-logo {
             width: 50px;
             height: 65px;
             margin-bottom: 12px;
             filter: drop-shadow(0 2px 8px rgba(0, 180, 216, 0.8));
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .cross-logo svg {
+        .cross-logo img {
             width: 100%;
             height: 100%;
-            fill: #0077b6 !important;
+            object-fit: contain;
         }
 
         .cover-badge {
@@ -187,6 +210,14 @@
             transition: all 0.3s ease;
         }
 
+        .btn-fullscreen:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #555555, #777777) !important;
+            border-color: #aaaaaa !important;
+            box-shadow: none !important;
+        }
+
         .btn-fullscreen svg {
             width: 22px;
             height: 22px;
@@ -238,6 +269,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            height: 100dvh;
             z-index: 2;
             display: none;
             flex-direction: column;
@@ -259,7 +291,7 @@
             color: #000000 !important;
             overflow-y: auto;
             box-shadow: none !important;
-            touch-action: pan-y;
+            touch-action: pan-y pinch-zoom;
         }
 
         /* Bottom Nav Bar */
@@ -1021,6 +1053,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             background-color: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -1134,12 +1167,12 @@
     </div>
 
     <!-- Video Background Utama -->
-    <video id="myVideo" autoplay loop muted playsinline>
+    <video id="myVideo" loop muted playsinline preload="auto">
         <source src="Background.mp4" type="video/mp4">
     </video>
 
     <!-- Audio Musik Latar -->
-    <audio id="myAudio" loop>
+    <audio id="myAudio" loop preload="auto">
         <source src="Musik.mp3" type="audio/mpeg">
     </audio>
 
@@ -1182,25 +1215,25 @@
     <!-- Layar Pembuka / Cover (Opening Awal) -->
     <div class="cover" id="coverScreen">
         <div class="cross-logo">
-            <svg viewBox="0 0 24 24">
-                <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
-            </svg>
+            <img src="Logo_HKI.png" alt="Logo HKI">
         </div>
 
         <div class="cover-badge">Proposal Digital</div>
         <div class="cover-title">Pengadaan Lahan & Pembangunan Rumah Dinas Pendeta</div>
         <div class="cover-main-header">HKI RESORT KHUSUS TANJUNG MORAWA</div>
         
+        <!-- Box Penerima Tamu/Undangan Dinamis -->
         <div class="recipient-box">
             <div class="yth">Kepada YTH</div>
-            <div class="name">Bapak/Ibu/Saudara/Saudari Terkasih</div>
+            <div class="name" id="recipientNameCover">Bapak/Ibu/Saudara/Saudari Terkasih</div>
         </div>
 
-        <button class="btn-fullscreen" onclick="openFullscreen()">
-            <svg viewBox="0 0 24 24">
+        <!-- Tombol Buka Proposal dengan Progress Pengunduhan -->
+        <button class="btn-fullscreen" id="btnOpenProposal" onclick="openFullscreen()" disabled>
+            <svg id="btnOpenIcon" viewBox="0 0 24 24" style="display: none;">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
-            <span>Buka Proposal</span>
+            <span id="btnOpenProposalText">⏳ Memuat Komponen (0%)...</span>
         </button>
     </div>
 
@@ -1212,9 +1245,7 @@
             <div id="tab-opening" class="tab-pane">
                 <div class="opening-layout">
                     <div class="cross-logo anim-1">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
-                        </svg>
+                        <img src="Logo_HKI.png" alt="Logo HKI">
                     </div>
 
                     <div class="cover-badge anim-2">Proposal Digital</div>
@@ -1223,7 +1254,7 @@
                     
                     <div class="recipient-box anim-5">
                         <div class="yth">Kepada YTH</div>
-                        <div class="name">Bapak/Ibu/Saudara/Saudari Terkasih</div>
+                        <div class="name" id="recipientNameTab">Bapak/Ibu/Saudara/Saudari Terkasih</div>
                     </div>
                 </div>
             </div>
@@ -1424,9 +1455,7 @@
                 <div class="slide-layout-container">
                     
                     <div class="cross-logo anim-1">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M10 2h4v6h6v4h-6v10h-4V12H4V8h6V2z"/>
-                        </svg>
+                        <img src="Logo_HKI.png" alt="Logo HKI">
                     </div>
 
                     <p class="slide-main-header anim-2">Terima Kasih</p>
@@ -1444,7 +1473,7 @@
                 </div>
             </div>
 
-            <!-- Tab Panitia Utama (Ekstensi Foto PNG) -->
+            <!-- Tab Panitia Utama -->
             <div id="tab-panitia" class="tab-pane">
                 <div class="panitia-center-layout">
                     
@@ -1502,13 +1531,12 @@
                         </div>
                     </div>
 
-                    <!-- Seksi Dana Per Sektor (Sub-Tabs) -->
+                    <!-- Seksi Dana Per Sektor -->
                     <p class="slide-text anim-3" style="font-weight: 900; color: #0077b6; margin-bottom: 4px; text-align: center;">
                         Seksi Dana Per Sektor
                     </p>
 
                     <div class="sektor-tabs-wrapper anim-4">
-                        <!-- Navigation Sub-Tabs -->
                         <div class="sektor-tabs-nav">
                             <button class="sektor-btn active" onclick="switchSektor('sektor-1', this)">Sektor I</button>
                             <button class="sektor-btn" onclick="switchSektor('sektor-2', this)">Sektor II</button>
@@ -1517,9 +1545,7 @@
                             <button class="sektor-btn" onclick="switchSektor('sektor-5', this)">Sektor V</button>
                         </div>
 
-                        <!-- Content Display Scrollable Box -->
                         <div class="sektor-content-box">
-                            <!-- Sektor I -->
                             <div id="sektor-1" class="sektor-pane active">
                                 <ul class="sektor-list">
                                     <li>St. D. Br. Manullang</li>
@@ -1537,7 +1563,6 @@
                                 </ul>
                             </div>
 
-                            <!-- Sektor II -->
                             <div id="sektor-2" class="sektor-pane">
                                 <ul class="sektor-list">
                                     <li>St. M. Simbolon</li>
@@ -1556,7 +1581,6 @@
                                 </ul>
                             </div>
 
-                            <!-- Sektor III -->
                             <div id="sektor-3" class="sektor-pane">
                                 <ul class="sektor-list">
                                     <li>St. H. Sinaga</li>
@@ -1574,7 +1598,6 @@
                                 </ul>
                             </div>
 
-                            <!-- Sektor IV -->
                             <div id="sektor-4" class="sektor-pane">
                                 <ul class="sektor-list">
                                     <li>St. A. Simamora</li>
@@ -1594,7 +1617,6 @@
                                 </ul>
                             </div>
 
-                            <!-- Sektor V -->
                             <div id="sektor-5" class="sektor-pane">
                                 <ul class="sektor-list">
                                     <li>St. AL. Simanukkalit</li>
@@ -1670,6 +1692,79 @@
         var panitiaTimer = null;
         var panitiaResumeTimeout = null;
         var scrollDirection = 1;
+
+        // --- SKRIP NAMA PENERIMA DINAMIS DARI URL PARAMETER ---
+        window.addEventListener('DOMContentLoaded', function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var namaTamu = urlParams.get('to') || urlParams.get('n');
+
+            if (namaTamu) {
+                var namaClean = decodeURIComponent(namaTamu);
+                var elCover = document.getElementById('recipientNameCover');
+                var elTab = document.getElementById('recipientNameTab');
+
+                if (elCover) elCover.innerText = namaClean;
+                if (elTab) elTab.innerText = namaClean;
+            }
+        });
+
+        // --- SISTEM PRELOADER ASSET ---
+        var assetsToPreload = [
+            { url: 'Logo_HKI.png', type: 'image' },
+            { url: 'Background.mp4', type: 'video' },
+            { url: 'Musik.mp3', type: 'audio' },
+            { url: 'Ukuran Lebar.jpeg', type: 'image' },
+            { url: 'Ukuran Panjang I.jpeg', type: 'image' },
+            { url: 'Ukuran Panjang II.jpeg', type: 'image' },
+            { url: 'RAB I.jpg', type: 'image' },
+            { url: 'RAB II.jpg', type: 'image' },
+            { url: 'Penasehat.png', type: 'image' },
+            { url: 'Penanggungjawab.png', type: 'image' },
+            { url: 'Ketua.png', type: 'image' },
+            { url: 'Sekretaris.png', type: 'image' },
+            { url: 'Bendahara.png', type: 'image' }
+        ];
+
+        var loadedCount = 0;
+        var totalAssets = assetsToPreload.length;
+        var btnOpenProposal = document.getElementById('btnOpenProposal');
+        var btnOpenProposalText = document.getElementById('btnOpenProposalText');
+        var btnOpenIcon = document.getElementById('btnOpenIcon');
+
+        function updateProgress() {
+            loadedCount++;
+            var percent = Math.floor((loadedCount / totalAssets) * 100);
+            
+            if (loadedCount < totalAssets) {
+                btnOpenProposalText.innerText = '⏳ Memuat Komponen (' + percent + '%)...';
+            } else {
+                btnOpenProposal.disabled = false;
+                btnOpenIcon.style.display = 'inline';
+                btnOpenProposalText.innerText = 'Buka Proposal';
+            }
+        }
+
+        function preloadSingleAsset(asset) {
+            return new Promise(function(resolve) {
+                if (asset.type === 'image') {
+                    var img = new Image();
+                    img.onload = function() { updateProgress(); resolve(); };
+                    img.onerror = function() { updateProgress(); resolve(); };
+                    img.src = asset.url;
+                } else if (asset.type === 'audio' || asset.type === 'video') {
+                    var req = new XMLHttpRequest();
+                    req.open('GET', asset.url, true);
+                    req.responseType = 'blob';
+                    req.onload = function() { updateProgress(); resolve(); };
+                    req.onerror = function() { updateProgress(); resolve(); };
+                    req.send();
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            Promise.all(assetsToPreload.map(preloadSingleAsset)).then(function() {});
+        });
 
         function openFullscreen() {
             var elem = document.documentElement;
