@@ -130,7 +130,7 @@
             border: 1.5px solid #00b4d8 !important;
             border-radius: 14px;
             padding: 14px 18px;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             max-width: 340px;
             width: 100%;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -162,37 +162,61 @@
             font-style: italic;
         }
 
-        /* Tombol Buka Tata Ibadah dengan Indikator Loading */
+        /* Container Tombol Aksi Cover */
+        .cover-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        /* Tombol Utama Buka Tata Ibadah */
         .btn-fullscreen {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 14px 32px;
-            font-size: clamp(0.9rem, 3.8vw, 1rem) !important;
+            width: 100%;
+            padding: 13px 20px;
+            font-size: clamp(0.88rem, 3.6vw, 0.95rem) !important;
             font-weight: 800;
             color: #ffffff !important;
             background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
             border: 1.5px solid #90e0ef !important;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.7), 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 18px rgba(0, 180, 216, 0.6), 0 4px 12px rgba(0, 0, 0, 0.25);
             transition: all 0.3s ease;
         }
 
-        .btn-fullscreen:disabled {
-            opacity: 0.75;
-            cursor: not-allowed;
-            background: linear-gradient(135deg, #555555, #777777) !important;
-            border-color: #aaaaaa !important;
-            box-shadow: none !important;
+        /* Tombol Unduh File HTML Offline */
+        .btn-download-html {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 11px 20px;
+            font-size: clamp(0.8rem, 3.2vw, 0.88rem) !important;
+            font-weight: 700;
+            color: #0077b6 !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
         }
 
-        .btn-fullscreen svg {
-            width: 20px;
-            height: 20px;
-            fill: #ffffff !important;
+        .btn-download-html svg, .btn-fullscreen svg {
+            width: 18px;
+            height: 18px;
         }
+
+        .btn-download-html svg { fill: #0077b6 !important; }
+        .btn-fullscreen svg { fill: #ffffff !important; }
 
         /* BAR HORIZONTAL ZOOM TEKS DI TENGAH BAWAH */
         .zoom-controls-wrapper {
@@ -476,11 +500,12 @@
     <!-- Layar Pembuka / Cover (Opening Awal) -->
     <div class="cover" id="coverScreen">
         <div class="cross-logo">
-            <img src="Logo_HKI.png" alt="Logo HKI" id="imgLogoHki">
+            <img src="Logo_HKI.png" alt="Logo HKI">
         </div>
 
         <div class="cover-badge">TATA IBADAH MINGGU</div>
-        <div class="cover-date">Minggu XXIII Dung Trinitatis — 08 Nopember 2026</div>
+        <!-- Tanggal Ibadah yang Digunakan untuk Nama File Unduhan -->
+        <div class="cover-date" id="ibadahDateText">Minggu XXIII Dung Trinitatis — 08 Nopember 2026</div>
         <div class="cover-main-header">HKI RESORT KHUSUS TANJUNG MORAWA</div>
         
         <!-- Box Tema & Nats Ibadah -->
@@ -490,13 +515,24 @@
             <div class="verse">(Hesekiel 18 : 21 - 29)</div>
         </div>
 
-        <!-- Tombol Buka Tata Ibadah dengan Progress Loading -->
-        <button class="btn-fullscreen" id="btnOpenProposal" onclick="openFullscreen()" disabled>
-            <svg id="btnOpenIcon" viewBox="0 0 24 24" style="display: none;">
-                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-            </svg>
-            <span id="btnOpenProposalText">⏳ Memuat Komponen (0%)...</span>
-        </button>
+        <!-- Tombol Aksi Cover -->
+        <div class="cover-actions">
+            <!-- 1. Tombol Buka Tata Ibadah -->
+            <button class="btn-fullscreen" onclick="openFullscreen()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+                <span>Buka Tata Ibadah</span>
+            </button>
+
+            <!-- 2. Tombol Unduh File HTML Offline -->
+            <button class="btn-download-html" onclick="downloadCurrentPage()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                <span>Simpan / Unduh File Offline</span>
+            </button>
+        </div>
     </div>
 
     <!-- Area Konten Utama Slide Liturgi -->
@@ -521,11 +557,11 @@
                 </div>
             </div>
 
-            <!-- Content Panes 1 - 20 -->
+            <!-- Content Panes 1 - 20 (Generasi via JS) -->
         </div>
     </div>
 
-    <!-- Navigasi Bottom -->
+    <!-- Navigasi Bottom (Tab Opening + Tab Nomor Urut 1 - 20) -->
     <div class="nav-tabs-container" id="navTabs">
         <!-- Generasi via JS -->
     </div>
@@ -534,9 +570,9 @@
         var btnNextFixed = document.getElementById('btnNextFixed');
         var btnPrevFixed = document.getElementById('btnPrevFixed');
         var zoomControls = document.getElementById('zoomControls');
-        var btnOpenProposal = document.getElementById('btnOpenProposal');
-        var btnOpenProposalText = document.getElementById('btnOpenProposalText');
-        var btnOpenIcon = document.getElementById('btnOpenIcon');
+
+        // MASUKKAN PENANDA TANGGAL DI SINI UNTUK NAMA FILE HASIL UNDUHAN
+        const DATE_FILE_NAME = "08_Nov_2026"; // Contoh: Tata_Ibadah_HKI_08_Nov_2026.html
 
         // Data Liturgi (1 - 20)
         const liturgiData = [
@@ -564,46 +600,12 @@
 
         let currentIndex = 0;
 
-        // SISTEM PRELOADER ASET DENGAN PROGRESS PERSENTASE REAL
-        const assetsToPreload = [
-            { url: 'Backgroud.jpg', type: 'image' },
-            { url: 'Logo_HKI.png', type: 'image' }
-        ];
-
-        let loadedCount = 0;
-        let totalAssets = assetsToPreload.length;
-
-        function updateProgress() {
-            loadedCount++;
-            var percent = Math.floor((loadedCount / totalAssets) * 100);
-            
-            if (loadedCount < totalAssets) {
-                btnOpenProposalText.innerText = '⏳ Memuat Komponen (' + percent + '%)...';
-            } else {
-                btnOpenProposal.disabled = false;
-                btnOpenIcon.style.display = 'inline';
-                btnOpenProposalText.innerText = 'Buka Tata Ibadah';
-            }
-        }
-
-        function preloadSingleAsset(asset) {
-            return new Promise(function(resolve) {
-                var img = new Image();
-                img.onload = function() { updateProgress(); resolve(); };
-                img.onerror = function() { updateProgress(); resolve(); }; // fallback jika file gambar tidak ditemukan
-                img.src = asset.url;
-            });
-        }
-
-        // Inisialisasi Elemen
+        // Inisialisasi Generasi Elemen Slide & Tab
         window.addEventListener('DOMContentLoaded', function() {
-            // Jalankan Preloader
-            Promise.all(assetsToPreload.map(preloadSingleAsset)).then(function() {});
-
             const contentCard = document.getElementById('contentCard');
             const navTabs = document.getElementById('navTabs');
 
-            // Render Tab Opening (Indeks 0)
+            // 1. Render Tab Opening (Indeks 0)
             const tabOpeningBtn = document.createElement('button');
             tabOpeningBtn.className = 'tab-btn active';
             tabOpeningBtn.id = 'btn-tab-0';
@@ -611,7 +613,7 @@
             tabOpeningBtn.onclick = () => switchTab(0);
             navTabs.appendChild(tabOpeningBtn);
 
-            // Render Slide Liturgi 1 - 20 (Indeks 1 - 20)
+            // 2. Render Slide Liturgi 1 - 20 (Indeks 1 - 20)
             liturgiData.forEach((item) => {
                 const pane = document.createElement('div');
                 pane.id = `tab-${item.id}`;
@@ -638,13 +640,30 @@
             });
         });
 
-        // Zoom Teks
+        // FUNGSI UTAMA UNDUH FILE HTML BERDASARKAN TANGGAL IBADAH
+        function downloadCurrentPage() {
+            var htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            var blob = new Blob([htmlContent], { type: 'text/html' });
+            var url = URL.createObjectURL(blob);
+            
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = `Tata_Ibadah_HKI_${DATE_FILE_NAME}.html`;
+            document.body.appendChild(a);
+            a.click();
+            
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Pengatur Zoom Teks
         var currentTextScale = 1.0;
         function adjustTextZoom(delta) {
             currentTextScale = Math.min(Math.max(currentTextScale + delta, 0.8), 1.6);
             document.documentElement.style.setProperty('--text-zoom-scale', currentTextScale);
         }
 
+        // Buka Layar Utama
         function openFullscreen() {
             var elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
@@ -658,6 +677,7 @@
             switchTab(0);
         }
 
+        // Fungsi Berpindah Slide Menggunakan Indeks Angka
         function switchTab(index) {
             currentIndex = index;
 
