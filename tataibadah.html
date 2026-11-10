@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Penguncian Skema Warna Sistem & Browser (Anti-Dark Mode) -->
+    <meta name="color-scheme" content="only light">
+    <meta name="supported-color-schemes" content="only light">
+    
+    <title>Tata Ibadah Minggu - HKI Resort Khusus Tanjung Morawa</title>
+
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            color-scheme: only light !important;
+            supported-color-schemes: only light !important;
+            --text-zoom-scale: 1;
+            --sky-blue-primary: #0077b6;
+            --sky-blue-light: #00b4d8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            forced-color-adjust: none !important;
+            -webkit-forced-color-adjust: none !important;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif;
+            color-scheme: light !important;
+            -webkit-color-scheme: light !important;
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+            touch-action: manipulation;
+            
+            /* Gambar Background Utama */
+            background-image: url('Backgroud.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #e0f2fe;
+        }
+
+        /* Layar Pembuka / Cover (Opening Awal) */
+        .cover {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: transparent !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 4;
+        }
+
+        /* Logo HKI */
+        .cross-logo {
+            width: 65px;
+            height: 75px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 8px rgba(0, 180, 216, 0.8));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cross-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cover-badge {
+            font-size: clamp(0.75rem, 3.2vw, 0.85rem) !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #0077b6 !important;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background-color: #ffffff !important;
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1.5px solid #00b4d8 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+        }
+
+        .cover-date {
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem) !important;
+            font-weight: 700;
+            color: #ffffff !important;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .cover-main-header {
+            font-size: clamp(1.25rem, 5vw, 1.55rem) !important;
+            font-weight: 900;
+            color: #0077b6 !important;
+            text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 15px rgba(0, 180, 216, 0.8);
+            max-width: 380px;
+            line-height: 1.3;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Box Tema & Nats Ibadah */
+        .theme-box {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .theme-box .label {
+            font-size: calc(clamp(0.7rem, 3vw, 0.78rem) * var(--text-zoom-scale)) !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0077b6 !important;
+            margin-bottom: 4px;
+            font-weight: 800;
+        }
+
+        .theme-box .title {
+            font-family: 'Lora', serif !important;
+            font-size: calc(clamp(0.95rem, 4vw, 1.1rem) * var(--text-zoom-scale)) !important;
+            font-weight: 600;
+            color: #000000 !important;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .theme-box .verse {
+            font-size: calc(clamp(0.8rem, 3.2vw, 0.85rem) * var(--text-zoom-scale)) !important;
+            font-weight: 700;
+            color: #0077b6 !important;
+            font-style: italic;
+        }
+
+        /* Tombol Buka Tata Ibadah dengan Indikator Loading */
+        .btn-fullscreen {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 32px;
+            font-size: clamp(0.9rem, 3.8vw, 1rem) !important;
+            font-weight: 800;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            border: 1.5px solid #90e0ef !important;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.7), 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-fullscreen:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #555555, #777777) !important;
+            border-color: #aaaaaa !important;
+            box-shadow: none !important;
+        }
+
+        .btn-fullscreen svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff !important;
+        }
+
+        /* BAR HORIZONTAL ZOOM TEKS DI TENGAH BAWAH */
+        .zoom-controls-wrapper {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 73px;
+            z-index: 9;
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(0, 180, 216, 0.8) !important;
+            border-radius: 30px;
+            padding: 2px 6px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-zoom-control {
+            width: 34px;
+            height: 34px;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .btn-zoom-control:active {
+            transform: scale(0.88);
+            background: rgba(0, 180, 216, 0.3) !important;
+        }
+
+        .btn-zoom-control svg {
+            width: 20px;
+            height: 20px;
+            fill: #0077b6 !important;
+        }
+
+        .zoom-divider {
+            width: 1px;
+            height: 18px;
+            background-color: rgba(0, 119, 182, 0.35);
+            margin: 0 2px;
+        }
+
+        /* Area Konten Utama */
+        .main-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            z-index: 2;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 0 60px 0;
+            background: transparent !important;
+        }
+
+        .content-card {
+            background: transparent !important;
+            border: none !important;
+            width: 100%;
+            height: 100%;
+            padding: 15px 15px 130px 15px;
+            color: #000000 !important;
+            overflow-y: auto;
+            touch-action: pan-y;
+        }
+
+        /* BOTTOM NAV BAR DENGAN TAB OPENING & NOMOR URUT */
+        .nav-tabs-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border-top: 1.5px solid #00b4d8 !important;
+            padding: 8px 10px;
+            z-index: 3;
+            display: none;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+        }
+
+        .nav-tabs-container::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 10px;
+            margin: 0 3px;
+            background: #ffffff !important;
+            color: #0077b6 !important;
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: #0077b6 !important;
+            color: #ffffff !important;
+            border-color: #0077b6 !important;
+            transform: scale(1.08);
+            box-shadow: 0 4px 10px rgba(0, 119, 182, 0.4);
+        }
+
+        .tab-pane {
+            display: none;
+            height: 100%;
+            background: transparent !important;
+        }
+
+        .tab-pane.active { display: block; }
+
+        /* STYLES UNTUK SLIDE LITURGI */
+        .slide-layout-container {
+            max-width: 400px;
+            width: 94%;
+            min-height: 100%;
+            margin: 0 auto;
+            padding: 10px 0 20px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-main-header {
+            font-size: calc(clamp(1.1rem, 4.5vw, 1.3rem) * var(--text-zoom-scale)) !important;
+            font-weight: 900;
+            color: #0077b6 !important;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 12px rgba(0, 180, 216, 0.8);
+        }
+
+        /* Badge Posisi Jemaat (Jongjong / Hundul) */
+        .posisi-badge {
+            font-size: calc(clamp(0.75rem, 3vw, 0.82rem) * var(--text-zoom-scale)) !important;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .badge-jongjong {
+            background-color: #fef3c7 !important;
+            color: #b45309 !important;
+            border: 1.5px solid #f59e0b !important;
+        }
+
+        .badge-hundul {
+            background-color: #ffffff !important;
+            color: #475569 !important;
+            border: 1.5px solid #cbd5e1 !important;
+        }
+
+        /* Box Isi Liturgi */
+        .liturgi-card-box {
+            background-color: rgba(255, 255, 255, 0.94) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid #00b4d8 !important;
+            border-radius: 16px;
+            padding: clamp(16px, 4.5vw, 22px);
+            text-align: left;
+            width: 100%;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            margin-bottom: 12px;
+        }
+
+        .liturgi-text {
+            font-family: 'Lora', serif !important;
+            font-size: calc(clamp(0.95rem, 4vw, 1.1rem) * var(--text-zoom-scale)) !important;
+            line-height: 1.7;
+            color: #0f172a !important;
+            white-space: pre-line;
+        }
+
+        /* TOMBOL NAVIGASI BOTTOM (KEMBALI & LANJUT) */
+        .btn-next-fixed, .btn-prev-fixed {
+            position: fixed;
+            bottom: 72px;
+            z-index: 8;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px 14px;
+            font-size: clamp(0.75rem, 3vw, 0.82rem) !important;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-next-fixed {
+            right: 14px;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            border: 1.5px solid #90e0ef !important;
+            box-shadow: 0 4px 18px rgba(0, 180, 216, 0.6);
+        }
+
+        .btn-prev-fixed {
+            left: 14px;
+            color: #0077b6 !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            border: 1.5px solid #00b4d8 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-next-fixed svg { width: 15px; height: 15px; fill: #ffffff !important; }
+        .btn-prev-fixed svg { width: 15px; height: 15px; fill: #0077b6 !important; }
+
+        /* ANIMASI MASUK SLIDE */
+        @keyframes smoothFadeUp {
+            0% { opacity: 0; transform: translateY(25px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-pane.active .anim-1 { animation: smoothFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .tab-pane.active .anim-2 { animation: smoothFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; }
+        .tab-pane.active .anim-3 { animation: smoothFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Kembali Dikunci di Posisi Bawah Kiri -->
+    <button class="btn-prev-fixed" id="btnPrevFixed" onclick="goToPrevSlide()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        <span>Sebelumnya</span>
+    </button>
+
+    <!-- BAR TOMBOL ZOOM TEKS DI TENGAH BAWAH -->
+    <div class="zoom-controls-wrapper" id="zoomControls">
+        <button class="btn-zoom-control" onclick="adjustTextZoom(-0.1)" title="Perkecil Teks">
+            <svg viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/>
+                <path d="M7 9h5v1.5H7z"/>
+            </svg>
+        </button>
+        <div class="zoom-divider"></div>
+        <button class="btn-zoom-control" onclick="adjustTextZoom(0.1)" title="Perbesar Teks">
+            <svg viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/>
+                <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Tombol Lanjut Dikunci di Posisi Bawah Kanan -->
+    <button class="btn-next-fixed" id="btnNextFixed" onclick="goToNextSlide()">
+        <span>Lanjut</span>
+        <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+    </button>
+
+    <!-- Layar Pembuka / Cover (Opening Awal) -->
+    <div class="cover" id="coverScreen">
+        <div class="cross-logo">
+            <img src="Logo_HKI.png" alt="Logo HKI" id="imgLogoHki">
+        </div>
+
+        <div class="cover-badge">TATA IBADAH MINGGU</div>
+        <div class="cover-date">Minggu XXIII Dung Trinitatis — 08 Nopember 2026</div>
+        <div class="cover-main-header">HKI RESORT KHUSUS TANJUNG MORAWA</div>
+        
+        <!-- Box Tema & Nats Ibadah -->
+        <div class="theme-box">
+            <div class="label">Oahan / Tema</div>
+            <div class="title">"Mangulahon Hatigoran Dohot Hasintongan"</div>
+            <div class="verse">(Hesekiel 18 : 21 - 29)</div>
+        </div>
+
+        <!-- Tombol Buka Tata Ibadah dengan Progress Loading -->
+        <button class="btn-fullscreen" id="btnOpenProposal" onclick="openFullscreen()" disabled>
+            <svg id="btnOpenIcon" viewBox="0 0 24 24" style="display: none;">
+                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+            <span id="btnOpenProposalText">⏳ Memuat Komponen (0%)...</span>
+        </button>
+    </div>
+
+    <!-- Area Konten Utama Slide Liturgi -->
+    <div class="main-container" id="mainContainer">
+        <div class="content-card" id="contentCard">
+            
+            <!-- TAB OPENING (JUDUL & TEMA ACARA) -->
+            <div id="tab-opening" class="tab-pane active">
+                <div class="slide-layout-container">
+                    <div class="cross-logo anim-1">
+                        <img src="Logo_HKI.png" alt="Logo HKI">
+                    </div>
+                    <div class="cover-badge anim-1">TATA IBADAH MINGGU</div>
+                    <div class="cover-date anim-2">Minggu XXIII Dung Trinitatis — 08 Nopember 2026</div>
+                    <div class="cover-main-header anim-2">HKI RESORT KHUSUS TANJUNG MORAWA</div>
+                    
+                    <div class="theme-box anim-3" style="margin-top: 10px;">
+                        <div class="label">Oahan / Tema</div>
+                        <div class="title">"Mangulahon Hatigoran Dohot Hasintongan"</div>
+                        <div class="verse">(Hesekiel 18 : 21 - 29)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Panes 1 - 20 -->
+        </div>
+    </div>
+
+    <!-- Navigasi Bottom -->
+    <div class="nav-tabs-container" id="navTabs">
+        <!-- Generasi via JS -->
+    </div>
+
+    <script>
+        var btnNextFixed = document.getElementById('btnNextFixed');
+        var btnPrevFixed = document.getElementById('btnPrevFixed');
+        var zoomControls = document.getElementById('zoomControls');
+        var btnOpenProposal = document.getElementById('btnOpenProposal');
+        var btnOpenProposalText = document.getElementById('btnOpenProposalText');
+        var btnOpenIcon = document.getElementById('btnOpenIcon');
+
+        // Data Liturgi (1 - 20)
+        const liturgiData = [
+            { id: 1, title: "1. Votum (Jongjong)", jongjong: true, text: "P: Marhitehite Goar ni Debata Ama, dohot Goar ni AnakNa Tuhan Yesus Kristus, dohot Goar ni Tondi Parbadia na manompa langit dohot tano on.\nJ: Amin.\n\nP: Martangiang ma hita..." },
+            { id: 2, title: "2. Marende BE. No. 31 : 1 - 2", jongjong: false, text: "1. Solsoli singkoram, taon nuaeng dosami...\n\n2. (Ayat 2)" },
+            { id: 3, title: "3. Ayat / Tangiang / Haleluya...", jongjong: false, text: "Haleluya, haleluya, haleluya..." },
+            { id: 4, title: "4. S. Patik : Poda 13 : 20", jongjong: false, text: "Poda 13 : 20\n\n'Merdongan tu na pistak, gabe pistak ma ibana; alai na marsaor tu na oto, gabe marjea ma.'" },
+            { id: 5, title: "5. Marende BE. No. 432 : 1 + 3 (Ayat 3 jongjong)", jongjong: true, text: "1. Lirik BE No. 432 ayat 1 (Hundul)...\n\n3. Lirik BE No. 432 ayat 3 (Jongjong)..." },
+            { id: 6, title: "6. Manopoti Dosa + Bagabaga", jongjong: false, text: "Tatopoti ma dosanta tu adopan ni Debata..." },
+            { id: 7, title: "7. Marende B.E No. 443 : 1 - 2", jongjong: false, text: "1. Lirik BE No. 443 ayat 1...\n\n2. Lirik BE No. 443 ayat 2..." },
+            { id: 8, title: "8. Epistel: 2 Timoteus 2 : 22 - 26", jongjong: false, text: "2 Timoteus 2 : 22 - 26\n\n'Maporus ma ho sian angka hisap-hisap ni haposoon...'" },
+            { id: 9, title: "9. Koor PA + Koor Sektor II", jongjong: false, text: "Pelayanan Koor Punguan Ama & Sektor II." },
+            { id: 10, title: "10. Marende BE No. 262 : 2 + 5 (Ayt. 5 jongjong)", jongjong: true, text: "2. Lirik BE No. 262 ayat 2 (Hundul)...\n\n5. Lirik BE No. 262 ayat 5 (Jongjong)..." },
+            { id: 11, title: "11. Manghatindanghon Haporseaon", jongjong: true, text: "Ahu porsea di Debata Ama, Pargogo na so hatudosan, na manompa langit dohot tano..." },
+            { id: 12, title: "12. Koor PPr", jongjong: false, text: "Pelayanan Koor Punguan Parompuan." },
+            { id: 13, title: "13. Koor PNB", jongjong: false, text: "Pelayanan Koor Punguan Naposo Bulung." },
+            { id: 14, title: "14. Marende BE. No. 681 : 1.. (Pelean I/II)", jongjong: false, text: "Papungu Pelean I & II..." },
+            { id: 15, title: "15. Jamita : Hesekiel 18 : 21 - 29", jongjong: false, text: "Khotbah: Hesekiel 18 : 21 - 29\n\n'Mangulahon Hatigoran Dohot Hasintongan'" },
+            { id: 16, title: "16. Marende BE No. 729 : 2", jongjong: false, text: "Lirik BE No. 729 ayat 2..." },
+            { id: 17, title: "17. Tingting", jongjong: false, text: "Pengumuman / Tingting Gereja." },
+            { id: 18, title: "18. Tangiang", jongjong: false, text: "Tangiang Pangondianon / Syafaat." },
+            { id: 19, title: "19. Marende BE No. 669 : 1.. (P.P III-IV)", jongjong: false, text: "Papungu Pelean III & IV..." },
+            { id: 20, title: "20. Tangiang Panimpuli + Pasupasu", jongjong: true, text: "P: Ale Amanami na di banua ginjang...\nJ: Ai Ho do nampuna harajaon...\nP: Pasupasu sian Tuhan Debata..." }
+        ];
+
+        let currentIndex = 0;
+
+        // SISTEM PRELOADER ASET DENGAN PROGRESS PERSENTASE REAL
+        const assetsToPreload = [
+            { url: 'Backgroud.jpg', type: 'image' },
+            { url: 'Logo_HKI.png', type: 'image' }
+        ];
+
+        let loadedCount = 0;
+        let totalAssets = assetsToPreload.length;
+
+        function updateProgress() {
+            loadedCount++;
+            var percent = Math.floor((loadedCount / totalAssets) * 100);
+            
+            if (loadedCount < totalAssets) {
+                btnOpenProposalText.innerText = '⏳ Memuat Komponen (' + percent + '%)...';
+            } else {
+                btnOpenProposal.disabled = false;
+                btnOpenIcon.style.display = 'inline';
+                btnOpenProposalText.innerText = 'Buka Tata Ibadah';
+            }
+        }
+
+        function preloadSingleAsset(asset) {
+            return new Promise(function(resolve) {
+                var img = new Image();
+                img.onload = function() { updateProgress(); resolve(); };
+                img.onerror = function() { updateProgress(); resolve(); }; // fallback jika file gambar tidak ditemukan
+                img.src = asset.url;
+            });
+        }
+
+        // Inisialisasi Elemen
+        window.addEventListener('DOMContentLoaded', function() {
+            // Jalankan Preloader
+            Promise.all(assetsToPreload.map(preloadSingleAsset)).then(function() {});
+
+            const contentCard = document.getElementById('contentCard');
+            const navTabs = document.getElementById('navTabs');
+
+            // Render Tab Opening (Indeks 0)
+            const tabOpeningBtn = document.createElement('button');
+            tabOpeningBtn.className = 'tab-btn active';
+            tabOpeningBtn.id = 'btn-tab-0';
+            tabOpeningBtn.innerText = 'Opening';
+            tabOpeningBtn.onclick = () => switchTab(0);
+            navTabs.appendChild(tabOpeningBtn);
+
+            // Render Slide Liturgi 1 - 20 (Indeks 1 - 20)
+            liturgiData.forEach((item) => {
+                const pane = document.createElement('div');
+                pane.id = `tab-${item.id}`;
+                pane.className = 'tab-pane';
+                pane.innerHTML = `
+                    <div class="slide-layout-container">
+                        <p class="slide-main-header anim-1">${item.title}</p>
+                        <div class="posisi-badge ${item.jongjong ? 'badge-jongjong' : 'badge-hundul'} anim-2">
+                            ${item.jongjong ? '🚶 Jongjong (Berdiri)' : '🪑 Hundul (Duduk)'}
+                        </div>
+                        <div class="liturgi-card-box anim-3">
+                            <div class="liturgi-text">${item.text}</div>
+                        </div>
+                    </div>
+                `;
+                contentCard.appendChild(pane);
+
+                const tabBtn = document.createElement('button');
+                tabBtn.className = 'tab-btn';
+                tabBtn.id = `btn-tab-${item.id}`;
+                tabBtn.innerText = item.id;
+                tabBtn.onclick = () => switchTab(item.id);
+                navTabs.appendChild(tabBtn);
+            });
+        });
+
+        // Zoom Teks
+        var currentTextScale = 1.0;
+        function adjustTextZoom(delta) {
+            currentTextScale = Math.min(Math.max(currentTextScale + delta, 0.8), 1.6);
+            document.documentElement.style.setProperty('--text-zoom-scale', currentTextScale);
+        }
+
+        function openFullscreen() {
+            var elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+
+            document.getElementById('coverScreen').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+            document.getElementById('navTabs').style.display = 'block';
+            zoomControls.style.display = 'flex';
+
+            switchTab(0);
+        }
+
+        function switchTab(index) {
+            currentIndex = index;
+
+            const panes = document.getElementsByClassName('tab-pane');
+            for (let pane of panes) pane.classList.remove('active');
+            
+            const targetPaneId = (index === 0) ? 'tab-opening' : `tab-${index}`;
+            const activePane = document.getElementById(targetPaneId);
+            if (activePane) activePane.classList.add('active');
+
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let btn of buttons) btn.classList.remove('active');
+
+            const activeBtn = document.getElementById(`btn-tab-${index}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+
+            btnPrevFixed.style.display = (index === 0) ? 'none' : 'inline-flex';
+            btnNextFixed.style.display = (index === liturgiData.length) ? 'none' : 'inline-flex';
+
+            document.getElementById('contentCard').scrollTop = 0;
+        }
+
+        function goToNextSlide() {
+            if (currentIndex < liturgiData.length) {
+                switchTab(currentIndex + 1);
+            }
+        }
+
+        function goToPrevSlide() {
+            if (currentIndex > 0) {
+                switchTab(currentIndex - 1);
+            }
+        }
+    </script>
+</body>
+</html>
