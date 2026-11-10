@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Penguncian Skema Warna Sistem & Browser (Anti-Dark Mode) -->
     <meta name="color-scheme" content="only light">
     <meta name="supported-color-schemes" content="only light">
     
     <title>Tata Ibadah Minggu - HKI Resort Khusus Tanjung Morawa</title>
 
-    <!-- Import Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -44,7 +42,6 @@
             text-size-adjust: 100% !important;
             touch-action: manipulation;
             
-            /* Gambar Background Utama */
             background-image: url('Backgroud.jpg');
             background-size: cover;
             background-position: center;
@@ -53,7 +50,38 @@
             background-color: #e0f2fe;
         }
 
-        /* Layar Pembuka / Cover (Opening Awal) */
+        /* TOMBOL GARIS 3 MELAYANG DI KANAN ATAS */
+        .btn-toc-trigger {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 10;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            border: 1px solid rgba(0, 180, 216, 0.35) !important;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .btn-toc-trigger:active {
+            transform: scale(0.9);
+            background: rgba(0, 119, 182, 0.3) !important;
+        }
+
+        .btn-toc-trigger svg {
+            width: 22px;
+            height: 22px;
+            fill: rgba(0, 119, 182, 0.7) !important;
+        }
+
         .cover {
             width: 100%;
             height: 100%;
@@ -71,7 +99,6 @@
             z-index: 4;
         }
 
-        /* Logo HKI */
         .cross-logo {
             width: 65px;
             height: 75px;
@@ -122,7 +149,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Box Tema & Nats Ibadah */
         .theme-box {
             background-color: rgba(255, 255, 255, 0.95) !important;
             backdrop-filter: blur(8px);
@@ -162,7 +188,6 @@
             font-style: italic;
         }
 
-        /* Container Tombol Aksi Cover */
         .cover-actions {
             display: flex;
             flex-direction: column;
@@ -172,7 +197,6 @@
             max-width: 320px;
         }
 
-        /* Tombol Utama Buka Tata Ibadah */
         .btn-fullscreen {
             display: inline-flex;
             align-items: center;
@@ -191,7 +215,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Tombol Unduh File HTML Offline */
         .btn-download-html {
             display: inline-flex;
             align-items: center;
@@ -218,7 +241,6 @@
         .btn-download-html svg { fill: #0077b6 !important; }
         .btn-fullscreen svg { fill: #ffffff !important; }
 
-        /* BAR HORIZONTAL ZOOM TEKS DI TENGAH BAWAH */
         .zoom-controls-wrapper {
             position: fixed;
             left: 50%;
@@ -267,7 +289,6 @@
             margin: 0 2px;
         }
 
-        /* Area Konten Utama */
         .main-container {
             position: fixed;
             top: 0;
@@ -295,7 +316,6 @@
             touch-action: pan-y;
         }
 
-        /* BOTTOM NAV BAR DENGAN TAB OPENING & NOMOR URUT */
         .nav-tabs-container {
             position: fixed;
             bottom: 0;
@@ -331,6 +351,7 @@
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .tab-btn.active {
@@ -349,7 +370,6 @@
 
         .tab-pane.active { display: block; }
 
-        /* STYLES UNTUK SLIDE LITURGI */
         .slide-layout-container {
             max-width: 400px;
             width: 94%;
@@ -371,7 +391,6 @@
             text-shadow: 0 0 10px #ffffff, 0 0 5px #ffffff, 0 0 12px rgba(0, 180, 216, 0.8);
         }
 
-        /* Badge Posisi Jemaat (Jongjong / Hundul) */
         .posisi-badge {
             font-size: calc(clamp(0.75rem, 3vw, 0.82rem) * var(--text-zoom-scale)) !important;
             font-weight: 800;
@@ -395,7 +414,6 @@
             border: 1.5px solid #cbd5e1 !important;
         }
 
-        /* Box Isi Liturgi */
         .liturgi-card-box {
             background-color: rgba(255, 255, 255, 0.94) !important;
             backdrop-filter: blur(8px);
@@ -417,7 +435,419 @@
             white-space: pre-line;
         }
 
-        /* TOMBOL NAVIGASI BOTTOM (KEMBALI & LANJUT) */
+        .toc-list-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .toc-item-btn {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            background: #ffffff !important;
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 12px;
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
+            gap: 0.6em;
+            position: relative;
+        }
+
+        .toc-item-btn:active {
+            transform: scale(0.98);
+            background: #e0f2fe !important;
+        }
+
+        .toc-item-btn.last-viewed {
+            background: #f0f9ff !important;
+            border: 2px solid #0077b6 !important;
+            box-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+        }
+
+        .toc-item-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5em;
+            flex: 1;
+        }
+
+        .toc-item-num {
+            font-size: calc(clamp(0.85rem, 3.5vw, 0.95rem) * var(--text-zoom-scale)) !important;
+            font-weight: 800;
+            color: #0077b6 !important;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 3ch;
+        }
+
+        .toc-item-title-box {
+            flex: 1;
+        }
+
+        .toc-item-title {
+            font-size: calc(clamp(0.85rem, 3.5vw, 0.95rem) * var(--text-zoom-scale)) !important;
+            font-weight: 700;
+            color: #0077b6 !important;
+            line-height: 1.4;
+            display: block;
+        }
+
+        .last-viewed-badge {
+            font-size: calc(clamp(0.65rem, 2.8vw, 0.72rem) * var(--text-zoom-scale)) !important;
+            font-weight: 800;
+            color: #ffffff !important;
+            background-color: #0077b6 !important;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            margin-top: 4px;
+            display: inline-block;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .toc-item-arrow {
+            font-size: calc(clamp(0.95rem, 3.8vw, 1.1rem) * var(--text-zoom-scale)) !important;
+            color: #00b4d8;
+            font-weight: 900;
+            margin-top: -1px;
+            flex-shrink: 0;
+        }
+
+        /* STYLES PROFIL & FOTO PPTTI.JPG */
+        .profile-card-box {
+            background-color: rgba(255, 255, 255, 0.96) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid #00b4d8 !important;
+            border-radius: 20px;
+            padding: 22px 18px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .profile-avatar-img-box {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.5);
+            overflow: hidden;
+            margin-bottom: 12px;
+            background: #e0f2fe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .profile-avatar-img-box:active {
+            transform: scale(0.92);
+        }
+
+        .profile-avatar-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: calc(clamp(1.15rem, 4.8vw, 1.35rem) * var(--text-zoom-scale)) !important;
+            font-weight: 900;
+            color: #0077b6 !important;
+            margin-bottom: 4px;
+        }
+
+        .profile-role {
+            font-size: calc(clamp(0.78rem, 3.2vw, 0.85rem) * var(--text-zoom-scale)) !important;
+            font-weight: 800;
+            color: #00b4d8 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            background: #e0f2fe;
+            padding: 4px 12px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* NOMOR KONTUK POLOS TANPA TULISAN SALIN - KLIK LANGSUNG SALIN */
+        .profile-phone-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff !important;
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 12px;
+            padding: 9px 18px;
+            font-size: calc(clamp(0.95rem, 4vw, 1.05rem) * var(--text-zoom-scale)) !important;
+            font-weight: 800;
+            color: #0f172a !important;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .profile-phone-box:active {
+            transform: scale(0.95);
+            background: #e0f2fe !important;
+        }
+
+        .profile-phone-box svg {
+            width: 18px;
+            height: 18px;
+            fill: #0077b6 !important;
+        }
+
+        /* NOTIFIKASI TOAST HASIL SALIN NOMOR */
+        .copy-toast {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: #0077b6;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 6px 16px;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 20;
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .profile-actions-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-action-profile {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 18px;
+            font-size: calc(clamp(0.82rem, 3.4vw, 0.92rem) * var(--text-zoom-scale)) !important;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-action-profile:active {
+            transform: scale(0.96);
+        }
+
+        .btn-action-profile svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .btn-save-vcf-style {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            border: 1.5px solid #90e0ef !important;
+        }
+
+        .btn-save-vcf-style svg { fill: #ffffff !important; }
+
+        .btn-wa-style {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            border: 1.5px solid #86efac !important;
+        }
+
+        .btn-wa-style svg { fill: #ffffff !important; }
+
+        /* LIGHTBOX VIEWER FOTO PROFIL BESAR */
+        .photo-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 150;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        .photo-modal-container {
+            position: relative;
+            max-width: 90vw;
+            max-height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 16px;
+            border: 3px solid #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+        }
+
+        /* TOMBOL X POLOS TANPA LINGKARAN DI LIGHTBOX FOTO */
+        .btn-close-photo-plain {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: #ffffff !important;
+            font-size: 2.2rem;
+            font-weight: 300;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 160;
+            background: none !important;
+            border: none !important;
+            padding: 5px;
+            user-select: none;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        /* MODAL FORM DATA JEMAAT */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #ffffff !important;
+            border: 2px solid #00b4d8 !important;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            animation: smoothFadeUp 0.3s ease forwards;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #0077b6 !important;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .modal-subtitle {
+            font-size: 0.82rem;
+            color: #64748b !important;
+            margin-bottom: 14px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #0f172a !important;
+            margin-bottom: 4px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #00b4d8 !important;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: #0077b6 !important;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
+        }
+
+        .modal-buttons-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .btn-modal-cancel {
+            flex: 1;
+            padding: 10px;
+            border: 1.5px solid #cbd5e1 !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-modal-send {
+            flex: 1.3;
+            padding: 10px;
+            border: 1.5px solid #86efac !important;
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            color: #ffffff !important;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+        }
+
         .btn-next-fixed, .btn-prev-fixed {
             position: fixed;
             bottom: 72px;
@@ -455,7 +885,6 @@
         .btn-next-fixed svg { width: 15px; height: 15px; fill: #ffffff !important; }
         .btn-prev-fixed svg { width: 15px; height: 15px; fill: #0077b6 !important; }
 
-        /* ANIMASI MASUK SLIDE */
         @keyframes smoothFadeUp {
             0% { opacity: 0; transform: translateY(25px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -468,13 +897,15 @@
 </head>
 <body>
 
-    <!-- Tombol Kembali Dikunci di Posisi Bawah Kiri -->
+    <button class="btn-toc-trigger" id="btnTocTrigger" onclick="switchTab('toc')" title="Ke Daftar Isi">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+
     <button class="btn-prev-fixed" id="btnPrevFixed" onclick="goToPrevSlide()">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
         <span>Sebelumnya</span>
     </button>
 
-    <!-- BAR TOMBOL ZOOM TEKS DI TENGAH BAWAH -->
     <div class="zoom-controls-wrapper" id="zoomControls">
         <button class="btn-zoom-control" onclick="adjustTextZoom(-0.1)" title="Perkecil Teks">
             <svg viewBox="0 0 24 24">
@@ -491,59 +922,50 @@
         </button>
     </div>
 
-    <!-- Tombol Lanjut Dikunci di Posisi Bawah Kanan -->
     <button class="btn-next-fixed" id="btnNextFixed" onclick="goToNextSlide()">
         <span>Lanjut</span>
         <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
     </button>
 
-    <!-- Layar Pembuka / Cover (Opening Awal) -->
     <div class="cover" id="coverScreen">
         <div class="cross-logo">
-            <img src="Logo_HKI.png" alt="Logo HKI">
+            <img src="Logo_HKI.png" alt="Logo HKI" id="mainHkiLogo">
         </div>
 
         <div class="cover-badge">TATA IBADAH MINGGU</div>
-        <!-- Tanggal Ibadah yang Digunakan untuk Nama File Unduhan -->
         <div class="cover-date" id="ibadahDateText">Minggu XXIII Dung Trinitatis — 08 Nopember 2026</div>
         <div class="cover-main-header">HKI RESORT KHUSUS TANJUNG MORAWA</div>
         
-        <!-- Box Tema & Nats Ibadah -->
         <div class="theme-box">
             <div class="label">Oahan / Tema</div>
             <div class="title">"Mangulahon Hatigoran Dohot Hasintongan"</div>
             <div class="verse">(Hesekiel 18 : 21 - 29)</div>
         </div>
 
-        <!-- Tombol Aksi Cover -->
         <div class="cover-actions">
-            <!-- 1. Tombol Buka Tata Ibadah -->
             <button class="btn-fullscreen" onclick="openFullscreen()">
                 <svg viewBox="0 0 24 24">
                     <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
                 </svg>
-                <span>Buka Tata Ibadah</span>
+                <span id="btnOpenText">Buka Tata Ibadah</span>
             </button>
 
-            <!-- 2. Tombol Unduh File HTML Offline -->
-            <button class="btn-download-html" onclick="downloadCurrentPage()">
+            <button class="btn-download-html" id="btnDownloadBtn" onclick="downloadCurrentPage()">
                 <svg viewBox="0 0 24 24">
                     <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                 </svg>
-                <span>Simpan / Unduh File Offline</span>
+                <span id="btnDownloadText">Simpan / Unduh File Offline</span>
             </button>
         </div>
     </div>
 
-    <!-- Area Konten Utama Slide Liturgi -->
     <div class="main-container" id="mainContainer">
         <div class="content-card" id="contentCard">
-            
-            <!-- TAB OPENING (JUDUL & TEMA ACARA) -->
+            <!-- TAB OPENING -->
             <div id="tab-opening" class="tab-pane active">
                 <div class="slide-layout-container">
                     <div class="cross-logo anim-1">
-                        <img src="Logo_HKI.png" alt="Logo HKI">
+                        <img src="Logo_HKI.png" alt="Logo HKI" class="innerHkiLogo">
                     </div>
                     <div class="cover-badge anim-1">TATA IBADAH MINGGU</div>
                     <div class="cover-date anim-2">Minggu XXIII Dung Trinitatis — 08 Nopember 2026</div>
@@ -557,24 +979,116 @@
                 </div>
             </div>
 
-            <!-- Content Panes 1 - 20 (Generasi via JS) -->
+            <!-- TAB DAFTAR ISI (SLIDE ☰) -->
+            <div id="tab-toc" class="tab-pane">
+                <div class="slide-layout-container" style="justify-content: flex-start; padding-top: 10px;">
+                    <p class="slide-main-header anim-1">📋 DAFTAR ISI LITURGI</p>
+                    <div class="liturgi-card-box anim-2" style="padding: 12px 14px;">
+                        <div class="toc-list-container" id="tocListContainer">
+                            <!-- Generasi via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB PROFIL PEMBUAT WEB (SLIDE 👤) -->
+            <div id="tab-profile" class="tab-pane">
+                <div class="slide-layout-container">
+                    <p class="slide-main-header anim-1">PROFIL PEMBUAT WEB</p>
+                    <div class="profile-card-box anim-2">
+                        <div class="copy-toast" id="copyToast">Nomor berhasil disalin!</div>
+                        
+                        <!-- FOTO PROFIL BISA DIKLIK UNTUK MEMPERBESAR -->
+                        <div class="profile-avatar-img-box" onclick="openPhotoModal()" title="Klik untuk perbesar foto">
+                            <img src="pptti.jpg" alt="Foto Amang D. Hasibuan" id="profileImage">
+                        </div>
+
+                        <div class="profile-name">Amang D. Hasibuan</div>
+                        <div class="profile-role">Pengembang / Pembuat Web</div>
+                        
+                        <!-- KLIK NOMOR LANGSUNG MENYALIN OTOMATIS -->
+                        <div class="profile-phone-box" onclick="copyPhoneNumber()" title="Klik untuk salin nomor">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                            </svg>
+                            <span id="phoneNumText">087884010953</span>
+                        </div>
+
+                        <div class="profile-actions-group">
+                            <button class="btn-action-profile btn-save-vcf-style" onclick="saveContactDirectly()">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                                </svg>
+                                <span>Simpan Kontak ke HP (.vcf)</span>
+                            </button>
+
+                            <button class="btn-action-profile btn-wa-style" onclick="openWaFormModal()">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.81 9.81 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.18 8.18 0 0 1-5.82 2.41c-1.48 0-2.92-.39-4.18-1.14l-.3-.18-3.11.82.83-3.03-.2-.31a8.2 8.2 0 0 1-1.26-4.39c0-4.54 3.7-8.24 8.24-8.24zm-2.88 4.54c-.18 0-.47.07-.72.34-.25.28-.96.94-.96 2.3 0 1.35.98 2.66 1.12 2.85.14.19 1.94 2.97 4.7 4.16.66.28 1.17.45 1.57.58.66.21 1.26.18 1.73.11.53-.08 1.63-.67 1.86-1.31.23-.64.23-1.19.16-1.31-.07-.11-.25-.18-.53-.32-.28-.14-1.63-.8-1.88-.89-.25-.09-.44-.14-.63.14-.19.28-.73.89-.9 1.08-.16.19-.33.21-.61.07-.28-.14-1.18-.43-2.25-1.39-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.33.42-.49.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.49-.07-.14-.63-1.52-.86-2.08-.23-.55-.46-.48-.63-.48z"/>
+                                </svg>
+                                <span>Minta Link Update / HTML via WA</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Navigasi Bottom (Tab Opening + Tab Nomor Urut 1 - 20) -->
-    <div class="nav-tabs-container" id="navTabs">
-        <!-- Generasi via JS -->
+    <!-- LIGHTBOX TAMPILAN FOTO PROFIL BESAR -->
+    <div class="photo-modal-overlay" id="photoModalOverlay" onclick="closePhotoModal()">
+        <button class="btn-close-photo-plain" onclick="closePhotoModal()" title="Tutup">✕</button>
+        <div class="photo-modal-container" onclick="event.stopPropagation()">
+            <img src="pptti.jpg" alt="Foto Profil Besar" class="photo-modal-img" id="largeProfileImg">
+        </div>
     </div>
+
+    <!-- MODAL POP-UP FORM DATA JEMAAT -->
+    <div class="modal-overlay" id="waFormModal">
+        <div class="modal-box">
+            <div class="modal-title">Lengkapi Data Jemaat</div>
+            <div class="modal-subtitle">Isi data di bawah ini untuk mengirim pesan via WhatsApp</div>
+            
+            <div class="form-group">
+                <label for="inputNama">Nama (Inisial & Marga):</label>
+                <input type="text" class="form-input" id="inputNama" placeholder="Contoh: D. Hasibuan">
+            </div>
+
+            <div class="form-group">
+                <label for="selectSektor">Pilih Sektor:</label>
+                <select class="form-select" id="selectSektor">
+                    <option value="">-- Pilih Sektor --</option>
+                    <option value="Sektor 1">Sektor 1</option>
+                    <option value="Sektor 2">Sektor 2</option>
+                    <option value="Sektor 3">Sektor 3</option>
+                    <option value="Sektor 4">Sektor 4</option>
+                    <option value="Sektor 5">Sektor 5</option>
+                </select>
+            </div>
+
+            <div class="modal-buttons-group">
+                <button class="btn-modal-cancel" onclick="closeWaFormModal()">Batal</button>
+                <button class="btn-modal-send" onclick="sendWaMessage()">Kirim Pesan WA</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-tabs-container" id="navTabs"></div>
 
     <script>
         var btnNextFixed = document.getElementById('btnNextFixed');
         var btnPrevFixed = document.getElementById('btnPrevFixed');
         var zoomControls = document.getElementById('zoomControls');
+        var btnTocTrigger = document.getElementById('btnTocTrigger');
 
-        // MASUKKAN PENANDA TANGGAL DI SINI UNTUK NAMA FILE HASIL UNDUHAN
-        const DATE_FILE_NAME = "08_Nov_2026"; // Contoh: Tata_Ibadah_HKI_08_Nov_2026.html
+        const DATE_FILE_NAME = "08_Nov_2026";
+        const STORAGE_KEY_LAST_SLIDE = "hki_liturgi_last_slide_" + DATE_FILE_NAME;
 
-        // Data Liturgi (1 - 20)
+        const CONTACT_DATA = {
+            name: "Amang D. Hasibuan",
+            phone: "087884010953"
+        };
+
         const liturgiData = [
             { id: 1, title: "1. Votum (Jongjong)", jongjong: true, text: "P: Marhitehite Goar ni Debata Ama, dohot Goar ni AnakNa Tuhan Yesus Kristus, dohot Goar ni Tondi Parbadia na manompa langit dohot tano on.\nJ: Amin.\n\nP: Martangiang ma hita..." },
             { id: 2, title: "2. Marende BE. No. 31 : 1 - 2", jongjong: false, text: "1. Solsoli singkoram, taon nuaeng dosami...\n\n2. (Ayat 2)" },
@@ -583,7 +1097,7 @@
             { id: 5, title: "5. Marende BE. No. 432 : 1 + 3 (Ayat 3 jongjong)", jongjong: true, text: "1. Lirik BE No. 432 ayat 1 (Hundul)...\n\n3. Lirik BE No. 432 ayat 3 (Jongjong)..." },
             { id: 6, title: "6. Manopoti Dosa + Bagabaga", jongjong: false, text: "Tatopoti ma dosanta tu adopan ni Debata..." },
             { id: 7, title: "7. Marende B.E No. 443 : 1 - 2", jongjong: false, text: "1. Lirik BE No. 443 ayat 1...\n\n2. Lirik BE No. 443 ayat 2..." },
-            { id: 8, title: "8. Epistel: 2 Timoteus 2 : 22 - 26", jongjong: false, text: "2 Timoteus 2 : 22 - 26\n\n'Maporus ma ho sian angka hisap-hisap ni haposoon...'" },
+            { id: 8, title: "8. Epistel: 2 Timoteus 2 : 22 - 26", jongjong: false, text: "2 Timoteus 2 : 22 - 26\n\n22. Sebab itu jauhilah nafsu orang muda, kejarlah keadilan, kesetiaan, kasih dan damai bersama-sama dengan mereka yang berseru kepada Tuhan dengan hati yang murni.\n\n23. Hindarilah soal-soal yang dicari-cari, yang bodoh dan tidak layak. Engkau tahu bahwa soal-soal itu menimbulkan pertengkaran,\n\n24. sedangkan seorang hamba Tuhan tidak boleh bertengkar, tetapi harus ramah terhadap semua orang. Ia harus cakap mengajar, sabar\n\n25. dan dengan lemah lembut dapat menuntun orang yang suka melawan, sebab mungkin memberikan mereka kesempatan untuk bertobat dan memimpin mereka kepada pengetahuan akan kebenaran,\n\n26. dan dengan demikian mereka menjadi sadar kembali, karena terlepas dari jerat Iblis yang telah mengikat mereka pada kehendaknya." },
             { id: 9, title: "9. Koor PA + Koor Sektor II", jongjong: false, text: "Pelayanan Koor Punguan Ama & Sektor II." },
             { id: 10, title: "10. Marende BE No. 262 : 2 + 5 (Ayt. 5 jongjong)", jongjong: true, text: "2. Lirik BE No. 262 ayat 2 (Hundul)...\n\n5. Lirik BE No. 262 ayat 5 (Jongjong)..." },
             { id: 11, title: "11. Manghatindanghon Haporseaon", jongjong: true, text: "Ahu porsea di Debata Ama, Pargogo na so hatudosan, na manompa langit dohot tano..." },
@@ -598,51 +1112,263 @@
             { id: 20, title: "20. Tangiang Panimpuli + Pasupasu", jongjong: true, text: "P: Ale Amanami na di banua ginjang...\nJ: Ai Ho do nampuna harajaon...\nP: Pasupasu sian Tuhan Debata..." }
         ];
 
-        let currentIndex = 0;
+        let currentActiveKey = 'opening';
 
-        // Inisialisasi Generasi Elemen Slide & Tab
-        window.addEventListener('DOMContentLoaded', function() {
-            const contentCard = document.getElementById('contentCard');
-            const navTabs = document.getElementById('navTabs');
+        // FUNGSI MEMPERBESAR FOTO PROFIL (LIGHTBOX)
+        function openPhotoModal() {
+            const currentProfileSrc = document.getElementById('profileImage').src;
+            document.getElementById('largeProfileImg').src = currentProfileSrc;
+            document.getElementById('photoModalOverlay').style.display = 'flex';
+        }
 
-            // 1. Render Tab Opening (Indeks 0)
-            const tabOpeningBtn = document.createElement('button');
-            tabOpeningBtn.className = 'tab-btn active';
-            tabOpeningBtn.id = 'btn-tab-0';
-            tabOpeningBtn.innerText = 'Opening';
-            tabOpeningBtn.onclick = () => switchTab(0);
-            navTabs.appendChild(tabOpeningBtn);
+        function closePhotoModal() {
+            document.getElementById('photoModalOverlay').style.display = 'none';
+        }
 
-            // 2. Render Slide Liturgi 1 - 20 (Indeks 1 - 20)
+        // FUNGSI SALIN NOMOR TELEPON LANGSUNG SAAT KOTAK DIKLIK
+        function copyPhoneNumber() {
+            const phoneNum = "087884010953";
+            
+            function showToast() {
+                const toast = document.getElementById('copyToast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(phoneNum).then(showToast).catch(() => {
+                    fallbackCopy(phoneNum);
+                });
+            } else {
+                fallbackCopy(phoneNum);
+            }
+
+            function fallbackCopy(text) {
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showToast();
+                } catch (e) {
+                    alert("Nomor Kontak: " + text);
+                }
+                document.body.removeChild(tempInput);
+            }
+        }
+
+        // FUNGSI KONTROL MODAL POP-UP DATA JEMAAT
+        function openWaFormModal() {
+            document.getElementById('waFormModal').style.display = 'flex';
+            document.getElementById('inputNama').focus();
+        }
+
+        function closeWaFormModal() {
+            document.getElementById('waFormModal').style.display = 'none';
+        }
+
+        function sendWaMessage() {
+            const namaVal = document.getElementById('inputNama').value.trim();
+            const sektorVal = document.getElementById('selectSektor').value;
+
+            if (!namaVal) {
+                alert("Mohon isi Nama (Inisial & Marga) Anda terlebih dahulu!");
+                return;
+            }
+
+            if (!sektorVal) {
+                alert("Mohon pilih Sektor Anda terlebih dahulu!");
+                return;
+            }
+
+            const formattedPhone = "6287884010953";
+            const textContent = `Syalom Amang D. Hasibuan, Saya ${namaVal} Dari ${sektorVal} ingin meminta link update / file Tata Ibadah Offline HTML,\n\nTerima Kasih`;
+            
+            const messageUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(textContent)}`;
+            
+            closeWaFormModal();
+            window.open(messageUrl, '_blank');
+        }
+
+        // FUNGSI SIMPAN KONTAK VCF
+        function saveContactDirectly() {
+            const vcardData = 
+`BEGIN:VCARD
+VERSION:3.0
+FN:${CONTACT_DATA.name}
+N:Hasibuan;Amang;D.;;
+TEL;TYPE=CELL:${CONTACT_DATA.phone}
+NOTE:Pembuat Web Tata Ibadah HKI
+END:VCARD`;
+
+            const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Amang_D_Hasibuan.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+        }
+
+        function updateTOCVisuals() {
+            const lastViewed = localStorage.getItem(STORAGE_KEY_LAST_SLIDE);
+            const tocListContainer = document.getElementById('tocListContainer');
+            if (!tocListContainer) return;
+
+            tocListContainer.innerHTML = '';
+
             liturgiData.forEach((item) => {
-                const pane = document.createElement('div');
-                pane.id = `tab-${item.id}`;
-                pane.className = 'tab-pane';
-                pane.innerHTML = `
-                    <div class="slide-layout-container">
-                        <p class="slide-main-header anim-1">${item.title}</p>
-                        <div class="posisi-badge ${item.jongjong ? 'badge-jongjong' : 'badge-hundul'} anim-2">
-                            ${item.jongjong ? '🚶 Jongjong (Berdiri)' : '🪑 Hundul (Duduk)'}
-                        </div>
-                        <div class="liturgi-card-box anim-3">
-                            <div class="liturgi-text">${item.text}</div>
+                const match = item.title.match(/^(\d+\.)\s*(.*)$/);
+                const numText = match ? match[1] : `${item.id}.`;
+                const titleText = match ? match[2] : item.title;
+
+                const isLast = (lastViewed && String(lastViewed) === String(item.id));
+
+                const tocItem = document.createElement('button');
+                tocItem.className = `toc-item-btn ${isLast ? 'last-viewed' : ''}`;
+                tocItem.onclick = function() { switchTab(item.id); };
+                
+                tocItem.innerHTML = `
+                    <div class="toc-item-content">
+                        <span class="toc-item-num">${numText}</span>
+                        <div class="toc-item-title-box">
+                            <span class="toc-item-title">${titleText}</span>
+                            ${isLast ? '<span class="last-viewed-badge">📌 Terakhir Dibuka</span>' : ''}
                         </div>
                     </div>
+                    <span class="toc-item-arrow">➔</span>
                 `;
-                contentCard.appendChild(pane);
+                tocListContainer.appendChild(tocItem);
+            });
+        }
+
+        function buildLiturgiUI() {
+            const contentCard = document.getElementById('contentCard');
+            const navTabs = document.getElementById('navTabs');
+            
+            navTabs.innerHTML = '';
+
+            // 1. Tab Opening
+            const tabOpeningBtn = document.createElement('button');
+            tabOpeningBtn.className = 'tab-btn active';
+            tabOpeningBtn.id = 'btn-tab-opening';
+            tabOpeningBtn.innerText = 'Opening';
+            tabOpeningBtn.onclick = function() { switchTab('opening'); };
+            navTabs.appendChild(tabOpeningBtn);
+
+            // 2. Tab Daftar Isi (☰)
+            const tabTocBtn = document.createElement('button');
+            tabTocBtn.className = 'tab-btn';
+            tabTocBtn.id = 'btn-tab-toc';
+            tabTocBtn.innerText = '☰';
+            tabTocBtn.title = 'Daftar Isi';
+            tabTocBtn.onclick = function() { switchTab('toc'); };
+            navTabs.appendChild(tabTocBtn);
+
+            // 3. Slide & Tab 1 - 20
+            liturgiData.forEach((item) => {
+                let existingPane = document.getElementById(`tab-${item.id}`);
+                if (!existingPane) {
+                    const pane = document.createElement('div');
+                    pane.id = `tab-${item.id}`;
+                    pane.className = 'tab-pane';
+                    pane.innerHTML = `
+                        <div class="slide-layout-container">
+                            <p class="slide-main-header anim-1">${item.title}</p>
+                            <div class="posisi-badge ${item.jongjong ? 'badge-jongjong' : 'badge-hundul'} anim-2">
+                                ${item.jongjong ? '🚶 Jongjong (Berdiri)' : '🪑 Hundul (Duduk)'}
+                            </div>
+                            <div class="liturgi-card-box anim-3">
+                                <div class="liturgi-text">${item.text}</div>
+                            </div>
+                        </div>
+                    `;
+                    contentCard.appendChild(pane);
+                }
 
                 const tabBtn = document.createElement('button');
                 tabBtn.className = 'tab-btn';
                 tabBtn.id = `btn-tab-${item.id}`;
                 tabBtn.innerText = item.id;
-                tabBtn.onclick = () => switchTab(item.id);
+                tabBtn.onclick = function() { switchTab(item.id); };
                 navTabs.appendChild(tabBtn);
             });
+
+            // 4. Tab Profil (👤)
+            const tabProfileBtn = document.createElement('button');
+            tabProfileBtn.className = 'tab-btn';
+            tabProfileBtn.id = 'btn-tab-profile';
+            tabProfileBtn.innerText = '👤';
+            tabProfileBtn.title = 'Profil Pembuat';
+            tabProfileBtn.onclick = function() { switchTab('profile'); };
+            navTabs.appendChild(tabProfileBtn);
+
+            updateTOCVisuals();
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            buildLiturgiUI();
+            
+            const lastViewed = localStorage.getItem(STORAGE_KEY_LAST_SLIDE);
+            if (lastViewed && document.getElementById('btnOpenText')) {
+                document.getElementById('btnOpenText').innerText = `Lanjutkan No. ${lastViewed}`;
+            }
         });
 
-        // FUNGSI UTAMA UNDUH FILE HTML BERDASARKAN TANGGAL IBADAH
-        function downloadCurrentPage() {
-            var htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        async function getBase64Image(url) {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = () => resolve(null);
+                    reader.readAsDataURL(blob);
+                });
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function downloadCurrentPage() {
+            const btnText = document.getElementById('btnDownloadText');
+            const btnObj = document.getElementById('btnDownloadBtn');
+            btnObj.disabled = true;
+            btnText.innerText = "⏳ Memproses Gambar Offline...";
+
+            const bgBase64 = await getBase64Image('Backgroud.jpg');
+            const logoBase64 = await getBase64Image('Logo_HKI.png');
+            const profileBase64 = await getBase64Image('pptti.jpg');
+
+            let cloneDoc = document.documentElement.cloneNode(true);
+
+            if (bgBase64) {
+                let styleTag = cloneDoc.querySelector('style');
+                if (styleTag) {
+                    styleTag.innerHTML = styleTag.innerHTML.replace("url('Backgroud.jpg')", `url('${bgBase64}')`);
+                }
+            }
+
+            if (logoBase64) {
+                let logoImgs = cloneDoc.querySelectorAll('img[src="Logo_HKI.png"]');
+                logoImgs.forEach(img => img.src = logoBase64);
+            }
+
+            if (profileBase64) {
+                let profileImgs = cloneDoc.querySelectorAll('img[src="pptti.jpg"]');
+                profileImgs.forEach(img => img.src = profileBase64);
+            }
+
+            var htmlContent = "<!DOCTYPE html>\n" + cloneDoc.outerHTML;
             var blob = new Blob([htmlContent], { type: 'text/html' });
             var url = URL.createObjectURL(blob);
             
@@ -654,16 +1380,17 @@
             
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+
+            btnObj.disabled = false;
+            btnText.innerText = "Simpan / Unduh File Offline";
         }
 
-        // Pengatur Zoom Teks
         var currentTextScale = 1.0;
         function adjustTextZoom(delta) {
             currentTextScale = Math.min(Math.max(currentTextScale + delta, 0.8), 1.6);
             document.documentElement.style.setProperty('--text-zoom-scale', currentTextScale);
         }
 
-        // Buka Layar Utama
         function openFullscreen() {
             var elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
@@ -673,45 +1400,78 @@
             document.getElementById('mainContainer').style.display = 'flex';
             document.getElementById('navTabs').style.display = 'block';
             zoomControls.style.display = 'flex';
+            btnTocTrigger.style.display = 'flex';
 
-            switchTab(0);
+            const lastViewed = localStorage.getItem(STORAGE_KEY_LAST_SLIDE);
+            if (lastViewed && !isNaN(lastViewed) && Number(lastViewed) >= 1 && Number(lastViewed) <= liturgiData.length) {
+                switchTab(Number(lastViewed));
+            } else {
+                switchTab('opening');
+            }
         }
 
-        // Fungsi Berpindah Slide Menggunakan Indeks Angka
-        function switchTab(index) {
-            currentIndex = index;
+        function switchTab(key) {
+            currentActiveKey = key;
+
+            if (typeof key === 'number' || (!isNaN(key) && Number(key) >= 1 && Number(key) <= liturgiData.length)) {
+                localStorage.setItem(STORAGE_KEY_LAST_SLIDE, key);
+            }
 
             const panes = document.getElementsByClassName('tab-pane');
             for (let pane of panes) pane.classList.remove('active');
             
-            const targetPaneId = (index === 0) ? 'tab-opening' : `tab-${index}`;
+            const targetPaneId = (key === 'opening' || key === 'toc' || key === 'profile') ? `tab-${key}` : `tab-${key}`;
             const activePane = document.getElementById(targetPaneId);
             if (activePane) activePane.classList.add('active');
 
             const buttons = document.getElementsByClassName('tab-btn');
             for (let btn of buttons) btn.classList.remove('active');
 
-            const activeBtn = document.getElementById(`btn-tab-${index}`);
+            const activeBtn = document.getElementById(`btn-tab-${key}`);
             if (activeBtn) {
                 activeBtn.classList.add('active');
                 activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
 
-            btnPrevFixed.style.display = (index === 0) ? 'none' : 'inline-flex';
-            btnNextFixed.style.display = (index === liturgiData.length) ? 'none' : 'inline-flex';
+            if (key === 'toc') {
+                updateTOCVisuals();
+            }
+
+            if (key === 'opening') {
+                btnPrevFixed.style.display = 'none';
+                btnNextFixed.style.display = 'inline-flex';
+            } else if (key === 'profile') {
+                btnPrevFixed.style.display = 'inline-flex';
+                btnNextFixed.style.display = 'none';
+            } else {
+                btnPrevFixed.style.display = 'inline-flex';
+                btnNextFixed.style.display = 'inline-flex';
+            }
 
             document.getElementById('contentCard').scrollTop = 0;
         }
 
         function goToNextSlide() {
-            if (currentIndex < liturgiData.length) {
-                switchTab(currentIndex + 1);
+            if (currentActiveKey === 'opening') {
+                switchTab('toc');
+            } else if (currentActiveKey === 'toc') {
+                switchTab(1);
+            } else if (typeof currentActiveKey === 'number' && currentActiveKey < liturgiData.length) {
+                switchTab(currentActiveKey + 1);
+            } else if (currentActiveKey === liturgiData.length) {
+                switchTab('profile');
             }
         }
 
         function goToPrevSlide() {
-            if (currentIndex > 0) {
-                switchTab(currentIndex - 1);
+            if (currentActiveKey === 'profile') {
+                switchTab(liturgiData.length);
+            } else if (currentActiveKey === 1) {
+                switchTab('toc');
+            } else if (currentActiveKey === 'toc') {
+                switchTab('opening');
+            } else if (typeof currentActiveKey === 'number' && currentActiveKey > 1) {
+                switchTab(currentActiveKey - 1);
             }
         }
     </script>
